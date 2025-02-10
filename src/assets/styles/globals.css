@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-black h-full text-white;
+  }
+  h1 {
+    @apply text-xl;
+  }
+  html {
+    @apply h-full;
+  }
+}
