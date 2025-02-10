@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function Dashboard() {
   return (
     <div>
@@ -7,7 +9,15 @@ export default function Dashboard() {
         <h1>Dashboard</h1>
         <p>Aprentação do projeto</p>
 
-        <button className="mt-44 border p-1">Ir para mapa</button>
+        <div className="mt-44 flex flex-col items-center justify-center gap-10">
+          <Link href="/map-city" className="inline-block w-44 border p-1">
+            Ir para mapa
+          </Link>
+
+          <Link href="/sign-in" className="inline-block w-44 border p-1">
+            Fazer Login
+          </Link>
+        </div>
       </main>
     </div>
   )
