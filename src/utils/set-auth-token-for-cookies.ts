@@ -9,10 +9,6 @@ interface Props {
 }
 
 export const setAuthTokenForCookies = async ({ token, key }: Props) => {
-  if (process.env.NEXT_ENV === 'test') {
-    return
-  }
-
   const tokenExpires = extractExpirationTimeFromJwtToken(token)
 
   const currentUnixTimestamp = Math.floor(Date.now() / 1000)

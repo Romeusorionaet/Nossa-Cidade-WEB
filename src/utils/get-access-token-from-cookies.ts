@@ -4,10 +4,6 @@ import { cookies } from 'next/headers'
 import { KeyCookies } from '@/constants/key-cookies'
 
 export async function getAccessTokenFromCookies() {
-  if (process.env.NEXT_ENV === 'test') {
-    return 'fakeToken'
-  }
-
   const cookiesOC = await cookies()
   const accessToken = cookiesOC.get(KeyCookies.AT_OC)
 
