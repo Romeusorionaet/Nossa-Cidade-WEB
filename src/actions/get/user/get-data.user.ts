@@ -13,7 +13,7 @@ export const getDataUser = async () => {
   }
 
   try {
-    const response = await api.get('/buyer/profile', {
+    const response = await api.get('/user/profile', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
