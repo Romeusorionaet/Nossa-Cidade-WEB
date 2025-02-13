@@ -218,25 +218,32 @@ export function Map() {
         }
 
         currentMarker = new maplibregl.Marker({
-          element: getMarkerElement({ icon: 'click', size: 'small' }),
+          element: getMarkerElement({ icon: 'click', size: 'small', name: '' }),
         })
           .setLngLat([lng, lat])
           .addTo(map)
       })
 
       map.on('load', () => {
-        if (businessPoints) {
-          businessPoints.map((item) => {
-            return new maplibregl.Marker({
-              element: getMarkerElement({ icon: 'store', size: 'small' }),
-            })
-              .setLngLat([item.location.latitude, item.location.longitude])
-              .setPopup(
-                new maplibregl.Popup().setHTML(`<p>${item.name}! 🍕</p>`),
-              )
-              .addTo(map)
+        businessPoints?.forEach(({ location, name }) => {
+          const popup = new maplibregl.Popup().setDOMContent(
+            Object.assign(document.createElement('p'), {
+              textContent: `${name}! 🍕`,
+              classList: 'text-black',
+            }),
+          )
+
+          new maplibregl.Marker({
+            element: getMarkerElement({
+              icon: 'store',
+              size: 'small',
+              name,
+            }),
           })
-        }
+            .setLngLat([location.latitude, location.longitude])
+            .setPopup(popup)
+            .addTo(map)
+        })
       })
 
       return () => map.remove()
