@@ -13,6 +13,7 @@ import maplibregl from 'maplibre-gl'
 import { SearchBusinessPoint } from '@/components/search-business-points'
 import { FilterBusinessPointsContext } from '@/contexts/filter-business-points'
 import { getBusinessPointCategories } from '@/actions/get/business-point/get-business-point-categories'
+import { checkBusinessStatus } from '@/utils/check-business-status'
 
 interface TravelInfo {
   duration: string
@@ -261,45 +262,49 @@ export function Map() {
       })
 
       pointsToShow &&
-        pointsToShow.forEach(({ id, location, name, categoryId }) => {
-          if (
-            businessPointNotFound &&
-            markersRef.current.some(
-              (marker) => marker.getElement().dataset.id === id,
+        pointsToShow.forEach(
+          ({ id, location, name, categoryId, openingHours }) => {
+            if (
+              businessPointNotFound &&
+              markersRef.current.some(
+                (marker) => marker.getElement().dataset.id === id,
+              )
             )
-          )
-            return
+              return
 
-          const category =
-            businessPointCategories &&
-            businessPointCategories.find(
-              (category) => category.id === categoryId,
+            const category =
+              businessPointCategories &&
+              businessPointCategories.find(
+                (category) => category.id === categoryId,
+              )
+
+            const iconName = category && category.name.replace(/\s+/g, '_')
+            console.log(openingHours)
+            const status = checkBusinessStatus(openingHours)
+
+            const popup = new maplibregl.Popup().setDOMContent(
+              Object.assign(document.createElement('p'), {
+                textContent: `${name} - ${status}`,
+                classList: 'text-black',
+              }),
             )
 
-          const iconName = category && category.name.replace(/\s+/g, '_')
+            const markerElement = getMarkerElement({
+              icon: iconName as keyof typeof markers,
+              size: 'small',
+              name: '',
+            })
 
-          const popup = new maplibregl.Popup().setDOMContent(
-            Object.assign(document.createElement('p'), {
-              textContent: `${name}`,
-              classList: 'text-black',
-            }),
-          )
+            markerElement.dataset.id = id
 
-          const markerElement = getMarkerElement({
-            icon: iconName as keyof typeof markers,
-            size: 'small',
-            name,
-          })
+            const marker = new maplibregl.Marker({ element: markerElement })
+              .setLngLat([location.latitude, location.longitude])
+              .setPopup(popup)
+              .addTo(map)
 
-          markerElement.dataset.id = id
-
-          const marker = new maplibregl.Marker({ element: markerElement })
-            .setLngLat([location.latitude, location.longitude])
-            .setPopup(popup)
-            .addTo(map)
-
-          markersRef.current.push(marker)
-        })
+            markersRef.current.push(marker)
+          },
+        )
 
       return () => map.remove()
     }
@@ -321,11 +326,11 @@ export function Map() {
       />
       {travelInfo && (
         <div className="absolute left-5 top-5 rounded-md bg-white p-2">
-          <p className="text-black">Tempo estimado: {travelInfo.duration}</p>
+          <p className="text-black">🚗 - {travelInfo.duration} ⌛</p>
         </div>
       )}
 
-      {startPoint && (
+      {startPoint[0] && (
         <div className="absolute right-5 top-5 space-y-5 rounded-md bg-white p-2 text-black">
           <p>Início:</p>
           <button
