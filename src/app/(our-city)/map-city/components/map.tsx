@@ -5,11 +5,14 @@ import { openRouteServiceDriveCar } from '@/actions/services/open-route-services
 import { maplibreglStyle, maplibreglTiles } from '@/actions/services/maplibregl'
 import { centerLat, centerLng, polygonBounds } from '@/constants/polygon-bounds'
 import { businessPointType } from '@/core/@types/business-points'
-import { getMarkerElement } from '@/utils/get-marker-element'
-import { useEffect, useRef, useState } from 'react'
+import { getMarkerElement, markers } from '@/utils/get-marker-element'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import maplibregl from 'maplibre-gl'
+import { SearchBusinessPoint } from '@/components/search-business-points'
+import { FilterBusinessPointsContext } from '@/contexts/filter-business-points'
+import { getBusinessPointCategories } from '@/actions/get/business-point/get-business-point-categories'
 
 interface TravelInfo {
   duration: string
@@ -23,11 +26,22 @@ export function Map() {
   const [startPoint, setStartPoint] = useState<[number, number]>([0, 0])
   const [endPoint, setEndPoint] = useState<[number, number]>([0, 0])
   const [isSelectingPointType, setIsSelectingPointType] = useState(false)
+  const { businessPointsFiltered } = useContext(FilterBusinessPointsContext)
+
+  const businessPointNotFound = businessPointsFiltered.length > 0
 
   const { data: businessPoints } = useQuery<businessPointType[]>({
-    queryKey: ['allProducts'],
+    queryKey: ['allBusinessPoints'],
     queryFn: () => getBusinessPointForMapping(),
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 60,
+  })
+
+  const { data: businessPointCategories } = useQuery<
+    { id: string; name: string }[]
+  >({
+    queryKey: ['allBusinessPointCategories'],
+    queryFn: () => getBusinessPointCategories(),
+    staleTime: 1000 * 60 * 60,
   })
 
   const handlePointRoute = ({ lat, lng }: { lat: number; lng: number }) => {
@@ -82,7 +96,11 @@ export function Map() {
       .setLngLat(startPoint)
       .addTo(map)
     const endMarker = new maplibregl.Marker({
-      element: getMarkerElement({ icon: 'greenPoint', size: 'small' }),
+      element: getMarkerElement({
+        icon: 'greenPoint',
+        size: 'small',
+        name: '',
+      }),
     })
       .setLngLat(endPoint)
       .addTo(map)
@@ -224,33 +242,75 @@ export function Map() {
           .addTo(map)
       })
 
-      map.on('load', () => {
-        businessPoints?.forEach(({ location, name }) => {
+      const pointsToShow = businessPointNotFound
+        ? businessPointsFiltered
+        : businessPoints
+
+      const filteredIds = new Set(
+        businessPointsFiltered.map((point) => point.id),
+      )
+
+      markersRef.current.forEach((marker) => {
+        const markerId = marker.getElement().dataset.id
+
+        if (filteredIds.has(markerId!)) {
+          marker.getElement().style.display = 'block'
+        } else {
+          marker.getElement().style.display = 'none'
+        }
+      })
+
+      pointsToShow &&
+        pointsToShow.forEach(({ id, location, name, categoryId }) => {
+          if (
+            businessPointNotFound &&
+            markersRef.current.some(
+              (marker) => marker.getElement().dataset.id === id,
+            )
+          )
+            return
+
+          const category =
+            businessPointCategories &&
+            businessPointCategories.find(
+              (category) => category.id === categoryId,
+            )
+
+          const iconName = category && category.name.replace(/\s+/g, '_')
+
           const popup = new maplibregl.Popup().setDOMContent(
             Object.assign(document.createElement('p'), {
-              textContent: `${name}! 🍕`,
+              textContent: `${name}`,
               classList: 'text-black',
             }),
           )
 
-          new maplibregl.Marker({
-            element: getMarkerElement({
-              icon: 'store',
-              size: 'small',
-              name,
-            }),
+          const markerElement = getMarkerElement({
+            icon: iconName as keyof typeof markers,
+            size: 'small',
+            name,
           })
+
+          markerElement.dataset.id = id
+
+          const marker = new maplibregl.Marker({ element: markerElement })
             .setLngLat([location.latitude, location.longitude])
             .setPopup(popup)
             .addTo(map)
+
+          markersRef.current.push(marker)
         })
-      })
 
       return () => map.remove()
     }
 
     initializeMap()
-  }, [businessPoints])
+  }, [
+    businessPoints,
+    businessPointNotFound,
+    businessPointsFiltered,
+    businessPointCategories,
+  ])
 
   return (
     <div className="h-screen">
@@ -303,6 +363,10 @@ export function Map() {
           </div>
         </div>
       )}
+
+      <div className="absolute bottom-10 left-4">
+        <SearchBusinessPoint />
+      </div>
     </div>
   )
 }

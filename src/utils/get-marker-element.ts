@@ -1,8 +1,16 @@
-const markers = {
+export const markers = {
   click: '📍',
-  store: '🏬',
-  user: '👤',
   greenPoint: '🟢',
+  Farmácia: '💊',
+  Restaurante: '🍴',
+  Escola: '🏫',
+  Igreja: '⛪',
+  Hospital: '🏥',
+  Academia: '🏋️‍♀️',
+  Supermercado: '🛒',
+  Padaria: '🍞',
+  Banco: '🏦',
+  Posto_de_gasolina: '⛽',
 }
 
 const sizes = {
