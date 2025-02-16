@@ -85,7 +85,7 @@ export function Map() {
   const handlePlotRoute = async () => {
     const map = await providerMapContainer()
 
-    if (!startPoint || !endPoint) {
+    if (!startPoint[0] || !endPoint[1]) {
       alert('Selecione os pontos de início e fim antes de traçar a rota.')
       return
     }
@@ -279,7 +279,6 @@ export function Map() {
               )
 
             const iconName = category && category.name.replace(/\s+/g, '_')
-            console.log(openingHours)
             const status = checkBusinessStatus(openingHours)
 
             const popup = new maplibregl.Popup().setDOMContent(
@@ -325,51 +324,53 @@ export function Map() {
         style={{ height: '100%', width: '100%' }}
       />
       {travelInfo && (
-        <div className="absolute left-5 top-5 rounded-md bg-white p-2">
+        <div className="absolute left-1 top-1 rounded-md bg-white p-2">
           <p className="text-black">🚗 - {travelInfo.duration} ⌛</p>
         </div>
       )}
 
       {startPoint[0] && (
-        <div className="absolute right-5 top-5 space-y-5 rounded-md bg-white p-2 text-black">
-          <p>Início:</p>
-          <button
-            onClick={() => handleChangeArea(false)}
-            data-value={isSelectingPointType}
-            className="h-14 w-full rounded-md border-4 p-1 data-[value=false]:border-red-500"
-          >
-            <p>lat: {startPoint[0].toFixed(6)}</p>
-            <p>lng: {startPoint[1].toFixed(6)}</p>
-          </button>
-
-          <p>Fim:</p>
-          <button
-            onClick={() => handleChangeArea(true)}
-            data-value={isSelectingPointType}
-            className="h-14 w-full rounded-md border-4 p-1 data-[value=true]:border-green-500"
-          >
-            {endPoint && (
-              <div>
-                <div>
-                  <p>lat: {endPoint[0].toFixed(6)}</p>
-                  <p>lng: {endPoint[1].toFixed(6)}</p>
-                </div>
-              </div>
-            )}
-          </button>
-
+        <div className="absolute right-1 top-1 space-y-3 rounded-md bg-white p-2 text-black">
           <div>
+            <p className="text-sm">Início:</p>
             <button
-              onClick={() => handlePlotRoute()}
-              className="rounded-sm border p-1"
+              onClick={() => handleChangeArea(false)}
+              data-value={isSelectingPointType}
+              className="h-14 w-full rounded-md border-4 p-1 text-xs data-[value=false]:border-red-700"
             >
-              traçar rota
+              <p className="opacity-60">lat: {startPoint[0].toFixed(6)}</p>
+              <p className="opacity-60">lng: {startPoint[1].toFixed(6)}</p>
             </button>
           </div>
+
+          <div>
+            <p className="text-sm">Fim:</p>
+            <button
+              onClick={() => handleChangeArea(true)}
+              data-value={isSelectingPointType}
+              className="h-14 w-full rounded-md border-4 text-xs data-[value=true]:border-green-700"
+            >
+              {endPoint[1] && (
+                <div>
+                  <div>
+                    <p className="opacity-60">lat: {endPoint[0].toFixed(6)}</p>
+                    <p className="opacity-60">lng: {endPoint[1].toFixed(6)}</p>
+                  </div>
+                </div>
+              )}
+            </button>
+          </div>
+
+          <button
+            onClick={() => handlePlotRoute()}
+            className="w-full rounded-sm border p-1 text-sm"
+          >
+            traçar rota
+          </button>
         </div>
       )}
 
-      <div className="absolute bottom-10 left-4">
+      <div className="absolute bottom-10 left-1">
         <SearchBusinessPoint />
       </div>
     </div>
