@@ -2,8 +2,7 @@
 
 import { getBusinessPointForMapping } from '@/actions/get/business-point/get-business-point-for-mapping'
 import { openRouteServiceDriveCar } from '@/actions/services/open-route-services'
-import { maplibreglStyle, maplibreglTiles } from '@/actions/services/maplibregl'
-import { centerLat, centerLng, polygonBounds } from '@/constants/polygon-bounds'
+import { maplibreglTiles } from '@/actions/services/maplibregl'
 import { businessPointType } from '@/core/@types/business-points'
 import { getMarkerElement, markers } from '@/utils/get-marker-element'
 import { useContext, useEffect, useRef, useState } from 'react'
@@ -16,14 +15,14 @@ import { FilterBusinessPointsContext } from '@/contexts/filter-business-points'
 import { getBusinessPointCategories } from '@/actions/get/business-point/get-business-point-categories'
 import { checkBusinessStatus } from '@/utils/check-business-status'
 import { orderDays, weekDays } from '@/constants/week-days-order'
+import { useProviderMapContainer } from '@/hooks/use-provider-map-container'
 
 interface TravelInfo {
   duration: string
 }
 
 export function Map() {
-  const mapContainerRef = useRef<HTMLDivElement>(null)
-  const mapRef = useRef<maplibregl.Map | null>(null)
+  const { mapContainerRef, providerMapContainer } = useProviderMapContainer()
   const markersRef = useRef<maplibregl.Marker[]>([])
   const [travelInfo, setTravelInfo] = useState<TravelInfo | null>(null)
   const [startPoint, setStartPoint] = useState<[number, number]>([0, 0])
@@ -80,23 +79,7 @@ export function Map() {
     }
   }
 
-  const providerMapContainer = async () => {
-    if (!mapRef.current) {
-      const map = new maplibregl.Map({
-        container: mapContainerRef.current as HTMLElement,
-        center: [centerLng, centerLat],
-        style: await maplibreglStyle(),
-        zoom: 15.5,
-        pitch: 45,
-        bearing: -17.6,
-        maxBounds: polygonBounds,
-      })
-
-      mapRef.current = map
-    }
-
-    return mapRef.current
-  }
+  const routeMarkersRef = useRef<maplibregl.Marker[]>([])
 
   const handlePlotRoute = async () => {
     const map = await providerMapContainer()
@@ -106,8 +89,8 @@ export function Map() {
       return
     }
 
-    markersRef.current.forEach((marker) => marker.remove())
-    markersRef.current = []
+    routeMarkersRef.current.forEach((marker) => marker.remove())
+    routeMarkersRef.current = []
 
     const startMarker = new maplibregl.Marker({ color: 'red' })
       .setLngLat(startPoint)
@@ -122,7 +105,7 @@ export function Map() {
       .setLngLat(endPoint)
       .addTo(map)
 
-    markersRef.current.push(startMarker, endMarker)
+    routeMarkersRef.current.push(startMarker, endMarker)
 
     await openRouteServiceDriveCar({
       startPoint,
@@ -331,6 +314,8 @@ export function Map() {
     businessPointsFiltered,
     businessPointCategories,
     pointsToShow,
+    mapContainerRef,
+    providerMapContainer,
   ])
 
   return (
@@ -436,6 +421,10 @@ export function Map() {
                     </li>
                   ))}
               </ul>
+
+              <div className="mt-2 flex w-full justify-end">
+                <button className="border p-1 text-xs">traçar rota</button>
+              </div>
             </div>
           ))}
         </div>
