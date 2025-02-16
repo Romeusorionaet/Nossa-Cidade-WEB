@@ -10,10 +10,12 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import maplibregl from 'maplibre-gl'
+import '@/assets/styles/scrollbar.css'
 import { SearchBusinessPoint } from '@/components/search-business-points'
 import { FilterBusinessPointsContext } from '@/contexts/filter-business-points'
 import { getBusinessPointCategories } from '@/actions/get/business-point/get-business-point-categories'
 import { checkBusinessStatus } from '@/utils/check-business-status'
+import { orderDays, weekDays } from '@/constants/week-days-order'
 
 interface TravelInfo {
   duration: string
@@ -27,7 +29,10 @@ export function Map() {
   const [startPoint, setStartPoint] = useState<[number, number]>([0, 0])
   const [endPoint, setEndPoint] = useState<[number, number]>([0, 0])
   const [isSelectingPointType, setIsSelectingPointType] = useState(false)
-  const { businessPointsFiltered } = useContext(FilterBusinessPointsContext)
+  const [isOpenWindowSearch, setIsOpenWindowSearch] = useState(false)
+  const { businessPointsFiltered, accessQuery } = useContext(
+    FilterBusinessPointsContext,
+  )
 
   const businessPointNotFound = businessPointsFiltered.length > 0
 
@@ -44,6 +49,17 @@ export function Map() {
     queryFn: () => getBusinessPointCategories(),
     staleTime: 1000 * 60 * 60,
   })
+
+  const handleWindowSearch = () => {
+    isOpenWindowSearch
+      ? setIsOpenWindowSearch(false)
+      : setIsOpenWindowSearch(true)
+  }
+
+  const handleCleanSearch = () => {
+    setIsOpenWindowSearch(false)
+    accessQuery('')
+  }
 
   const handlePointRoute = ({ lat, lng }: { lat: number; lng: number }) => {
     setIsSelectingPointType((prev) => {
@@ -165,6 +181,10 @@ export function Map() {
     setIsSelectingPointType(false)
   }
 
+  const pointsToShow = businessPointNotFound
+    ? businessPointsFiltered
+    : businessPoints
+
   useEffect(() => {
     if (!mapContainerRef.current) return
 
@@ -243,10 +263,6 @@ export function Map() {
           .addTo(map)
       })
 
-      const pointsToShow = businessPointNotFound
-        ? businessPointsFiltered
-        : businessPoints
-
       const filteredIds = new Set(
         businessPointsFiltered.map((point) => point.id),
       )
@@ -314,10 +330,11 @@ export function Map() {
     businessPointNotFound,
     businessPointsFiltered,
     businessPointCategories,
+    pointsToShow,
   ])
 
   return (
-    <div className="h-screen">
+    <div className="h-screen overflow-hidden">
       <div
         ref={mapContainerRef}
         className="h-screen overflow-hidden"
@@ -369,6 +386,67 @@ export function Map() {
           </button>
         </div>
       )}
+
+      {businessPointNotFound && (
+        <button
+          onClick={() => handleWindowSearch()}
+          className="absolute bottom-10 right-1 rounded-full bg-white p-5 text-black duration-300 hover:bg-green-200"
+        >
+          <p className="text-2xl">🗺️</p>
+          <span className="absolute right-7 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-green-200">
+            {businessPointsFiltered.length}
+          </span>
+        </button>
+      )}
+
+      <div
+        data-value={isOpenWindowSearch}
+        className="absolute top-0 h-[80%] w-full overflow-hidden rounded-md bg-white p-1 text-black data-[value=false]:hidden max-md:pb-10 md:max-w-96"
+      >
+        <div className="relative h-10">
+          <button
+            onClick={() => handleWindowSearch()}
+            className="absolute right-0 top-1 h-9 w-8 rounded-full bg-slate-400 p-1 text-xl text-white"
+          >
+            X
+          </button>
+          <h2 className="border-b">Resultado da busca</h2>
+        </div>
+
+        <div className="scrollbar mt-4 flex h-[85%] w-full flex-col overflow-auto rounded-md p-1">
+          {businessPointsFiltered.map((item) => (
+            <div key={item.id} className="mb-2 rounded border bg-slate-100 p-2">
+              <div className="flex justify-between">
+                <p className="font-bold">{item.name}</p>
+                <p>{checkBusinessStatus(item.openingHours)}</p>
+              </div>
+              <ul className="mt-2 text-xs">
+                {Object.entries(item.openingHours)
+                  .sort(
+                    ([a], [b]) => orderDays.indexOf(a) - orderDays.indexOf(b),
+                  )
+                  .map(([day, { abertura, fechamento }]) => (
+                    <li key={day} className="flex justify-between">
+                      <span className="font-medium">
+                        {weekDays[day] || day}:
+                      </span>
+                      <span>
+                        {abertura} - {fechamento}
+                      </span>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <button
+          onClick={() => handleCleanSearch()}
+          className="mt-5 rounded-md border p-1"
+        >
+          Limpar busca
+        </button>
+      </div>
 
       <div className="absolute bottom-10 left-1">
         <SearchBusinessPoint />
