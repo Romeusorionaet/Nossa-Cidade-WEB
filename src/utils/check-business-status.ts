@@ -17,7 +17,6 @@ export function checkBusinessStatus(
   const dayHours = openingHours[currentDay]
 
   if (!dayHours || !dayHours.abertura || !dayHours.fechamento) {
-    console.log('Ponto fechado hoje')
     return 'Fechado'
   }
 

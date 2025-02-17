@@ -2,9 +2,8 @@
 
 import { getBusinessPointForMapping } from '@/actions/get/business-point/get-business-point-for-mapping'
 import { openRouteServiceDriveCar } from '@/actions/services/open-route-services'
-import { maplibreglTiles } from '@/actions/services/maplibregl'
 import { businessPointType } from '@/core/@types/business-points'
-import { getMarkerElement, markers } from '@/utils/get-marker-element'
+import { getMarkerElement } from '@/utils/get-marker-element'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import 'maplibre-gl/dist/maplibre-gl.css'
@@ -16,6 +15,7 @@ import { getBusinessPointCategories } from '@/actions/get/business-point/get-bus
 import { checkBusinessStatus } from '@/utils/check-business-status'
 import { orderDays, weekDays } from '@/constants/week-days-order'
 import { useProviderMapContainer } from '@/hooks/use-provider-map-container'
+import { initializeMap } from '@/utils/initialize-map'
 
 interface TravelInfo {
   duration: string
@@ -24,11 +24,12 @@ interface TravelInfo {
 export function Map() {
   const { mapContainerRef, providerMapContainer } = useProviderMapContainer()
   const markersRef = useRef<maplibregl.Marker[]>([])
+  const routeMarkersRef = useRef<maplibregl.Marker[]>([])
   const [travelInfo, setTravelInfo] = useState<TravelInfo | null>(null)
   const [startPoint, setStartPoint] = useState<[number, number]>([0, 0])
   const [endPoint, setEndPoint] = useState<[number, number]>([0, 0])
-  const [isSelectingPointType, setIsSelectingPointType] = useState(false)
-  const [isOpenWindowSearch, setIsOpenWindowSearch] = useState(false)
+  const [togglePointType, setTogglePointType] = useState(false)
+  const [toggleWindowSearch, setToggleWindowSearch] = useState(false)
   const { businessPointsFiltered, accessQuery } = useContext(
     FilterBusinessPointsContext,
   )
@@ -52,18 +53,18 @@ export function Map() {
   })
 
   const handleWindowSearch = () => {
-    isOpenWindowSearch
-      ? setIsOpenWindowSearch(false)
-      : setIsOpenWindowSearch(true)
+    toggleWindowSearch
+      ? setToggleWindowSearch(false)
+      : setToggleWindowSearch(true)
   }
 
   const handleCleanSearch = () => {
-    setIsOpenWindowSearch(false)
+    setToggleWindowSearch(false)
     accessQuery('')
   }
 
   const handlePointRoute = ({ lat, lng }: { lat: number; lng: number }) => {
-    setIsSelectingPointType((prev) => {
+    setTogglePointType((prev) => {
       if (!prev) {
         setStartPoint([lng, lat])
       } else {
@@ -75,13 +76,11 @@ export function Map() {
 
   const handleChangeArea = (value: boolean) => {
     if (!value) {
-      setIsSelectingPointType(false)
+      setTogglePointType(false)
     } else {
-      setIsSelectingPointType(true)
+      setTogglePointType(true)
     }
   }
-
-  const routeMarkersRef = useRef<maplibregl.Marker[]>([])
 
   const handlePlotRoute = async (
     start: [number, number],
@@ -166,12 +165,12 @@ export function Map() {
       }
     })
 
-    setIsSelectingPointType(false)
+    setTogglePointType(false)
   }
 
   const handleSetLocation = () => {
     setStartPoint(myLocation)
-    setIsSelectingPointType(true)
+    setTogglePointType(true)
   }
 
   const handleSelectedPlotRoute = async ({
@@ -186,7 +185,7 @@ export function Map() {
 
     await handlePlotRoute(newStart, newEnd)
 
-    setIsOpenWindowSearch(false)
+    setToggleWindowSearch(false)
   }
 
   const handleCleanRoute = async () => {
@@ -215,151 +214,25 @@ export function Map() {
     : businessPoints
 
   useEffect(() => {
-    if (!mapContainerRef.current) return
-
-    async function initializeMap() {
-      const map = await providerMapContainer()
-
-      map.on('load', async () => {
-        const layers = map.getStyle().layers!
-        let labelLayerId
-        for (const layer of layers) {
-          if (layer.type === 'symbol' && layer.layout?.['text-field']) {
-            labelLayerId = layer.id
-            break
-          }
-        }
-
-        map.addSource('openmaptiles', {
-          url: await maplibreglTiles(),
-          type: 'vector',
-        })
-
-        map.addLayer(
-          {
-            id: '3d-buildings',
-            source: 'openmaptiles',
-            'source-layer': 'building',
-            type: 'fill-extrusion',
-            minzoom: 15,
-            filter: ['!=', ['get', 'hide_3d'], true],
-            paint: {
-              'fill-extrusion-color': [
-                'interpolate',
-                ['linear'],
-                ['get', 'render_height'],
-                0,
-                'lightgray',
-                200,
-                'royalblue',
-                400,
-                'lightblue',
-              ],
-              'fill-extrusion-height': [
-                'interpolate',
-                ['linear'],
-                ['zoom'],
-                15,
-                0,
-                16,
-                ['get', 'render_height'],
-              ],
-              'fill-extrusion-base': [
-                'case',
-                ['>=', ['get', 'zoom'], 16],
-                ['get', 'render_min_height'],
-                0,
-              ],
-            },
-          },
-          labelLayerId,
-        )
+    const initialize = async () => {
+      return initializeMap({
+        mapContainerRef,
+        providerMapContainer,
+        handlePointRoute,
+        businessPointsFiltered,
+        pointsToShow,
+        businessPointNotFound,
+        businessPointCategories,
+        markersRef,
       })
-
-      let currentMarker: maplibregl.Marker | null = null
-      map.on('click', (e) => {
-        const { lng, lat } = e.lngLat
-        handlePointRoute({ lat, lng })
-
-        if (currentMarker) {
-          currentMarker.remove()
-        }
-
-        currentMarker = new maplibregl.Marker({
-          element: getMarkerElement({ icon: 'click', size: 'small', name: '' }),
-        })
-          .setLngLat([lng, lat])
-          .addTo(map)
-      })
-
-      const filteredIds = new Set(
-        businessPointsFiltered.map((point) => point.id),
-      )
-
-      markersRef.current.forEach((marker) => {
-        const markerId = marker.getElement().dataset.id
-
-        if (filteredIds.has(markerId!)) {
-          marker.getElement().style.display = 'block'
-        } else {
-          marker.getElement().style.display = 'none'
-        }
-      })
-
-      pointsToShow &&
-        pointsToShow.forEach(
-          ({ id, location, name, categoryId, openingHours }) => {
-            if (
-              businessPointNotFound &&
-              markersRef.current.some(
-                (marker) => marker.getElement().dataset.id === id,
-              )
-            )
-              return
-
-            const category =
-              businessPointCategories &&
-              businessPointCategories.find(
-                (category) => category.id === categoryId,
-              )
-
-            const iconName = category && category.name.replace(/\s+/g, '_')
-            const status = checkBusinessStatus(openingHours)
-
-            const popup = new maplibregl.Popup().setDOMContent(
-              Object.assign(document.createElement('p'), {
-                textContent: `${name} - ${status}`,
-                classList: 'text-black',
-              }),
-            )
-
-            const markerElement = getMarkerElement({
-              icon: iconName as keyof typeof markers,
-              size: 'medium',
-              name: '',
-            })
-
-            markerElement.dataset.id = id
-
-            const marker = new maplibregl.Marker({ element: markerElement })
-              .setLngLat([location.latitude, location.longitude])
-              .setPopup(popup)
-              .addTo(map)
-
-            markersRef.current.push(marker)
-          },
-        )
-
-      return () => map.remove()
     }
 
-    initializeMap()
+    initialize()
   }, [
-    businessPoints,
-    businessPointNotFound,
     businessPointsFiltered,
-    businessPointCategories,
+    businessPointNotFound,
     pointsToShow,
+    businessPointCategories,
     mapContainerRef,
     providerMapContainer,
   ])
@@ -391,7 +264,7 @@ export function Map() {
             </div>
             <button
               onClick={() => handleChangeArea(false)}
-              data-value={isSelectingPointType}
+              data-value={togglePointType}
               className="h-14 w-full rounded-md border-4 p-1 text-xs data-[value=false]:border-red-700"
             >
               <p className="opacity-60">lat: {startPoint[0].toFixed(6)}</p>
@@ -403,7 +276,7 @@ export function Map() {
             <p className="text-sm">Fim:</p>
             <button
               onClick={() => handleChangeArea(true)}
-              data-value={isSelectingPointType}
+              data-value={togglePointType}
               className="h-14 w-full rounded-md border-4 text-xs data-[value=true]:border-green-700"
             >
               {endPoint[1] && (
@@ -448,7 +321,7 @@ export function Map() {
       )}
 
       <div
-        data-value={isOpenWindowSearch}
+        data-value={toggleWindowSearch}
         className="absolute top-0 h-[80%] w-full overflow-hidden rounded-md bg-white p-1 text-black data-[value=false]:hidden max-md:pb-10 md:max-w-96"
       >
         <div className="relative h-10">
