@@ -33,6 +33,8 @@ export function Map() {
     FilterBusinessPointsContext,
   )
 
+  const myLocation: [number, number] = [-35.13145819818388, -6.378905610634973] // TODO for while
+
   const businessPointNotFound = businessPointsFiltered.length > 0
 
   const { data: businessPoints } = useQuery<businessPointType[]>({
@@ -81,10 +83,13 @@ export function Map() {
 
   const routeMarkersRef = useRef<maplibregl.Marker[]>([])
 
-  const handlePlotRoute = async () => {
+  const handlePlotRoute = async (
+    start: [number, number],
+    end: [number, number],
+  ) => {
     const map = await providerMapContainer()
 
-    if (!startPoint[0] || !endPoint[1]) {
+    if (!start[0] || !end[1]) {
       alert('Selecione os pontos de início e fim antes de traçar a rota.')
       return
     }
@@ -93,23 +98,23 @@ export function Map() {
     routeMarkersRef.current = []
 
     const startMarker = new maplibregl.Marker({ color: 'red' })
-      .setLngLat(startPoint)
+      .setLngLat(start)
       .addTo(map)
     const endMarker = new maplibregl.Marker({
       element: getMarkerElement({
-        icon: 'greenPoint',
+        icon: 'dot',
         size: 'small',
         name: '',
       }),
     })
-      .setLngLat(endPoint)
+      .setLngLat(end)
       .addTo(map)
 
     routeMarkersRef.current.push(startMarker, endMarker)
 
     await openRouteServiceDriveCar({
-      startPoint,
-      endPoint,
+      startPoint: start,
+      endPoint: end,
     }).then((data) => {
       if (!data.features || data.features.length === 0) {
         alert('Não foi possível encontrar uma rota.')
@@ -162,6 +167,29 @@ export function Map() {
     })
 
     setIsSelectingPointType(false)
+  }
+
+  const handleSetLocation = () => {
+    setStartPoint(myLocation)
+    setIsSelectingPointType(true)
+  }
+
+  const handleSelectedPlotRoute = async ({
+    lat,
+    lng,
+  }: {
+    lat: number
+    lng: number
+  }) => {
+    // setStartPoint(myLocation)
+    // setEndPoint([lat, lng])
+
+    const newStart = myLocation
+    const newEnd = [lat, lng] as [number, number]
+
+    await handlePlotRoute(newStart, newEnd)
+
+    setIsOpenWindowSearch(false)
   }
 
   const pointsToShow = businessPointNotFound
@@ -289,7 +317,7 @@ export function Map() {
 
             const markerElement = getMarkerElement({
               icon: iconName as keyof typeof markers,
-              size: 'small',
+              size: 'medium',
               name: '',
             })
 
@@ -334,7 +362,15 @@ export function Map() {
       {startPoint[0] && (
         <div className="absolute right-1 top-1 space-y-3 rounded-md bg-white p-2 text-black">
           <div>
-            <p className="text-sm">Início:</p>
+            <div className="space-y-2 text-sm">
+              <button
+                onClick={() => handleSetLocation()}
+                className="w-full rounded-sm border p-1"
+              >
+                Inserir minha 📍
+              </button>
+              <p>Início:</p>
+            </div>
             <button
               onClick={() => handleChangeArea(false)}
               data-value={isSelectingPointType}
@@ -364,7 +400,7 @@ export function Map() {
           </div>
 
           <button
-            onClick={() => handlePlotRoute()}
+            onClick={() => handlePlotRoute(startPoint, endPoint)}
             className="w-full rounded-sm border p-1 text-sm"
           >
             traçar rota
@@ -423,7 +459,17 @@ export function Map() {
               </ul>
 
               <div className="mt-2 flex w-full justify-end">
-                <button className="border p-1 text-xs">traçar rota</button>
+                <button
+                  onClick={() =>
+                    handleSelectedPlotRoute({
+                      lat: item.location.latitude,
+                      lng: item.location.longitude,
+                    })
+                  }
+                  className="border p-1 text-xs"
+                >
+                  traçar rota
+                </button>
               </div>
             </div>
           ))}

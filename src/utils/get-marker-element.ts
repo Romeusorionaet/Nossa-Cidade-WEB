@@ -1,6 +1,6 @@
 export const markers = {
   click: '📍',
-  greenPoint: '🟢',
+  dot: '𓈒',
   Farmácia: '💊',
   Restaurante: '🍴',
   Escola: '🏫',
@@ -14,9 +14,9 @@ export const markers = {
 }
 
 const sizes = {
-  small: '15px',
-  medium: '25px',
-  big: '30px',
+  small: '10px',
+  medium: '15px',
+  big: '25px',
 }
 
 const createCustomMarker = ({
