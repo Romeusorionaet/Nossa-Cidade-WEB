@@ -181,15 +181,33 @@ export function Map() {
     lat: number
     lng: number
   }) => {
-    // setStartPoint(myLocation)
-    // setEndPoint([lat, lng])
-
     const newStart = myLocation
     const newEnd = [lat, lng] as [number, number]
 
     await handlePlotRoute(newStart, newEnd)
 
     setIsOpenWindowSearch(false)
+  }
+
+  const handleCleanRoute = async () => {
+    const map = await providerMapContainer()
+
+    if (!map) return
+
+    routeMarkersRef.current.forEach((marker) => marker.remove())
+    routeMarkersRef.current = []
+
+    if (map.getLayer('route')) {
+      map.removeLayer('route')
+    }
+
+    if (map.getSource('route')) {
+      map.removeSource('route')
+    }
+
+    setTravelInfo(null)
+    setStartPoint([0, 0])
+    setEndPoint([0, 0])
   }
 
   const pointsToShow = businessPointNotFound
@@ -399,12 +417,21 @@ export function Map() {
             </button>
           </div>
 
-          <button
-            onClick={() => handlePlotRoute(startPoint, endPoint)}
-            className="w-full rounded-sm border p-1 text-sm"
-          >
-            traçar rota
-          </button>
+          <div className="flex flex-col space-y-2">
+            <button
+              onClick={() => handlePlotRoute(startPoint, endPoint)}
+              className="w-full rounded-sm border p-1 text-sm"
+            >
+              traçar rota
+            </button>
+
+            <button
+              onClick={() => handleCleanRoute()}
+              className="rounded-sm border p-1 text-sm"
+            >
+              Limpar rota
+            </button>
+          </div>
         </div>
       )}
 
