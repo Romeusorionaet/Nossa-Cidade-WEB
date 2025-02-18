@@ -1,9 +1,10 @@
 import maplibregl from 'maplibre-gl'
-import { getMarkerElement, markers } from './get-marker-element'
-import { checkBusinessStatus } from './check-business-status'
 import { maplibreglTiles } from '@/actions/services/maplibregl'
 import { RefObject } from 'react'
 import { businessPointType } from '@/core/@types/business-points'
+import { checkBusinessStatus } from '@/utils/check-business-status'
+import { getMarkerElement, markers } from '@/utils/get-marker-element'
+import { popupContent } from './popup-content'
 
 interface Props {
   mapContainerRef: RefObject<HTMLDivElement | null>
@@ -130,10 +131,7 @@ export async function initializeMap({
     const status = checkBusinessStatus(openingHours)
 
     const popup = new maplibregl.Popup().setDOMContent(
-      Object.assign(document.createElement('p'), {
-        textContent: `${name} - ${status}`,
-        classList: 'text-black',
-      }),
+      popupContent({ name, status, id }),
     )
 
     const markerElement = getMarkerElement({

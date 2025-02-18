@@ -15,7 +15,7 @@ import { getBusinessPointCategories } from '@/actions/get/business-point/get-bus
 import { checkBusinessStatus } from '@/utils/check-business-status'
 import { orderDays, weekDays } from '@/constants/week-days-order'
 import { useProviderMapContainer } from '@/hooks/use-provider-map-container'
-import { initializeMap } from '@/utils/initialize-map'
+import { initializeMap } from '../helpers/initialize-map'
 
 interface TravelInfo {
   duration: string
@@ -92,6 +92,9 @@ export function Map() {
       alert('Selecione os pontos de início e fim antes de traçar a rota.')
       return
     }
+
+    setStartPoint(start)
+    setEndPoint(end)
 
     routeMarkersRef.current.forEach((marker) => marker.remove())
     routeMarkersRef.current = []
