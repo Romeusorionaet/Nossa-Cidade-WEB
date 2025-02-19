@@ -9,10 +9,12 @@ export function useProviderMapContainer() {
 
   const providerMapContainer = async () => {
     if (!mapRef.current) {
+      const style = await maplibreglStyle()
+
       const map = new maplibregl.Map({
         container: mapContainerRef.current as HTMLElement,
         center: [centerLng, centerLat],
-        style: await maplibreglStyle(),
+        style,
         zoom: 15.5,
         pitch: 45,
         bearing: -17.6,

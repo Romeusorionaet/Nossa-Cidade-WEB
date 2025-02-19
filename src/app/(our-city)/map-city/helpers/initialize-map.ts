@@ -46,10 +46,12 @@ export async function initializeMap({
       }
     }
 
-    map.addSource('openmaptiles', {
-      url: await maplibreglTiles(),
-      type: 'vector',
-    })
+    if (!map.getSource('openmaptiles')) {
+      map.addSource('openmaptiles', {
+        url: await maplibreglTiles(),
+        type: 'vector',
+      })
+    }
 
     map.addLayer(
       {
@@ -65,31 +67,29 @@ export async function initializeMap({
             ['linear'],
             ['get', 'render_height'],
             0,
-            'lightgray',
-            200,
-            'royalblue',
-            400,
-            'lightblue',
-          ],
-          'fill-extrusion-height': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            15,
-            0,
-            16,
-            ['get', 'render_height'],
-          ],
-          'fill-extrusion-base': [
-            'case',
-            ['>=', ['get', 'zoom'], 16],
-            ['get', 'render_min_height'],
-            0,
+            '#aaa',
+            100,
+            '#666',
           ],
         },
       },
       labelLayerId,
     )
+
+    map.easeTo({ pitch: 60, bearing: 0, duration: 2000 })
+
+    map.setLight({
+      anchor: 'viewport',
+      color: 'white',
+      intensity: 0.8,
+      position: [2, 100, 90],
+    })
+
+    map.getStyle().layers?.forEach((layer) => {
+      if (layer.id.includes('poi')) {
+        map.removeLayer(layer.id)
+      }
+    })
   })
 
   let currentMarker: maplibregl.Marker | null = null

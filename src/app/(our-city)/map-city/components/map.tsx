@@ -18,7 +18,8 @@ import { useProviderMapContainer } from '@/hooks/use-provider-map-container'
 import { initializeMap } from '../helpers/initialize-map'
 
 interface TravelInfo {
-  duration: string
+  duration: number
+  distanceKm: number
 }
 
 export function Map() {
@@ -125,8 +126,12 @@ export function Map() {
 
       const route = data.features[0].geometry.coordinates
       const duration = data.features[0]?.properties?.segments[0]?.duration
+      const distanceKm = data.features[0]?.properties?.summary?.distance / 1000
 
-      setTravelInfo({ duration: (duration / 60).toFixed(2) + ' min' })
+      setTravelInfo({
+        duration: duration / 60,
+        distanceKm,
+      })
 
       if (!route) {
         alert('A rota não contém geometria.')
@@ -249,7 +254,9 @@ export function Map() {
       />
       {travelInfo && (
         <div className="absolute left-1 top-1 rounded-md bg-white p-2">
-          <p className="text-black">🚗 - {travelInfo.duration} ⌛</p>
+          <span>🚗</span>
+          <p className="text-black">{travelInfo.duration.toFixed(2)} min</p>
+          <p className="text-black">{travelInfo.distanceKm.toFixed(2)} km</p>
         </div>
       )}
 
