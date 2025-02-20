@@ -1,22 +1,9 @@
-export const markers = {
-  click: '📍',
-  dot: '𓈒',
-  Farmácia: '💊',
-  Restaurante: '🍴',
-  Escola: '🏫',
-  Igreja: '⛪',
-  Hospital: '🏥',
-  Academia: '🏋️‍♀️',
-  Supermercado: '🛒',
-  Padaria: '🍞',
-  Banco: '🏦',
-  Posto_de_gasolina: '⛽',
-}
+import { markers } from '@/constants/markers'
 
 const sizes = {
-  small: '10px',
-  medium: '15px',
-  big: '25px',
+  large: '25px',
+  medium: '20px',
+  small: '8px',
 }
 
 const createCustomMarker = ({

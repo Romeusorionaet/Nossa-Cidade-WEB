@@ -3,8 +3,9 @@ import { maplibreglTiles } from '@/actions/services/maplibregl'
 import { RefObject } from 'react'
 import { businessPointType } from '@/core/@types/business-points'
 import { checkBusinessStatus } from '@/utils/check-business-status'
-import { getMarkerElement, markers } from '@/utils/get-marker-element'
+import { getMarkerElement } from '@/utils/get-marker-element'
 import { popupContent } from './popup-content'
+import { markers } from '@/constants/markers'
 
 interface Props {
   mapContainerRef: RefObject<HTMLDivElement | null>
@@ -106,6 +107,10 @@ export async function initializeMap({
     })
       .setLngLat([lng, lat])
       .addTo(map)
+  })
+
+  map.on('zoom', () => {
+    return map.getZoom()
   })
 
   const filteredIds = new Set(businessPointsFiltered.map((point) => point.id))
