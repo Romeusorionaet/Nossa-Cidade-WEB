@@ -109,10 +109,6 @@ export async function initializeMap({
       .addTo(map)
   })
 
-  map.on('zoom', () => {
-    return map.getZoom()
-  })
-
   const filteredIds = new Set(businessPointsFiltered.map((point) => point.id))
 
   markersRef.current.forEach((marker) => {

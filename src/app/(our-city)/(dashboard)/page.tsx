@@ -1,4 +1,6 @@
+import { CarouselPreviewsMap } from '@/components/carousel-previews-map'
 import Link from 'next/link'
+import 'swiper/css'
 
 export default function Dashboard() {
   return (
@@ -6,17 +8,24 @@ export default function Dashboard() {
       <header>Header</header>
 
       <main className="mt-44 text-center">
-        <h1>Dashboard</h1>
-        <p>Aprentação do projeto</p>
+        <h1>Encontre. Conecte. Compre. Tudo na Nossa Cidade.</h1>
+        <p>
+          Saiba exatamente onde comprar na nossa cidade – veja no mapa e
+          aproveite!
+        </p>
 
-        <div className="mt-44 flex flex-col items-center justify-center gap-10">
+        <div className="mt-10 flex items-center justify-center gap-10">
           <Link href="/map-city" className="inline-block w-44 border p-1">
-            Ir para mapa
+            Ir para o mapa
           </Link>
 
-          <Link href="/sign-in" className="inline-block w-44 border p-1">
-            Fazer Login
+          <Link href="/shopping" className="inline-block w-44 border p-1">
+            Ver produtos
           </Link>
+        </div>
+
+        <div className="mt-10 px-2">
+          <CarouselPreviewsMap />
         </div>
       </main>
     </div>

@@ -1,0 +1,16 @@
+@tailwind components;
+
+@layer components {
+    .wrapper-preview {
+        .image-measurement {
+            img {
+                @apply h-full w-full object-cover
+            }
+            @apply h-80 w-full relative
+        }
+        @media (min-width: 768px) {
+            width: clamp(28rem, 38vw, 40rem);
+            height: clamp(22rem, 28vw, 28rem);
+        }
+    } 
+}

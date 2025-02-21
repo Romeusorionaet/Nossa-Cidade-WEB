@@ -8,7 +8,7 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import maplibregl from 'maplibre-gl'
-import '@/assets/styles/scrollbar.css'
+import '@/assets/styles/utilities/scrollbar.css'
 import { SearchBusinessPoint } from '@/components/search-business-points'
 import { FilterBusinessPointsContext } from '@/contexts/filter-business-points'
 import { getBusinessPointCategories } from '@/actions/get/business-point/get-business-point-categories'
@@ -16,6 +16,7 @@ import { checkBusinessStatus } from '@/utils/check-business-status'
 import { orderDays, weekDays } from '@/constants/week-days-order'
 import { useProviderMapContainer } from '@/hooks/use-provider-map-container'
 import { initializeMap } from '../helpers/initialize-map'
+import Link from 'next/link'
 
 interface TravelInfo {
   duration: number
@@ -246,7 +247,14 @@ export function Map() {
   ])
 
   return (
-    <div className="h-screen overflow-hidden">
+    <div className="relative h-screen overflow-hidden">
+      <Link
+        href="/"
+        className="online-block absolute left-[50%] top-1 z-10 rounded-full border border-black bg-white p-1 text-black"
+      >
+        Sair
+      </Link>
+
       <div
         ref={mapContainerRef}
         className="h-screen overflow-hidden"
@@ -393,7 +401,7 @@ export function Map() {
         </button>
       </div>
 
-      <div className="absolute bottom-10 left-1">
+      <div className="absolute bottom-14 left-1">
         <SearchBusinessPoint />
       </div>
     </div>
