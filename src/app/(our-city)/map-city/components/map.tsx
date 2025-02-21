@@ -274,7 +274,7 @@ export function Map() {
             <div className="space-y-2 text-sm">
               <button
                 onClick={() => handleSetLocation()}
-                className="w-full rounded-sm border p-1"
+                className="w-full rounded-xs border p-1"
               >
                 Inserir minha 📍
               </button>
@@ -311,14 +311,14 @@ export function Map() {
           <div className="flex flex-col space-y-2">
             <button
               onClick={() => handlePlotRoute(startPoint, endPoint)}
-              className="w-full rounded-sm border p-1 text-sm"
+              className="w-full rounded-xs border p-1 text-sm"
             >
               traçar rota
             </button>
 
             <button
               onClick={() => handleCleanRoute()}
-              className="rounded-sm border p-1 text-sm"
+              className="rounded-xs border p-1 text-sm"
             >
               Limpar rota
             </button>
@@ -354,7 +354,7 @@ export function Map() {
 
         <div className="scrollbar mt-4 flex h-[85%] w-full flex-col overflow-auto rounded-md p-1">
           {businessPointsFiltered.map((item) => (
-            <div key={item.id} className="mb-2 rounded border bg-slate-100 p-2">
+            <div key={item.id} className="mb-2 rounded-xs border bg-slate-100 p-2">
               <div className="flex justify-between">
                 <p className="font-bold">{item.name}</p>
                 <p>{checkBusinessStatus(item.openingHours)}</p>

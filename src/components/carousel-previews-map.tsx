@@ -5,7 +5,6 @@ import { Navigation } from 'swiper/modules'
 import Image from 'next/image'
 import { Swiper as SwiperCore } from 'swiper'
 import { useWidthScreen } from '@/hooks/use-width-screen'
-import '@/assets/styles/components/carousel-previews-map.css'
 import { useRef } from 'react'
 
 export function CarouselPreviewsMap() {
@@ -43,42 +42,46 @@ export function CarouselPreviewsMap() {
         onSlideChange={() => console.log('slide change')}
       >
         <SwiperSlide className="wrapper-preview">
-          <div className="image-measurement">
+          <div className="h-80">
             <Image
               src="/imgs/previews/map.png"
               alt=""
               width={1000}
               height={1000}
+              className='h-full w-full object-cover'
             />
           </div>
         </SwiperSlide>
         <SwiperSlide className="wrapper-preview">
-          <div className="image-measurement">
+          <div className="h-80">
             <Image
               src="/imgs/previews/map.png"
               alt=""
               width={1000}
               height={1000}
+              className='h-full w-full object-cover'
             />
           </div>
         </SwiperSlide>
         <SwiperSlide className="wrapper-preview">
-          <div className="image-measurement">
+          <div className="h-80">
             <Image
               src="/imgs/previews/map.png"
               alt=""
               width={1000}
               height={1000}
+              className='h-full w-full object-cover'
             />
           </div>
         </SwiperSlide>
         <SwiperSlide className="wrapper-preview">
-          <div className="image-measurement">
+          <div className="h-80">
             <Image
               src="/imgs/previews/map.png"
               alt=""
               width={1000}
               height={1000}
+              className='h-full w-full object-cover'
             />
           </div>
         </SwiperSlide>
