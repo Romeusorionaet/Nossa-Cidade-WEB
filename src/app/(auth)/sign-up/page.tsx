@@ -1,4 +1,4 @@
-import { FormSignUp } from '../components/form-sign-up'
+import { FormSignUp } from "../components/form-sign-up";
 
 export default async function SignUp() {
   return (
@@ -14,5 +14,5 @@ export default async function SignUp() {
         </p>
       </div>
     </div>
-  )
+  );
 }

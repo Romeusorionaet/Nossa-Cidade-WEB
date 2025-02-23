@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @theme {
   --color-background: var(--background);
@@ -17,7 +17,7 @@
 
 @layer base {
   body {
-    @apply bg-black h-full text-white;
+    @apply h-full bg-black text-white;
   }
   h1 {
     @apply text-xl;

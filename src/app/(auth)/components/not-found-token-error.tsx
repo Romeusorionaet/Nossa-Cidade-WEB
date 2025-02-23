@@ -6,5 +6,5 @@ export function NotFoundTokenError() {
         seu email.
       </p>
     </div>
-  )
+  );
 }

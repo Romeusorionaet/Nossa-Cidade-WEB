@@ -1,13 +1,13 @@
-import jwt, { JwtPayload } from 'jsonwebtoken'
+import jwt, { type JwtPayload } from "jsonwebtoken";
 
 interface DecodedAccessToken extends JwtPayload {
-  exp: number
+  exp: number;
 }
 
 export function extractExpirationTimeFromJwtToken(token: string) {
-  const decodedAccessToken = jwt.decode(token) as DecodedAccessToken
+  const decodedAccessToken = jwt.decode(token) as DecodedAccessToken;
 
-  const tokenExpires = decodedAccessToken.exp
+  const tokenExpires = decodedAccessToken.exp;
 
-  return tokenExpires
+  return tokenExpires;
 }

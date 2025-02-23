@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
-import { signUp } from '@/actions/auth/sign-up'
-import { z } from 'zod'
-import { signUpFormSchema } from '@/schemas/form-sign-up.schema'
-import { FormError } from './form-error'
+import { signUp } from "@/actions/auth/sign-up";
+import { signUpFormSchema } from "@/schemas/form-sign-up.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import type { z } from "zod";
+import { FormError } from "./form-error";
 
-type LoginFormData = z.infer<typeof signUpFormSchema>
+type LoginFormData = z.infer<typeof signUpFormSchema>;
 
 export function FormSignUp() {
   const {
@@ -18,32 +18,32 @@ export function FormSignUp() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(signUpFormSchema),
-  })
+  });
 
-  const router = useRouter()
+  const router = useRouter();
 
   async function handleSignInForm(data: LoginFormData) {
-    const { username, email, password } = data
+    const { username, email, password } = data;
 
     const response = await signUp({
       username,
       email,
       password,
-      picture: 'https://avatar.example.com',
-    })
+      picture: "https://avatar.example.com",
+    });
 
     if (!response.success) {
-      console.log(response.message)
+      console.log(response.message);
     }
 
     if (response.success && !isSubmitting) {
-      handleNavigateToSignIn()
+      handleNavigateToSignIn();
     }
   }
 
   const handleNavigateToSignIn = () => {
-    router.push('/sign-in')
-  }
+    router.push("/sign-in");
+  };
 
   return (
     <motion.div
@@ -74,7 +74,7 @@ export function FormSignUp() {
               id="username"
               placeholder="Nome e sobrenome"
               className="p-2 text-black"
-              {...register('username')}
+              {...register("username")}
             />
             <FormError errors={errors.username?.message} />
           </label>
@@ -85,7 +85,7 @@ export function FormSignUp() {
               id="email"
               placeholder="pedro@gmail.com"
               className="p-2 text-black"
-              {...register('email')}
+              {...register("email")}
             />
             <FormError errors={errors.email?.message} />
           </label>
@@ -97,7 +97,7 @@ export function FormSignUp() {
               id="password"
               placeholder="******"
               className="p-2 text-black"
-              {...register('password')}
+              {...register("password")}
             />
             <FormError errors={errors.password?.message} />
           </label>
@@ -109,13 +109,13 @@ export function FormSignUp() {
               id="passwordRepeat"
               placeholder="******"
               className="p-2 text-black"
-              {...register('passwordRepeat')}
+              {...register("passwordRepeat")}
             />
             <FormError errors={errors.passwordRepeat?.message} />
           </label>
         </fieldset>
 
-        <div className="flex  justify-center">
+        <div className="flex justify-center">
           <button
             type="submit"
             className="hover:bg-base_one_reference_header hover:text-base_color_text_top group w-60 gap-4 font-semibold"
@@ -135,5 +135,5 @@ export function FormSignUp() {
         </button>
       </div>
     </motion.div>
-  )
+  );
 }

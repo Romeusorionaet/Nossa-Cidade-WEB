@@ -1,226 +1,226 @@
-'use client'
+"use client";
 
-import { getBusinessPointForMapping } from '@/actions/get/business-point/get-business-point-for-mapping'
-import { openRouteServiceDriveCar } from '@/actions/services/open-route-services'
-import { businessPointType } from '@/core/@types/business-points'
-import { getMarkerElement } from '@/utils/get-marker-element'
-import { useContext, useEffect, useRef, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import 'maplibre-gl/dist/maplibre-gl.css'
-import maplibregl from 'maplibre-gl'
-import '@/assets/styles/utilities/scrollbar.css'
-import { SearchBusinessPoint } from '@/components/search-business-points'
-import { FilterBusinessPointsContext } from '@/contexts/filter-business-points'
-import { getBusinessPointCategories } from '@/actions/get/business-point/get-business-point-categories'
-import { checkBusinessStatus } from '@/utils/check-business-status'
-import { orderDays, weekDays } from '@/constants/week-days-order'
-import { useProviderMapContainer } from '@/hooks/use-provider-map-container'
-import { initializeMap } from '../helpers/initialize-map'
-import Link from 'next/link'
+import { getBusinessPointForMapping } from "@/actions/get/business-point/get-business-point-for-mapping";
+import { openRouteServiceDriveCar } from "@/actions/services/open-route-services";
+import type { businessPointType } from "@/core/@types/business-points";
+import { getMarkerElement } from "@/utils/get-marker-element";
+import { useQuery } from "@tanstack/react-query";
+import { useContext, useEffect, useRef, useState } from "react";
+import "maplibre-gl/dist/maplibre-gl.css";
+import maplibregl from "maplibre-gl";
+import "@/assets/styles/utilities/scrollbar.css";
+import { getBusinessPointCategories } from "@/actions/get/business-point/get-business-point-categories";
+import { SearchBusinessPoint } from "@/components/search-business-points";
+import { orderDays, weekDays } from "@/constants/week-days-order";
+import { FilterBusinessPointsContext } from "@/contexts/filter-business-points";
+import { useProviderMapContainer } from "@/hooks/use-provider-map-container";
+import { checkBusinessStatus } from "@/utils/check-business-status";
+import Link from "next/link";
+import { initializeMap } from "../helpers/initialize-map";
 
 interface TravelInfo {
-  duration: number
-  distanceKm: number
+  duration: number;
+  distanceKm: number;
 }
 
 export function Map() {
-  const { mapContainerRef, providerMapContainer } = useProviderMapContainer()
-  const markersRef = useRef<maplibregl.Marker[]>([])
-  const routeMarkersRef = useRef<maplibregl.Marker[]>([])
-  const [travelInfo, setTravelInfo] = useState<TravelInfo | null>(null)
-  const [startPoint, setStartPoint] = useState<[number, number]>([0, 0])
-  const [endPoint, setEndPoint] = useState<[number, number]>([0, 0])
-  const [togglePointType, setTogglePointType] = useState(false)
-  const [toggleWindowSearch, setToggleWindowSearch] = useState(false)
+  const { mapContainerRef, providerMapContainer } = useProviderMapContainer();
+  const markersRef = useRef<maplibregl.Marker[]>([]);
+  const routeMarkersRef = useRef<maplibregl.Marker[]>([]);
+  const [travelInfo, setTravelInfo] = useState<TravelInfo | null>(null);
+  const [startPoint, setStartPoint] = useState<[number, number]>([0, 0]);
+  const [endPoint, setEndPoint] = useState<[number, number]>([0, 0]);
+  const [togglePointType, setTogglePointType] = useState(false);
+  const [toggleWindowSearch, setToggleWindowSearch] = useState(false);
   const { businessPointsFiltered, accessQuery } = useContext(
     FilterBusinessPointsContext,
-  )
+  );
 
-  const myLocation: [number, number] = [-35.13145819818388, -6.378905610634973] // TODO for while
+  const myLocation: [number, number] = [-35.13145819818388, -6.378905610634973]; // TODO for while
 
-  const businessPointNotFound = businessPointsFiltered.length > 0
+  const businessPointNotFound = businessPointsFiltered.length > 0;
 
   const { data: businessPoints } = useQuery<businessPointType[]>({
-    queryKey: ['allBusinessPoints'],
+    queryKey: ["allBusinessPoints"],
     queryFn: () => getBusinessPointForMapping(),
     staleTime: 1000 * 60 * 60,
-  })
+  });
 
   const { data: businessPointCategories } = useQuery<
     { id: string; name: string }[]
   >({
-    queryKey: ['allBusinessPointCategories'],
+    queryKey: ["allBusinessPointCategories"],
     queryFn: () => getBusinessPointCategories(),
     staleTime: 1000 * 60 * 60,
-  })
+  });
 
   const handleWindowSearch = () => {
     toggleWindowSearch
       ? setToggleWindowSearch(false)
-      : setToggleWindowSearch(true)
-  }
+      : setToggleWindowSearch(true);
+  };
 
   const handleCleanSearch = () => {
-    setToggleWindowSearch(false)
-    accessQuery('')
-  }
+    setToggleWindowSearch(false);
+    accessQuery("");
+  };
 
   const handlePointRoute = ({ lat, lng }: { lat: number; lng: number }) => {
     setTogglePointType((prev) => {
       if (!prev) {
-        setStartPoint([lng, lat])
+        setStartPoint([lng, lat]);
       } else {
-        setEndPoint([lng, lat])
+        setEndPoint([lng, lat]);
       }
-      return prev
-    })
-  }
+      return prev;
+    });
+  };
 
   const handleChangeArea = (value: boolean) => {
     if (!value) {
-      setTogglePointType(false)
+      setTogglePointType(false);
     } else {
-      setTogglePointType(true)
+      setTogglePointType(true);
     }
-  }
+  };
 
   const handlePlotRoute = async (
     start: [number, number],
     end: [number, number],
   ) => {
-    const map = await providerMapContainer()
+    const map = await providerMapContainer();
 
     if (!start[0] || !end[1]) {
-      alert('Selecione os pontos de início e fim antes de traçar a rota.')
-      return
+      alert("Selecione os pontos de início e fim antes de traçar a rota.");
+      return;
     }
 
-    setStartPoint(start)
-    setEndPoint(end)
+    setStartPoint(start);
+    setEndPoint(end);
 
-    routeMarkersRef.current.forEach((marker) => marker.remove())
-    routeMarkersRef.current = []
+    routeMarkersRef.current.forEach((marker) => marker.remove());
+    routeMarkersRef.current = [];
 
-    const startMarker = new maplibregl.Marker({ color: 'red' })
+    const startMarker = new maplibregl.Marker({ color: "red" })
       .setLngLat(start)
-      .addTo(map)
+      .addTo(map);
     const endMarker = new maplibregl.Marker({
       element: getMarkerElement({
-        icon: 'dot',
-        size: 'small',
-        name: '',
+        icon: "dot",
+        size: "small",
+        name: "",
       }),
     })
       .setLngLat(end)
-      .addTo(map)
+      .addTo(map);
 
-    routeMarkersRef.current.push(startMarker, endMarker)
+    routeMarkersRef.current.push(startMarker, endMarker);
 
     await openRouteServiceDriveCar({
       startPoint: start,
       endPoint: end,
     }).then((data) => {
       if (!data.features || data.features.length === 0) {
-        alert('Não foi possível encontrar uma rota.')
-        return
+        alert("Não foi possível encontrar uma rota.");
+        return;
       }
 
-      const route = data.features[0].geometry.coordinates
-      const duration = data.features[0]?.properties?.segments[0]?.duration
-      const distanceKm = data.features[0]?.properties?.summary?.distance / 1000
+      const route = data.features[0].geometry.coordinates;
+      const duration = data.features[0]?.properties?.segments[0]?.duration;
+      const distanceKm = data.features[0]?.properties?.summary?.distance / 1000;
 
       setTravelInfo({
         duration: duration / 60,
         distanceKm,
-      })
+      });
 
       if (!route) {
-        alert('A rota não contém geometria.')
-        return
+        alert("A rota não contém geometria.");
+        return;
       }
 
       const routeGeoJSON: GeoJSON.Feature<GeoJSON.LineString> = {
-        type: 'Feature',
+        type: "Feature",
         properties: {},
         geometry: {
-          type: 'LineString',
+          type: "LineString",
           coordinates: route,
         },
-      }
+      };
 
-      if (map.getSource('route')) {
-        ;(map.getSource('route') as maplibregl.GeoJSONSource).setData(
+      if (map.getSource("route")) {
+        (map.getSource("route") as maplibregl.GeoJSONSource).setData(
           routeGeoJSON,
-        )
+        );
       } else {
-        map.addSource('route', {
-          type: 'geojson',
+        map.addSource("route", {
+          type: "geojson",
           data: routeGeoJSON,
-        })
+        });
 
         map.addLayer({
-          id: 'route',
-          type: 'line',
-          source: 'route',
+          id: "route",
+          type: "line",
+          source: "route",
           layout: {
-            'line-join': 'round',
-            'line-cap': 'round',
+            "line-join": "round",
+            "line-cap": "round",
           },
           paint: {
-            'line-color': '#007cbf',
-            'line-width': 5,
+            "line-color": "#007cbf",
+            "line-width": 5,
           },
-        })
+        });
       }
-    })
+    });
 
-    setTogglePointType(false)
-  }
+    setTogglePointType(false);
+  };
 
   const handleSetLocation = () => {
-    setStartPoint(myLocation)
-    setTogglePointType(true)
-  }
+    setStartPoint(myLocation);
+    setTogglePointType(true);
+  };
 
   const handleSelectedPlotRoute = async ({
     lat,
     lng,
   }: {
-    lat: number
-    lng: number
+    lat: number;
+    lng: number;
   }) => {
-    const newStart = myLocation
-    const newEnd = [lat, lng] as [number, number]
+    const newStart = myLocation;
+    const newEnd = [lat, lng] as [number, number];
 
-    await handlePlotRoute(newStart, newEnd)
+    await handlePlotRoute(newStart, newEnd);
 
-    setToggleWindowSearch(false)
-  }
+    setToggleWindowSearch(false);
+  };
 
   const handleCleanRoute = async () => {
-    const map = await providerMapContainer()
+    const map = await providerMapContainer();
 
-    if (!map) return
+    if (!map) return;
 
-    routeMarkersRef.current.forEach((marker) => marker.remove())
-    routeMarkersRef.current = []
+    routeMarkersRef.current.forEach((marker) => marker.remove());
+    routeMarkersRef.current = [];
 
-    if (map.getLayer('route')) {
-      map.removeLayer('route')
+    if (map.getLayer("route")) {
+      map.removeLayer("route");
     }
 
-    if (map.getSource('route')) {
-      map.removeSource('route')
+    if (map.getSource("route")) {
+      map.removeSource("route");
     }
 
-    setTravelInfo(null)
-    setStartPoint([0, 0])
-    setEndPoint([0, 0])
-  }
+    setTravelInfo(null);
+    setStartPoint([0, 0]);
+    setEndPoint([0, 0]);
+  };
 
   const pointsToShow = businessPointNotFound
     ? businessPointsFiltered
-    : businessPoints
+    : businessPoints;
 
   useEffect(() => {
     const initialize = async () => {
@@ -233,10 +233,10 @@ export function Map() {
         businessPointNotFound,
         businessPointCategories,
         markersRef,
-      })
-    }
+      });
+    };
 
-    initialize()
+    initialize();
   }, [
     businessPointsFiltered,
     businessPointNotFound,
@@ -244,13 +244,13 @@ export function Map() {
     businessPointCategories,
     mapContainerRef,
     providerMapContainer,
-  ])
+  ]);
 
   return (
     <div className="relative h-screen overflow-hidden">
       <Link
         href="/"
-        className="online-block absolute left-[50%] top-1 z-10 rounded-full border border-black bg-white p-1 text-black"
+        className="online-block absolute top-1 left-[50%] z-10 rounded-full border border-black bg-white p-1 text-black"
       >
         Sair
       </Link>
@@ -258,10 +258,10 @@ export function Map() {
       <div
         ref={mapContainerRef}
         className="h-screen overflow-hidden"
-        style={{ height: '100%', width: '100%' }}
+        style={{ height: "100%", width: "100%" }}
       />
       {travelInfo && (
-        <div className="absolute left-1 top-1 rounded-md bg-white p-2">
+        <div className="absolute top-1 left-1 rounded-md bg-white p-2">
           <span>🚗</span>
           <p className="text-black">{travelInfo.duration.toFixed(2)} min</p>
           <p className="text-black">{travelInfo.distanceKm.toFixed(2)} km</p>
@@ -269,7 +269,7 @@ export function Map() {
       )}
 
       {startPoint[0] && (
-        <div className="absolute right-1 top-1 space-y-3 rounded-md bg-white p-2 text-black">
+        <div className="absolute top-1 right-1 space-y-3 rounded-md bg-white p-2 text-black">
           <div>
             <div className="space-y-2 text-sm">
               <button
@@ -329,10 +329,10 @@ export function Map() {
       {businessPointNotFound && (
         <button
           onClick={() => handleWindowSearch()}
-          className="absolute bottom-10 right-1 rounded-full bg-white p-5 text-black duration-300 hover:bg-green-200"
+          className="absolute right-1 bottom-10 rounded-full bg-white p-5 text-black duration-300 hover:bg-green-200"
         >
           <p className="text-2xl">🗺️</p>
-          <span className="absolute right-7 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-green-200">
+          <span className="absolute top-0 right-7 flex h-5 w-5 items-center justify-center rounded-full bg-green-200">
             {businessPointsFiltered.length}
           </span>
         </button>
@@ -345,7 +345,7 @@ export function Map() {
         <div className="relative h-10">
           <button
             onClick={() => handleWindowSearch()}
-            className="absolute right-0 top-1 h-9 w-8 rounded-full bg-slate-400 p-1 text-xl text-white"
+            className="absolute top-1 right-0 h-9 w-8 rounded-full bg-slate-400 p-1 text-xl text-white"
           >
             X
           </button>
@@ -354,7 +354,10 @@ export function Map() {
 
         <div className="scrollbar mt-4 flex h-[85%] w-full flex-col overflow-auto rounded-md p-1">
           {businessPointsFiltered.map((item) => (
-            <div key={item.id} className="mb-2 rounded-xs border bg-slate-100 p-2">
+            <div
+              key={item.id}
+              className="mb-2 rounded-xs border bg-slate-100 p-2"
+            >
               <div className="flex justify-between">
                 <p className="font-bold">{item.name}</p>
                 <p>{checkBusinessStatus(item.openingHours)}</p>
@@ -405,5 +408,5 @@ export function Map() {
         <SearchBusinessPoint />
       </div>
     </div>
-  )
+  );
 }

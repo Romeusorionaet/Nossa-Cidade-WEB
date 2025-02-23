@@ -4,31 +4,31 @@ export function checkBusinessStatus(
     { abertura: string | null; fechamento: string | null }
   >,
 ) {
-  const weekdays = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab']
-  const currentDayIndex = new Date().getDay()
-  const currentDay = weekdays[currentDayIndex]
+  const weekdays = ["dom", "seg", "ter", "qua", "qui", "sex", "sab"];
+  const currentDayIndex = new Date().getDay();
+  const currentDay = weekdays[currentDayIndex];
 
-  const currentTime = new Date()
-  const currentHours = currentTime.getHours()
-  const currentMinutes = currentTime.getMinutes()
+  const currentTime = new Date();
+  const currentHours = currentTime.getHours();
+  const currentMinutes = currentTime.getMinutes();
 
-  const currentFormattedTime = `${currentHours.toString().padStart(2, '0')}:${currentMinutes.toString().padStart(2, '0')}`
+  const currentFormattedTime = `${currentHours.toString().padStart(2, "0")}:${currentMinutes.toString().padStart(2, "0")}`;
 
-  const dayHours = openingHours[currentDay]
+  const dayHours = openingHours[currentDay];
 
   if (!dayHours || !dayHours.abertura || !dayHours.fechamento) {
-    return 'Fechado'
+    return "Fechado";
   }
 
-  const { abertura, fechamento } = dayHours
+  const { abertura, fechamento } = dayHours;
 
   if (!abertura || !fechamento) {
-    console.log('Sem horário definido para hoje')
-    return 'Fechado'
+    console.log("Sem horário definido para hoje");
+    return "Fechado";
   }
 
   const isOpen =
-    currentFormattedTime >= abertura && currentFormattedTime <= fechamento
+    currentFormattedTime >= abertura && currentFormattedTime <= fechamento;
 
-  return isOpen ? 'Aberto' : 'Fechado'
+  return isOpen ? "Aberto" : "Fechado";
 }

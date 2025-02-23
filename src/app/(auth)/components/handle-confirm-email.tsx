@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
-import { api } from '@/lib/api'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { NotFoundTokenError } from './not-found-token-error'
+import { api } from "@/lib/api";
+import { useRouter, useSearchParams } from "next/navigation";
+import { NotFoundTokenError } from "./not-found-token-error";
 
 export function HandleConfirmEmail() {
-  const router = useRouter()
+  const router = useRouter();
 
-  const searchParams = useSearchParams()
-  const token = searchParams.get('token')
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
 
   if (!token) {
-    return <NotFoundTokenError />
+    return <NotFoundTokenError />;
   }
 
   const handleConfirmEmailAndNavigateToSignIn = async () => {
@@ -24,14 +24,14 @@ export function HandleConfirmEmail() {
             Authorization: `Bearer ${token}`,
           },
         },
-      )
+      );
 
-      console.log(response.data.message)
-      router.push('/sign-in')
+      console.log(response.data.message);
+      router.push("/sign-in");
     } catch (err: any) {
-      console.log(err, '==err')
+      console.log(err, "==err");
     }
-  }
+  };
 
   return (
     <button
@@ -41,5 +41,5 @@ export function HandleConfirmEmail() {
     >
       Confirmar
     </button>
-  )
+  );
 }

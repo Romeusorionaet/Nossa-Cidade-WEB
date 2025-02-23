@@ -1,4 +1,4 @@
-@import 'tailwindcss/utilities' layer(utilities);
+@import "tailwindcss/utilities" layer(utilities);
 
 @theme {
   --color-background: var(--background);

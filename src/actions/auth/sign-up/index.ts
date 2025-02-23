@@ -1,17 +1,17 @@
-'use server'
+"use server";
 
-import { api } from '@/lib/api'
+import { api } from "@/lib/api";
 
 interface Props {
-  username: string
-  email: string
-  password: string
-  picture: string
+  username: string;
+  email: string;
+  password: string;
+  picture: string;
 }
 
 interface ResponseProps {
-  success: boolean
-  message: string
+  success: boolean;
+  message: string;
 }
 
 export const signUp = async ({
@@ -21,22 +21,22 @@ export const signUp = async ({
   picture,
 }: Props): Promise<ResponseProps> => {
   try {
-    const response = await api.post('/auth/register', {
+    const response = await api.post("/auth/register", {
       username,
       email,
       password,
       picture,
-    })
+    });
 
     return {
       success: true,
       message: response.data.message,
-    }
+    };
   } catch (err: any) {
     const errorMessage =
       err.response?.data?.message ||
-      'Aconteceu um erro inesperado, tente novamente mais tarde.'
+      "Aconteceu um erro inesperado, tente novamente mais tarde.";
 
-    return { success: false, message: errorMessage }
+    return { success: false, message: errorMessage };
   }
-}
+};

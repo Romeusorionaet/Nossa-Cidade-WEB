@@ -1,13 +1,13 @@
-import { ContentBusinessPointDetails } from '../../components/content-business-point-details'
+import { ContentBusinessPointDetails } from "../../components/content-business-point-details";
 
 interface ParamsProps {
   params: {
-    id: string
-  }
+    id: string;
+  };
 }
 
 export default function Details({ params }: ParamsProps) {
-  const { id } = params
+  const { id } = params;
 
   return (
     <main>
@@ -15,5 +15,5 @@ export default function Details({ params }: ParamsProps) {
 
       <ContentBusinessPointDetails id={id} />
     </main>
-  )
+  );
 }

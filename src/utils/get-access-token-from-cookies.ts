@@ -1,26 +1,26 @@
-'use server'
+"use server";
 
-import { cookies } from 'next/headers'
-import { KeyCookies } from '@/constants/key-cookies'
+import { KeyCookies } from "@/constants/key-cookies";
+import { cookies } from "next/headers";
 
 export async function getAccessTokenFromCookies() {
-  const cookiesOC = await cookies()
-  const accessToken = cookiesOC.get(KeyCookies.AT_OC)
+  const cookiesOC = await cookies();
+  const accessToken = cookiesOC.get(KeyCookies.AT_OC);
 
   if (!accessToken) {
-    return
+    return;
   }
 
-  return accessToken.value
+  return accessToken.value;
 }
 
 export async function getRefreshTokenFromCookies() {
-  const cookiesOC = await cookies()
-  const refreshToken = cookiesOC.get(KeyCookies.RT_OC)
+  const cookiesOC = await cookies();
+  const refreshToken = cookiesOC.get(KeyCookies.RT_OC);
 
   if (!refreshToken) {
-    return null
+    return null;
   }
 
-  return refreshToken.value
+  return refreshToken.value;
 }

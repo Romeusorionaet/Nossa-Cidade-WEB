@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import { FilterBusinessPointsContext } from '@/contexts/filter-business-points'
-import { useContext, useState } from 'react'
+import { FilterBusinessPointsContext } from "@/contexts/filter-business-points";
+import { useContext, useState } from "react";
 
 export function SearchBusinessPoint() {
-  const [query, setQuery] = useState('')
-  const { accessQuery } = useContext(FilterBusinessPointsContext)
+  const [query, setQuery] = useState("");
+  const { accessQuery } = useContext(FilterBusinessPointsContext);
 
   const handleSaveQuery = () => {
-    accessQuery(query)
-  }
+    accessQuery(query);
+  };
   return (
     <>
       <input
@@ -27,5 +27,5 @@ export function SearchBusinessPoint() {
         Buscar
       </button>
     </>
-  )
+  );
 }
