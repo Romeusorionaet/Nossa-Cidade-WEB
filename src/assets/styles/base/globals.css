@@ -3,6 +3,11 @@
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --color-custom-1: #dfe5eb;
+
+  --drop-shadow-h1: 0 20px 10px #fff;
+  --drop-shadow-p: 0 0px 10px #000;
 }
 
 @layer base {
@@ -13,16 +18,26 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
-}
 
-@layer base {
   body {
-    @apply h-full bg-black text-white;
+    background-color: var(--color-custom-1);
+    color: var(--color-white);
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-rowdies);
+    letter-spacing: 2px;
+    color: var(--color-zinc-700);
+    font-weight: 300;
   }
   h1 {
-    @apply text-xl;
+    font-size: clamp(2.4rem, 3vw, 3.6rem);
   }
-  html {
-    @apply h-full;
+  h2, h2, h3, h4 {
+    font-size: clamp(2rem, 2.5vw, 3rem);
+  }
+  p, input, button, span, a {
+    font-size: clamp(1.2rem, 1.3vw, 1.5rem);
+    font-family: var(--font-geist-sans);
   }
 }
+

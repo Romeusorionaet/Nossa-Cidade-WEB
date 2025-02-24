@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Rowdies } from "next/font/google";
 import "@/assets/styles/base/globals.css";
 import ClientProviders from "@/utils/client-providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  weight: ["300", "400", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const rowdies = Rowdies({
+  variable: "--font-rowdies",
   subsets: ["latin"],
+  weight: ["300", "400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -24,10 +26,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="br">
+      <body className={`${geistSans.variable} ${rowdies.variable} antialiased`}>
         <ClientProviders>{children}</ClientProviders>
       </body>
     </html>

@@ -1,11 +1,11 @@
-@import "tailwindcss/utilities" layer(utilities);
+@import "tailwindcss/utilities";
 
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 }
 
-@utility scrollbar {
+@utilities scrollbar {
   &::-webkit-scrollbar {
     @apply w-0.5;
   }

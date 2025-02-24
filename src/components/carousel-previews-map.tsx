@@ -4,7 +4,7 @@ import { useWidthScreen } from "@/hooks/use-width-screen";
 import Image from "next/image";
 import { useRef } from "react";
 import type { Swiper as SwiperCore } from "swiper";
-import { Navigation } from "swiper/modules";
+import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 export function CarouselPreviewsMap() {
@@ -36,14 +36,16 @@ export function CarouselPreviewsMap() {
         ▶
       </button>
       <Swiper
-        modules={[Navigation]}
+        modules={[Autoplay]}
         spaceBetween={20}
         loop
+        autoplay={{
+          delay: 4000,
+        }}
         slidesPerView={getSlidesPerView()}
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
         }}
-        onSlideChange={() => console.log("slide change")}
       >
         <SwiperSlide className="wrapper-preview">
           <div className="h-80">
@@ -52,7 +54,7 @@ export function CarouselPreviewsMap() {
               alt=""
               width={1000}
               height={1000}
-              className="h-full w-full object-cover"
+              className="h-full w-full rounded-md object-cover"
             />
           </div>
         </SwiperSlide>
@@ -63,7 +65,7 @@ export function CarouselPreviewsMap() {
               alt=""
               width={1000}
               height={1000}
-              className="h-full w-full object-cover"
+              className="h-full w-full rounded-md object-cover"
             />
           </div>
         </SwiperSlide>
@@ -74,7 +76,7 @@ export function CarouselPreviewsMap() {
               alt=""
               width={1000}
               height={1000}
-              className="h-full w-full object-cover"
+              className="h-full w-full rounded-md object-cover"
             />
           </div>
         </SwiperSlide>
@@ -85,7 +87,7 @@ export function CarouselPreviewsMap() {
               alt=""
               width={1000}
               height={1000}
-              className="h-full w-full object-cover"
+              className="h-full w-full rounded-md object-cover"
             />
           </div>
         </SwiperSlide>
