@@ -35,7 +35,7 @@
   h2, h2, h3, h4 {
     font-size: clamp(2rem, 2.5vw, 3rem);
   }
-  p, input, button, span, a {
+  p, button, span, a {
     font-size: clamp(1.2rem, 1.3vw, 1.5rem);
     font-family: var(--font-geist-sans);
   }

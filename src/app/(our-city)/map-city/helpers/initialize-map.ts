@@ -127,38 +127,42 @@ export async function initializeMap({
     }
   });
 
-  pointsToShow?.forEach(({ id, location, name, categoryId, openingHours }) => {
-    if (
-      businessPointNotFound &&
-      markersRef.current.some((marker) => marker.getElement().dataset.id === id)
-    )
-      return;
+  pointsToShow?.forEach(
+    async ({ id, location, name, categoryId, openingHours }) => {
+      if (
+        businessPointNotFound &&
+        markersRef.current.some(
+          (marker) => marker.getElement().dataset.id === id,
+        )
+      )
+        return;
 
-    const category = businessPointCategories?.find(
-      (category) => category.id === categoryId,
-    );
-    const iconName = category?.name.replace(/\s+/g, "_");
-    const status = checkBusinessStatus(openingHours);
+      const category = businessPointCategories?.find(
+        (category) => category.id === categoryId,
+      );
+      const iconName = category?.name.replace(/\s+/g, "_");
+      const status = checkBusinessStatus(openingHours);
 
-    const popup = new maplibregl.Popup().setDOMContent(
-      popupContent({ name, status, id }),
-    );
+      const popup = new maplibregl.Popup().setDOMContent(
+        popupContent({ name, status, id }),
+      );
 
-    const markerElement = getMarkerElement({
-      icon: iconName as keyof typeof markers,
-      size: "medium",
-      name: "",
-    });
+      const markerElement = getMarkerElement({
+        icon: iconName as keyof typeof markers,
+        size: "medium",
+        name: "",
+      });
 
-    markerElement.dataset.id = id;
+      markerElement.dataset.id = id;
 
-    const marker = new maplibregl.Marker({ element: markerElement })
-      .setLngLat([location.latitude, location.longitude])
-      .setPopup(popup)
-      .addTo(map);
+      const marker = new maplibregl.Marker({ element: markerElement })
+        .setLngLat([location.latitude, location.longitude])
+        .setPopup(popup)
+        .addTo(map);
 
-    markersRef.current.push(marker);
-  });
+      markersRef.current.push(marker);
+    },
+  );
 
   return () => map.remove();
 }

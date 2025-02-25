@@ -11,22 +11,24 @@ export function SearchBusinessPoint() {
     accessQuery(query);
   };
   return (
-    <>
-      <input
-        type="text"
-        defaultValue={query}
-        placeholder="farmácia"
-        onChange={(e) => setQuery(e.target.value)}
-        className="rounded-md p-1 text-black"
-        required
-      />
+    <div className="flex w-full max-w-[620px] items-center rounded-md bg-white max-md:h-16">
       <button
         type="button"
         onClick={() => handleSaveQuery()}
-        className="rounded-md bg-black p-1"
+        className="h-full rounded-l-md bg-black p-1 text-sm"
       >
         Buscar
       </button>
-    </>
+      <div className="w-full rounded-tr-md bg-white">
+        <input
+          type="text"
+          defaultValue={query}
+          placeholder="farmácia"
+          onChange={(e) => setQuery(e.target.value)}
+          className="w-full p-1 pl-4 text-black outline-none"
+          required
+        />
+      </div>
+    </div>
   );
 }
