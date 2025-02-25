@@ -38,8 +38,12 @@ export async function initializeMap({
   const map = await providerMapContainer();
 
   map.on("load", async () => {
-    const layers = map.getStyle().layers!;
-    let labelLayerId;
+    const style = map.getStyle();
+    if (!style.layers) return;
+
+    const layers = style.layers;
+    let labelLayerId: string | undefined = undefined;
+
     for (const layer of layers) {
       if (layer.type === "symbol" && layer.layout?.["text-field"]) {
         labelLayerId = layer.id;
@@ -54,28 +58,30 @@ export async function initializeMap({
       });
     }
 
-    map.addLayer(
-      {
-        id: "3d-buildings",
-        source: "openmaptiles",
-        "source-layer": "building",
-        type: "fill-extrusion",
-        minzoom: 15,
-        filter: ["!=", ["get", "hide_3d"], true],
-        paint: {
-          "fill-extrusion-color": [
-            "interpolate",
-            ["linear"],
-            ["get", "render_height"],
-            0,
-            "#aaa",
-            100,
-            "#666",
-          ],
+    if (!map.getLayer("3d-buildings")) {
+      map.addLayer(
+        {
+          id: "3d-buildings",
+          source: "openmaptiles",
+          "source-layer": "building",
+          type: "fill-extrusion",
+          minzoom: 15,
+          filter: ["!=", ["get", "hide_3d"], true],
+          paint: {
+            "fill-extrusion-color": [
+              "interpolate",
+              ["linear"],
+              ["get", "render_height"],
+              0,
+              "#aaa",
+              100,
+              "#666",
+            ],
+          },
         },
-      },
-      labelLayerId,
-    );
+        labelLayerId,
+      );
+    }
 
     map.easeTo({ pitch: 60, bearing: 0, duration: 2000 });
 
@@ -113,9 +119,12 @@ export async function initializeMap({
 
   markersRef.current.forEach((marker) => {
     const markerId = marker.getElement().dataset.id;
-    marker.getElement().style.display = filteredIds.has(markerId!)
-      ? "block"
-      : "none";
+
+    if (markerId) {
+      marker.getElement().style.display = filteredIds.has(markerId)
+        ? "block"
+        : "none";
+    }
   });
 
   pointsToShow?.forEach(({ id, location, name, categoryId, openingHours }) => {

@@ -116,6 +116,7 @@ export function FormSignIn() {
       </div>
 
       <button
+        type="button"
         onClick={handleNavigateToSignUp}
         className="hover:bg-base_one_reference_header w-full text-center"
       >

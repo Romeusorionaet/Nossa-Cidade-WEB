@@ -1,9 +1,9 @@
-import { Map } from "./components/map";
+import { MapComponent } from "./components/map";
 
 export default function MapCity() {
   return (
     <main>
-      <Map />
+      <MapComponent />
     </main>
   );
 }

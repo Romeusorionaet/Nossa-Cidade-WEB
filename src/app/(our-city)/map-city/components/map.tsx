@@ -23,7 +23,7 @@ interface TravelInfo {
   distanceKm: number;
 }
 
-export function Map() {
+export function MapComponent() {
   const { mapContainerRef, providerMapContainer } = useProviderMapContainer();
   const markersRef = useRef<maplibregl.Marker[]>([]);
   const routeMarkersRef = useRef<maplibregl.Marker[]>([]);
@@ -273,6 +273,7 @@ export function Map() {
           <div>
             <div className="space-y-2 text-sm">
               <button
+                type="button"
                 onClick={() => handleSetLocation()}
                 className="w-full rounded-xs border p-1"
               >
@@ -281,6 +282,7 @@ export function Map() {
               <p>Início:</p>
             </div>
             <button
+              type="button"
               onClick={() => handleChangeArea(false)}
               data-value={togglePointType}
               className="h-14 w-full rounded-md border-4 p-1 text-xs data-[value=false]:border-red-700"
@@ -293,6 +295,7 @@ export function Map() {
           <div>
             <p className="text-sm">Fim:</p>
             <button
+              type="button"
               onClick={() => handleChangeArea(true)}
               data-value={togglePointType}
               className="h-14 w-full rounded-md border-4 text-xs data-[value=true]:border-green-700"
@@ -310,6 +313,7 @@ export function Map() {
 
           <div className="flex flex-col space-y-2">
             <button
+              type="button"
               onClick={() => handlePlotRoute(startPoint, endPoint)}
               className="w-full rounded-xs border p-1 text-sm"
             >
@@ -317,6 +321,7 @@ export function Map() {
             </button>
 
             <button
+              type="button"
               onClick={() => handleCleanRoute()}
               className="rounded-xs border p-1 text-sm"
             >
@@ -328,6 +333,7 @@ export function Map() {
 
       {businessPointNotFound && (
         <button
+          type="button"
           onClick={() => handleWindowSearch()}
           className="absolute right-1 bottom-10 rounded-full bg-white p-5 text-black duration-300 hover:bg-green-200"
         >
@@ -344,6 +350,7 @@ export function Map() {
       >
         <div className="relative h-10">
           <button
+            type="button"
             onClick={() => handleWindowSearch()}
             className="absolute top-1 right-0 h-9 w-8 rounded-full bg-slate-400 p-1 text-xl text-white"
           >
@@ -381,6 +388,7 @@ export function Map() {
 
               <div className="mt-2 flex w-full justify-end">
                 <button
+                  type="button"
                   onClick={() =>
                     handleSelectedPlotRoute({
                       lat: item.location.latitude,
@@ -397,6 +405,7 @@ export function Map() {
         </div>
 
         <button
+          type="button"
           onClick={() => handleCleanSearch()}
           className="mt-5 rounded-md border p-1"
         >

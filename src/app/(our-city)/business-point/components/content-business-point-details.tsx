@@ -10,9 +10,13 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
     staleTime: 1000 * 60 * 60,
   });
 
+  if (!businessPointDetails) {
+    return <p>Dados não encontrado</p>;
+  }
+
   return (
     <div>
-      <p>{businessPointDetails && businessPointDetails.name}</p>
+      <p>{businessPointDetails.name}</p>
     </div>
   );
 }

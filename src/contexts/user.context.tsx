@@ -70,11 +70,11 @@ export function UserContextProvider({ children }: UserContextProps) {
           await signOut();
 
           return;
-        } else {
-          await refetchUserProfile();
-
-          return;
         }
+
+        await refetchUserProfile();
+
+        return;
       }
     };
 

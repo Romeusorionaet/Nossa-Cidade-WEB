@@ -17,7 +17,7 @@ export function HandleConfirmEmail() {
   const handleConfirmEmailAndNavigateToSignIn = async () => {
     try {
       const response = await api.post(
-        `/auth/confirm-email`,
+        "/auth/confirm-email",
         {},
         {
           headers: {
@@ -28,13 +28,14 @@ export function HandleConfirmEmail() {
 
       console.log(response.data.message);
       router.push("/sign-in");
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.log(err, "==err");
     }
   };
 
   return (
     <button
+      type="button"
       className="hover:text-base_color_text_top max-md:mt-8"
       disabled={!token}
       onClick={handleConfirmEmailAndNavigateToSignIn}

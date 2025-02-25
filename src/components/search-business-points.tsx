@@ -21,6 +21,7 @@ export function SearchBusinessPoint() {
         required
       />
       <button
+        type="button"
         onClick={() => handleSaveQuery()}
         className="rounded-md bg-black p-1"
       >
