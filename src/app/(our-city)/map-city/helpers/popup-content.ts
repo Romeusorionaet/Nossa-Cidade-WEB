@@ -12,17 +12,13 @@ export function popupContent({ name, status, id }: Props) {
   textElement.textContent = `${name} - ${status}`;
   textElement.classList.add("text-black", "text-xs");
 
-  const button = document.createElement("button");
-  button.textContent = "➕";
-  button.classList.add("text-black");
-
-  const destinationUrl = `/business-point/details/${id}`;
-  button.addEventListener("click", () => {
-    window.location.href = destinationUrl;
-  });
+  const link = document.createElement("a");
+  link.textContent = "Entrar";
+  link.href = `/business-point/details/${id}`;
+  link.classList.add("text-blue-600", "underline", "cursor-pointer", "text-xs");
 
   popupContent.appendChild(textElement);
-  popupContent.appendChild(button);
+  popupContent.appendChild(link);
 
   return popupContent;
 }
