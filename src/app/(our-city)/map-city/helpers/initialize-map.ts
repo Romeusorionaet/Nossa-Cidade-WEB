@@ -1,11 +1,11 @@
 import { maplibreglTiles } from "@/actions/services/maplibregl";
 import type { markers } from "@/constants/markers";
-import type { businessPointType } from "@/core/@types/business-points";
 import { checkBusinessStatus } from "@/utils/check-business-status";
 import { getMarkerElement } from "@/utils/get-marker-element";
 import maplibregl from "maplibre-gl";
 import type { RefObject } from "react";
 import { popupContent } from "./popup-content";
+import type { businessPointType } from "@/@types/business-point-type";
 
 interface Props {
   mapContainerRef: RefObject<HTMLDivElement | null>;

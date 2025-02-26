@@ -2,7 +2,6 @@
 
 import { getBusinessPointForMapping } from "@/actions/get/business-point/get-business-point-for-mapping";
 import { openRouteServiceDriveCar } from "@/actions/services/open-route-services";
-import type { businessPointType } from "@/core/@types/business-points";
 import { getMarkerElement } from "@/utils/get-marker-element";
 import { useQuery } from "@tanstack/react-query";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -18,6 +17,7 @@ import { checkBusinessStatus } from "@/utils/check-business-status";
 import Link from "next/link";
 import { initializeMap } from "../helpers/initialize-map";
 import { ArrowLeftSquare, ArrowRightSquare } from "lucide-react";
+import type { businessPointType } from "@/@types/business-point-type";
 
 interface TravelInfo {
   duration: number;
@@ -414,16 +414,22 @@ export function MapComponent() {
                   .sort(
                     ([a], [b]) => orderDays.indexOf(a) - orderDays.indexOf(b),
                   )
-                  .map(([day, { abertura, fechamento }]) => (
-                    <li key={day} className="flex justify-between">
-                      <span className="text-sm font-medium">
-                        {weekDays[day] || day}:
-                      </span>
-                      <span className="text-sm">
-                        {abertura} - {fechamento}
-                      </span>
-                    </li>
-                  ))}
+                  .map(([day, hours]) => {
+                    const { abertura, fechamento } = hours as {
+                      abertura: string;
+                      fechamento: string;
+                    };
+                    return (
+                      <li key={day} className="flex justify-between">
+                        <span className="text-sm font-medium">
+                          {weekDays[day] || day}:
+                        </span>
+                        <span className="text-sm">
+                          {abertura} - {fechamento}
+                        </span>
+                      </li>
+                    );
+                  })}
               </ul>
 
               <div className="mt-2 flex w-full justify-end">

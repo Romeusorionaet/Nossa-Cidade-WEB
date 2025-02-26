@@ -1,7 +1,7 @@
 "use client";
 
+import type { businessPointType } from "@/@types/business-point-type";
 import { searchBusinessPoints } from "@/actions/get/business-point/search-business-points";
-import type { businessPointType } from "@/core/@types/business-points";
 import { useQuery } from "@tanstack/react-query";
 import { createContext, useState } from "react";
 
