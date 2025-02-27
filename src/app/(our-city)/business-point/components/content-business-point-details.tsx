@@ -3,6 +3,7 @@
 import type { businessPointDetailsType } from "@/@types/business-point-details-type";
 import { getBusinessPointDetails } from "@/actions/get/business-point/get-business-point-details";
 import { OpeningHoursList } from "@/components/opening-hours-list";
+import { BaseUrls } from "@/constants/base-urls";
 import { orderDays, weekDays } from "@/constants/week-days-order";
 import { checkBusinessStatus } from "@/utils/check-business-status";
 import { useQuery } from "@tanstack/react-query";
@@ -24,9 +25,7 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
       <h1 className="text-center">{businessPoint.name}</h1>
 
       <div className="mt-10">
-        <p className="text-center">
-          Especialista em produtos de qualidade e preços baixo.
-        </p>
+        <p className="text-center">{businessPoint.highlight}</p>
 
         <p className="mt-10 text-base">
           Praça Augusto Severo, 123 - Centro, Canguaretama - RN, 59190-000
@@ -34,7 +33,7 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
 
         <div className="h-[600px] w-full">
           <Image
-            src="/imgs/others/ex-1.png"
+            src={`${BaseUrls.IMG}/${businessPoint.images[0]}`}
             alt=""
             width={1000}
             height={1000}
@@ -42,12 +41,7 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
           />
         </div>
 
-        <p className="mt-5 text-justify">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo, culpa
-          aperiam praesentium error at tempore quas distinctio adipisci eum
-          doloribus mollitia nobis, quisquam libero maiores unde numquam quaerat
-          rerum voluptate.
-        </p>
+        <p className="mt-5 text-justify">{businessPoint.description}</p>
 
         <div className="mt-10">
           <h2>Horários</h2>
@@ -67,7 +61,7 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
 
         <div className="mt-10 h-[600px] w-full">
           <Image
-            src="/imgs/others/ex-2.png"
+            src={`${BaseUrls.IMG}/${businessPoint.images[1]}`}
             alt=""
             width={1000}
             height={1000}

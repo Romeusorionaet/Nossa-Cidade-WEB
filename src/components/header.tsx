@@ -12,7 +12,12 @@ export function Header() {
             <li>
               <Link href="/sign-in">Sign in</Link>
             </li>
-            <Link href="/sign-up">Sign up</Link>
+            <li>
+              <Link href="/sign-up">Sign up</Link>
+            </li>
+            <li>
+              <Link href="/profile">Perfil</Link>
+            </li>
           </ul>
         </nav>
       </div>

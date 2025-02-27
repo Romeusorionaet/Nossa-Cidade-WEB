@@ -4,8 +4,8 @@ export type businessPointDetailsType = {
   name: string;
   censorship: boolean;
   description: string | null;
-  highlights: string | null;
-  images: string[] | null;
+  highlight: string;
+  images: string[];
   openingHours: Record<string, any>;
   location: {
     latitude: number;
