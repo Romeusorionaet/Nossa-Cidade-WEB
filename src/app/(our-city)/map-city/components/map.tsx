@@ -18,6 +18,7 @@ import Link from "next/link";
 import { initializeMap } from "../helpers/initialize-map";
 import { ArrowLeftSquare, ArrowRightSquare } from "lucide-react";
 import type { businessPointType } from "@/@types/business-point-type";
+import { OpeningHoursList } from "@/components/opening-hours-list";
 
 interface TravelInfo {
   duration: number;
@@ -409,28 +410,12 @@ export function MapComponent() {
                   {checkBusinessStatus(item.openingHours)}
                 </p>
               </div>
-              <ul className="mt-2">
-                {Object.entries(item.openingHours)
-                  .sort(
-                    ([a], [b]) => orderDays.indexOf(a) - orderDays.indexOf(b),
-                  )
-                  .map(([day, hours]) => {
-                    const { abertura, fechamento } = hours as {
-                      abertura: string;
-                      fechamento: string;
-                    };
-                    return (
-                      <li key={day} className="flex justify-between">
-                        <span className="text-sm font-medium">
-                          {weekDays[day] || day}:
-                        </span>
-                        <span className="text-sm">
-                          {abertura} - {fechamento}
-                        </span>
-                      </li>
-                    );
-                  })}
-              </ul>
+
+              <OpeningHoursList
+                openingHours={item.openingHours}
+                orderDays={orderDays}
+                weekDays={weekDays}
+              />
 
               <div className="mt-2 flex w-full justify-end">
                 <button
