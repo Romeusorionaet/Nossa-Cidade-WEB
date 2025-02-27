@@ -76,7 +76,7 @@ export function FormSignIn() {
             <input
               id="email"
               placeholder="pedro@gmail.com"
-              className="p-2 text-black"
+              className="p-2"
               {...register("email")}
             />
             <FormError errors={errors.email?.message} />
@@ -88,7 +88,7 @@ export function FormSignIn() {
               type="password"
               id="password"
               placeholder="******"
-              className="p-2 text-black"
+              className="p-2"
               {...register("password")}
             />
             <FormError errors={errors.password?.message} />

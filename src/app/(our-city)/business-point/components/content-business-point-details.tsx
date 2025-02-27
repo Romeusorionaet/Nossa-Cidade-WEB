@@ -21,7 +21,7 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
   }
 
   return (
-    <section className="px-4 pt-10 pb-20 text-black">
+    <section className="px-4 pt-10 pb-20">
       <h1 className="text-center">{businessPoint.name}</h1>
 
       <div className="mt-10">

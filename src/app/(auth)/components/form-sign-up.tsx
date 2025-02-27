@@ -73,7 +73,7 @@ export function FormSignUp() {
             <input
               id="username"
               placeholder="Nome e sobrenome"
-              className="p-2 text-black"
+              className="p-2"
               {...register("username")}
             />
             <FormError errors={errors.username?.message} />
@@ -84,7 +84,7 @@ export function FormSignUp() {
             <input
               id="email"
               placeholder="pedro@gmail.com"
-              className="p-2 text-black"
+              className="p-2"
               {...register("email")}
             />
             <FormError errors={errors.email?.message} />
@@ -96,7 +96,7 @@ export function FormSignUp() {
               type="password"
               id="password"
               placeholder="******"
-              className="p-2 text-black"
+              className="p-2"
               {...register("password")}
             />
             <FormError errors={errors.password?.message} />
@@ -108,7 +108,7 @@ export function FormSignUp() {
               type="password"
               id="passwordRepeat"
               placeholder="******"
-              className="p-2 text-black"
+              className="p-2"
               {...register("passwordRepeat")}
             />
             <FormError errors={errors.passwordRepeat?.message} />

@@ -12,7 +12,7 @@ export default async function Details({ params }: ParamsProps) {
 
   return (
     <main className="mx-auto w-full max-w-[1080px] pt-28">
-      <Link href="/map-city" className="ml-4 text-black hover:underline">
+      <Link href="/map-city" className="ml-4 hover:underline">
         Voltar
       </Link>
 

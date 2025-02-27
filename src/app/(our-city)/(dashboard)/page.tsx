@@ -21,7 +21,7 @@ export default function Dashboard() {
             </h1>
 
             <div className="pt-12">
-              <p className="drop-shadow-p font-bold text-white">
+              <p className="drop-shadow-p font-bold font-light text-white">
                 Saiba exatamente onde comprar na nossa cidade – veja no mapa e
                 aproveite!
               </p>
@@ -29,14 +29,14 @@ export default function Dashboard() {
               <div className="mt-10 flex items-center justify-center gap-10">
                 <Link
                   href="/map-city"
-                  className="inline-block w-44 rounded-md bg-zinc-500 p-1 duration-500 hover:bg-zinc-700"
+                  className="inline-block w-44 rounded-md bg-zinc-500 p-1 text-white duration-500 hover:bg-zinc-700"
                 >
                   Ir para o mapa
                 </Link>
 
                 <Link
                   href="/shopping"
-                  className="inline-block w-44 rounded-md bg-zinc-500 p-1 duration-500 hover:bg-zinc-700"
+                  className="inline-block w-44 rounded-md bg-zinc-500 p-1 text-white duration-500 hover:bg-zinc-700"
                 >
                   Ver produtos
                 </Link>
@@ -52,7 +52,7 @@ export default function Dashboard() {
         </section>
 
         <section className="background-1 relative space-y-10 overflow-x-hidden py-28">
-          <div className="mx-auto h-screen w-full max-w-[1600px] rounded-md px-4 pt-10 text-black md:h-[650px]">
+          <div className="mx-auto h-screen w-full max-w-[1600px] rounded-md px-4 pt-10 md:h-[650px]">
             <Image
               src="/imgs/others/deco-8.png"
               alt=""
@@ -67,7 +67,7 @@ export default function Dashboard() {
               Destacando <br /> a conexão local
             </h2>
 
-            <div className="w-full max-w-[500px] pt-10">
+            <div className="w-full max-w-[500px] pt-10 text-zinc-700">
               <p data-scroll data-scroll-speed={-0.04}>
                 Muitas vezes, quando precisamos comprar algo, nem sempre temos
                 tempo ou paciência para ir até o centro da cidade procurar. O
@@ -79,7 +79,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="relative h-screen text-black">
+          <div className="relative h-screen">
             <h2
               data-scroll
               data-scroll-speed={0.1}
@@ -92,7 +92,7 @@ export default function Dashboard() {
             <div className="mx-auto h-full w-full max-w-[1600px] rounded-md bg-[url('/imgs/others/deco-1.png')] bg-left bg-no-repeat md:bg-center" />
 
             <div className="top-72 right-44 -mt-20 px-4 md:absolute md:w-96">
-              <p>
+              <p className="text-zinc-700">
                 Na Nossa Cidade, trazemos essa facilidade para você! Aqui, você
                 tem a mesma experiência de comprar com conforto, direto de casa.
                 E se preferir sair, já saberá exatamente onde ir.
@@ -108,8 +108,8 @@ export default function Dashboard() {
               </h2>
             </div>
 
-            <div className="mx-auto mt-28 w-full max-w-[500px] space-y-10 px-4 text-center text-black">
-              <p data-scroll data-scroll-speed={0.1}>
+            <div className="mx-auto mt-28 w-full max-w-[500px] space-y-10 px-4 text-center text-white">
+              <p data-scroll data-scroll-speed={0.1} className="font-light">
                 A Nossa Cidade é uma plataforma focada no comércio local,
                 impulsionando as vendas da sua região e conectando comerciantes
                 aos clientes próximos.
@@ -123,7 +123,7 @@ export default function Dashboard() {
                 className="mx-auto h-20 w-20"
               />
 
-              <p>
+              <p className="font-light">
                 Agora, ao sair de casa, você já sabe onde encontrar aquele
                 sapato pelo melhor preço ou aquela bolsa estilosa que tanto
                 procurava—e muitas vezes, com um valor ainda melhor do que
@@ -135,7 +135,7 @@ export default function Dashboard() {
 
         <section
           id="faq"
-          className="border-y-8 border-black bg-orange-200 py-12 text-black"
+          className="border-y-8 border-black bg-orange-200 py-12"
         >
           <div className="flex flex-wrap items-center justify-center">
             <h2 className="text-center text-4xl font-thin drop-shadow-lg md:text-7xl">
@@ -182,7 +182,7 @@ export default function Dashboard() {
           </div>
         </section>
 
-        <section className="relative flex flex-col justify-center gap-28 bg-white bg-[url('/imgs/others/deco-7.png')] bg-left bg-no-repeat px-2 py-12 text-black md:bg-right md:pl-10">
+        <section className="relative flex flex-col justify-center gap-28 bg-white bg-[url('/imgs/others/deco-7.png')] bg-left bg-no-repeat px-2 py-12 md:bg-right md:pl-10">
           <div className="lg:w-1/2">
             <h2 className="text-4xl font-thin drop-shadow-lg max-md:text-center md:text-7xl">
               Você está no caminho certo
@@ -203,7 +203,7 @@ export default function Dashboard() {
             Cadastar ponto comercial
           </Link>
 
-          <p className="md:w-1/2">
+          <p className="text-zinc-700 md:w-1/2">
             Prepare-se para ter crescimento nas suas vendas — você será notado
             na Nossa Cidade! Aproveite essa oportunidade para alcançar mais
             clientes e expandir seu negócio.

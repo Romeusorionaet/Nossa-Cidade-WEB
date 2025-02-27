@@ -15,7 +15,7 @@ export function SearchBusinessPoint() {
       <button
         type="button"
         onClick={() => handleSaveQuery()}
-        className="h-full rounded-l-md bg-black p-1 text-sm"
+        className="h-full rounded-l-md bg-black p-1 text-sm text-white"
       >
         Buscar
       </button>
