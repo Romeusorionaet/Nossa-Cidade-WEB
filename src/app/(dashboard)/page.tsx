@@ -5,11 +5,14 @@ import "@/assets/styles/utilities/background-section.css";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { faqItems } from "@/constants/faq-items";
+import { Header } from "@/components/header";
 
 export default function Dashboard() {
   return (
     <div>
-      <main>
+      <Header />
+
+      <main className="pt-16">
         <section className="relative flex flex-col justify-between bg-[url('/imgs/others/deco-4.png')] bg-cover bg-top bg-no-repeat pt-20 text-center">
           <div className="relative px-2">
             <h1 className="drop-shadow-h1 leading-none font-bold max-md:text-start">
