@@ -1,5 +1,6 @@
 "use client";
 
+import type { userProfileType } from "@/@types/user-profile-type";
 import { getDataRefreshToken } from "@/actions/get/refresh-token/get-data-refresh-token";
 import { getDataUser } from "@/actions/get/user/get-data.user";
 import { KeyLocalStorage } from "@/constants/key-local-storage";
@@ -11,20 +12,12 @@ import type {
 import { signOut, useSession } from "next-auth/react";
 import { createContext, useEffect, useState } from "react";
 
-interface ProfileProps {
-  publicId: string;
-  username: string;
-  picture: string;
-  email: string;
-  createAt: string;
-  updateAt: string;
-}
-
 interface UserContextType {
-  profile: ProfileProps;
+  profile: userProfileType;
   refetchUserProfile: (
     options?: RefetchOptions | undefined,
   ) => Promise<QueryObserverResult>;
+  isLoadingDataUserProfile: boolean;
 }
 
 interface UserContextProps {
@@ -40,14 +33,21 @@ export function UserContextProvider({ children }: UserContextProps) {
     publicId: "",
     username: "",
     email: "",
-    picture: "",
-    createAt: "",
-    updateAt: "",
+    avatar: "",
+    emailVerified: false,
+    createdAt: "",
+    updatedAt: "",
   };
 
-  const [profile, setProfile] = useState<ProfileProps>(initialDataProfile);
+  const [profile, setProfile] = useState<userProfileType>(
+    () => initialDataProfile,
+  );
 
-  const { data, refetch: refetchUserProfile } = useQuery({
+  const {
+    data,
+    refetch: refetchUserProfile,
+    isLoading: isLoadingDataUserProfile,
+  } = useQuery({
     queryKey: ["profile"],
     queryFn: () => getDataUser(),
     enabled: !profile.username,
@@ -101,6 +101,7 @@ export function UserContextProvider({ children }: UserContextProps) {
       value={{
         profile,
         refetchUserProfile,
+        isLoadingDataUserProfile,
       }}
     >
       {children}

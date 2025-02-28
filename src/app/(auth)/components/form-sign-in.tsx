@@ -33,7 +33,7 @@ export function FormSignIn() {
     const response = await signInWithEmailAndPassword({ email, password });
 
     if (!response.success) {
-      console.log(response.message, "err");
+      console.log(response.message);
       return;
     }
 
@@ -51,8 +51,8 @@ export function FormSignIn() {
   const handleLoginWithGoogle = async () => {
     try {
       await signIn("google", { callbackUrl: "/" });
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      console.log(err.message);
     }
   };
 

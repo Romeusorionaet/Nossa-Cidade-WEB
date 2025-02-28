@@ -4,7 +4,7 @@ import { useWidthScreen } from "@/hooks/use-width-screen";
 import Image from "next/image";
 import { useRef } from "react";
 import type { Swiper as SwiperCore } from "swiper";
-import { Autoplay, Navigation } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 export function CarouselPreviewsMap() {

@@ -31,26 +31,29 @@ export const authOptions: AuthOptions = {
       async profile(profile: GoogleProfile) {
         try {
           if (profile.email_verified) {
-            const response = await api.post("/auth/register/oauth/callback", {
-              username: profile.name,
-              email: profile.email,
-              picture: profile.picture,
-              emailVerified: profile.email_verified,
-            });
+            const response = await api.post(
+              "/auth/authenticate/oauth/callback",
+              {
+                username: profile.name,
+                email: profile.email,
+                picture: profile.picture,
+                emailVerified: profile.email_verified,
+              },
+            );
 
-            const { accessToken, refreshToken } = response.data;
+            const { accessToken, refreshToken } = await response.data;
 
-            setAuthTokenForCookies({
+            await setAuthTokenForCookies({
               token: accessToken,
               key: KeyCookies.AT_OC,
             });
-            setAuthTokenForCookies({
+            await setAuthTokenForCookies({
               token: refreshToken,
               key: KeyCookies.RT_OC,
             });
           }
         } catch (err: any) {
-          console.log(err.message);
+          console.error("Erro durante a autenticação OAuth:", err.message);
         }
 
         return {

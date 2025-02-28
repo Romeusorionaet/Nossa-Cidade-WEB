@@ -26,10 +26,9 @@ export function HandleConfirmEmail() {
         },
       );
 
-      console.log(response.data.message);
       router.push("/sign-in");
-    } catch (err: unknown) {
-      console.log(err, "==err");
+    } catch (err: any) {
+      console.error(err.message);
     }
   };
 
