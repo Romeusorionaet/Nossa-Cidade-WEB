@@ -1,3 +1,4 @@
+import type { userProfileType } from "@/@types/user-profile-type";
 import { api } from "@/lib/api";
 import { getAccessTokenFromCookies } from "@/utils/get-access-token-from-cookies";
 
@@ -19,7 +20,7 @@ export const getDataUser = async () => {
       },
     });
 
-    const profile: any = response.data.profile;
+    const profile: userProfileType = response.data.userProfile;
 
     return {
       props: {
