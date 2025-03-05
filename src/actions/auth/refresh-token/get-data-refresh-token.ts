@@ -17,7 +17,7 @@ export const getDataRefreshToken = async (): Promise<BooleanResponse> => {
   }
 
   try {
-    const response = await api.get("/auth/user/refresh-token", {
+    const response = await api.get("/auth/refresh-token", {
       headers: {
         Authorization: `Bearer ${refreshToken}`,
       },

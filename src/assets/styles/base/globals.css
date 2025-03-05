@@ -45,5 +45,8 @@
     font-size: clamp(1.1rem, 1.3vw, 1.4rem);
     font-family: var(--font-geist-sans);
   }
+  button {
+    cursor: pointer;
+  }
 }
 

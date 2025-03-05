@@ -1,7 +1,7 @@
 "use client";
 
 import type { userProfileType } from "@/@types/user-profile-type";
-import { getDataRefreshToken } from "@/actions/get/refresh-token/get-data-refresh-token";
+import { getDataRefreshToken } from "@/actions/auth/refresh-token/get-data-refresh-token";
 import { getDataUser } from "@/actions/get/user/get-data.user";
 import { KeyLocalStorage } from "@/constants/key-local-storage";
 import { useQuery } from "@tanstack/react-query";
