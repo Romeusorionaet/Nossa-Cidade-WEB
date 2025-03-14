@@ -11,7 +11,6 @@ import "@/assets/styles/utilities/scrollbar.css";
 import { getBusinessPointCategories } from "@/actions/get/business-point/get-business-point-categories";
 import { SearchBusinessPoint } from "@/components/search-business-points";
 import { orderDays, weekDays } from "@/constants/week-days-order";
-import { FilterBusinessPointsContext } from "@/contexts/filter-business-points";
 import { useProviderMapContainer } from "@/hooks/use-provider-map-container";
 import { checkBusinessStatus } from "@/utils/check-business-status";
 import Link from "next/link";
@@ -19,6 +18,7 @@ import { initializeMap } from "../helpers/initialize-map";
 import { ArrowLeftSquare, ArrowRightSquare } from "lucide-react";
 import type { businessPointType } from "@/@types/business-point-type";
 import { OpeningHoursList } from "@/components/opening-hours-list";
+import { FilterBusinessPointsContext } from "@/contexts/filter-business-points.context";
 
 interface TravelInfo {
   duration: number;

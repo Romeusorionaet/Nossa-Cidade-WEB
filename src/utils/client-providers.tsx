@@ -1,6 +1,6 @@
 "use client";
 
-import { FilterBusinessPointsContextProvider } from "@/contexts/filter-business-points";
+import { FilterBusinessPointsContextProvider } from "@/contexts/filter-business-points.context";
 import { UserContextProvider } from "@/contexts/user.context";
 import { queryClient } from "@/lib/query-client";
 import { QueryClientProvider } from "@tanstack/react-query";

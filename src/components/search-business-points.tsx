@@ -1,6 +1,6 @@
 "use client";
 
-import { FilterBusinessPointsContext } from "@/contexts/filter-business-points";
+import { FilterBusinessPointsContext } from "@/contexts/filter-business-points.context";
 import { useContext, useState } from "react";
 
 export function SearchBusinessPoint() {
