@@ -22,6 +22,7 @@
   body {
     background-color: var(--color-custom-1);
     color: var(--color-black);
+    line-height: normal;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-rowdies);
@@ -47,6 +48,9 @@
   }
   button {
     cursor: pointer;
+  }
+  button, input, textarea {
+    border: 1px solid black
   }
 }
 

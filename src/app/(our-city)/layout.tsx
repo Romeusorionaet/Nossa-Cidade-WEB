@@ -1,4 +1,9 @@
+"use client";
+
 import { Header } from "@/components/header";
+import { ControlLocationForBusinessPointContextProvider } from "@/contexts/control-location-for-business-point.context";
+import { FormBusinessPointContextProvider } from "@/contexts/form-business-point.context";
+import { ManageTagsForBusinessPointContextProvider } from "@/contexts/manage-tags-for-business-point.context";
 
 export default function BusinessPointLayout({
   children,
@@ -6,9 +11,13 @@ export default function BusinessPointLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <Header />
-      {children}
-    </>
+    <ControlLocationForBusinessPointContextProvider>
+      <ManageTagsForBusinessPointContextProvider>
+        <FormBusinessPointContextProvider>
+          <Header />
+          {children}
+        </FormBusinessPointContextProvider>
+      </ManageTagsForBusinessPointContextProvider>
+    </ControlLocationForBusinessPointContextProvider>
   );
 }

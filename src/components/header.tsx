@@ -39,6 +39,11 @@ export function Header() {
             <li>
               <Link href="/profile">Perfil</Link>
             </li>
+            <li>
+              <Link href="/business-point/register-business-point">
+                Registrar ponto comercial
+              </Link>
+            </li>
           </ul>
         </nav>
 
