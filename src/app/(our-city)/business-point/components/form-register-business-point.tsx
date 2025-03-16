@@ -8,7 +8,7 @@ import { ControlLocationForBusinessPointContext } from "@/contexts/control-locat
 import { UserLocationMap } from "./user-location-map";
 import { FormBusinessPointContext } from "@/contexts/form-business-point.context";
 import { ManageTags } from "./manage-tags";
-import { daysOfWeek } from "@/contexts/day-of-week";
+import { daysOfWeek } from "@/constants/day-of-week";
 
 export function FormRegisterBusinessPoint() {
   const { handleGetUserLocation, businessLocation, handleSearchLocation } =

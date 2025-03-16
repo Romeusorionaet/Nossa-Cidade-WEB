@@ -1,4 +1,4 @@
-import { daysOfWeek } from "@/contexts/day-of-week";
+import { daysOfWeek } from "@/constants/day-of-week";
 import { z } from "zod";
 
 const openingHoursSchema = z.object(
