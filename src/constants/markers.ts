@@ -6,9 +6,11 @@ export const markers = {
   Escola: "🏫",
   Igreja: "⛪",
   Hospital: "🏥",
+  Clínica_médica: "🏥",
   Academia: "🏋️‍♀️",
   Supermercado: "🛒",
   Padaria: "🍞",
   Banco: "🏦",
-  Posto_de_gasolina: "⛽",
+  Posto_De_gasolina: "⛽",
+  Açougue: "🍖",
 };

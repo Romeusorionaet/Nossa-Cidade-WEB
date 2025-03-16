@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FieldErrors,
   useForm,
+  UseFormGetValues,
   UseFormHandleSubmit,
   UseFormRegister,
   UseFormSetValue,
@@ -15,6 +16,7 @@ import {
 import { createContext, useContext, useState } from "react";
 import { ManageTagsForBusinessPointContext } from "./manage-tags-for-business-point.context";
 import { registerBusinessPoint } from "@/actions/post/business-point/register-business-point";
+import { useRouter } from "next/navigation";
 
 interface FormBusinessPointContextType {
   register: UseFormRegister<BusinessPointFormData>;
@@ -23,6 +25,7 @@ interface FormBusinessPointContextType {
     businessPointData: BusinessPointFormData,
   ) => Promise<void>;
   setValue: UseFormSetValue<BusinessPointFormData>;
+  getValues: UseFormGetValues<BusinessPointFormData>;
   handleSelect: (categoryId: string) => void;
   errors: FieldErrors<BusinessPointFormData>;
   isLoadingForm: boolean;
@@ -44,6 +47,7 @@ export function FormBusinessPointContextProvider({
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors, isLoading: isLoadingForm },
   } = useForm<BusinessPointFormData>({
     resolver: zodResolver(businessPointSchema),
@@ -51,6 +55,8 @@ export function FormBusinessPointContextProvider({
 
   const { tags } = useContext(ManageTagsForBusinessPointContext);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+  const router = useRouter();
 
   const handleBusinessPointForm = async (baseData: BusinessPointFormData) => {
     const { messageError, messageSuccess } = await registerBusinessPoint({
@@ -61,6 +67,7 @@ export function FormBusinessPointContextProvider({
 
     if (messageSuccess) {
       alert(messageSuccess);
+      // router.push("/");
     } else {
       alert(messageError);
     }
@@ -82,6 +89,7 @@ export function FormBusinessPointContextProvider({
         handleBusinessPointForm,
         setValue,
         handleSelect,
+        getValues,
         errors,
         isLoadingForm,
         selectedCategories,

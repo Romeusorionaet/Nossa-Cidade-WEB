@@ -26,7 +26,7 @@ export function ManageTags() {
           value={inputValue}
           onChange={(e) => onChangeSetValueInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Digite uma tag..."
+          placeholder="Digite sua tag"
           data-value={String(tags.length === MAX_TAGS)}
           className="data-[value=true]:cursor-not-allowed"
         />

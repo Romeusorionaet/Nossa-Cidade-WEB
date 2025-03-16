@@ -9,6 +9,7 @@ interface LocationProps {
 
 interface ControlLocationForBusinessPointContextType {
   handleCaptureUserLocation: ({ lat, lng }: LocationProps) => void;
+  handleSearchLocation: ({ lat, lng }: LocationProps) => void;
   handleGetUserLocation: () => Promise<void>;
   businessLocation: LocationProps;
 }
@@ -51,12 +52,19 @@ export function ControlLocationForBusinessPointContextProvider({
     );
   };
 
+  const handleSearchLocation = ({ lat, lng }: LocationProps) => {
+    setBusinessLocation({ lat, lng });
+
+    return;
+  };
+
   return (
     <ControlLocationForBusinessPointContext.Provider
       value={{
         handleCaptureUserLocation,
         handleGetUserLocation,
         businessLocation,
+        handleSearchLocation,
       }}
     >
       {children}

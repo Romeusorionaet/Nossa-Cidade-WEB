@@ -11,9 +11,8 @@ import { ManageTags } from "./manage-tags";
 import { daysOfWeek } from "@/contexts/day-of-week";
 
 export function FormRegisterBusinessPoint() {
-  const { handleGetUserLocation, businessLocation } = useContext(
-    ControlLocationForBusinessPointContext,
-  );
+  const { handleGetUserLocation, businessLocation, handleSearchLocation } =
+    useContext(ControlLocationForBusinessPointContext);
   const {
     errors,
     handleBusinessPointForm,
@@ -21,6 +20,7 @@ export function FormRegisterBusinessPoint() {
     isLoadingForm,
     register,
     setValue,
+    getValues,
     handleSelect,
     selectedCategories,
   } = useContext(FormBusinessPointContext);
@@ -150,13 +150,27 @@ export function FormRegisterBusinessPoint() {
           </div>
         </label>
 
-        <button
-          type="button"
-          onClick={() => handleFillLocation()}
-          className="w-44"
-        >
-          Preencher com a minha localização
-        </button>
+        <div>
+          <button
+            type="button"
+            onClick={() => handleFillLocation()}
+            className="w-44"
+          >
+            Preencher com a minha localização
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              handleSearchLocation({
+                lat: Number(getValues("location.latitude")),
+                lng: Number(getValues("location.longitude")),
+              })
+            }
+          >
+            buscar
+          </button>
+        </div>
         <span>
           Atenção, ao preencher com a sua localização, fique atento que a sua
           localização seja o local extato do seu ponto comercial na qual esta
