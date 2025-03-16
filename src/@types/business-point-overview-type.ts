@@ -1,11 +1,12 @@
-export type businessPointDetailsType = {
+export type businessPointOverviewType = {
   id: string;
   categoryId: string;
   name: string;
   censorship: boolean;
   description: string | null;
   highlight: string;
-  images: string[];
+  address: string;
+  images: string[] | null;
   openingHours: Record<string, any>;
   location: {
     latitude: number;

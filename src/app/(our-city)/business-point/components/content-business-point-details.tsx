@@ -1,24 +1,48 @@
 "use client";
 
-import type { businessPointDetailsType } from "@/@types/business-point-details-type";
+import { BusinessPointDetailsType } from "@/@types/business-point-details";
+import { businessPointOverviewType } from "@/@types/business-point-overview-type";
 import { getBusinessPointDetails } from "@/actions/get/business-point/get-business-point-details";
+import { getBusinessPointOverview } from "@/actions/get/business-point/get-business-point-overview";
 import { OpeningHoursList } from "@/components/opening-hours-list";
 import { BaseUrls } from "@/constants/base-urls";
 import { orderDays, weekDays } from "@/constants/week-days-order";
 import { checkBusinessStatus } from "@/utils/check-business-status";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import { useState } from "react";
 
 export function ContentBusinessPointDetails({ id }: { id: string }) {
-  const { data: businessPoint } = useQuery<businessPointDetailsType>({
+  const [businessPointDetails, setBusinessPointDetails] =
+    useState<BusinessPointDetailsType>();
+  const [showDetails, setShowDetails] = useState(false);
+  const {
+    data: businessPoint,
+    isLoading,
+    error,
+  } = useQuery<businessPointOverviewType>({
     queryKey: ["businessPointDetails", id],
-    queryFn: async () => await getBusinessPointDetails(id),
+    queryFn: () => getBusinessPointOverview(id),
     staleTime: 1000 * 60 * 60,
+    enabled: !!id,
   });
 
-  if (!businessPoint) {
-    return <p>Dados não encontrado</p>;
+  if (isLoading) {
+    return <p>Carregando...</p>;
   }
+
+  if (error || !businessPoint) {
+    return <p>Erro ao carregar os dados.</p>;
+  }
+
+  const image1 = businessPoint.images?.[0];
+  const image2 = businessPoint.images?.[1];
+
+  const handleGetBusinessPointDetails = async () => {
+    const result: BusinessPointDetailsType = await getBusinessPointDetails(id);
+    setBusinessPointDetails(result);
+    setShowDetails((prev) => !prev);
+  };
 
   return (
     <section className="px-4 pt-10 pb-20">
@@ -27,19 +51,19 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
       <div className="mt-10">
         <p className="text-center">{businessPoint.highlight}</p>
 
-        <p className="mt-10 text-base">
-          Praça Augusto Severo, 123 - Centro, Canguaretama - RN, 59190-000
-        </p>
+        <p className="mt-10 text-base">{businessPoint.address}</p>
 
-        <div className="h-[600px] w-full">
-          <Image
-            src={`${BaseUrls.IMG}/${businessPoint.images[0]}`}
-            alt=""
-            width={1000}
-            height={1000}
-            className="h-full w-full object-cover"
-          />
-        </div>
+        {image1 && (
+          <div className="h-[600px] w-full">
+            <Image
+              src={`${BaseUrls.IMG}/${image1}`}
+              alt=""
+              width={1000}
+              height={1000}
+              className="h-full w-full object-cover"
+            />
+          </div>
+        )}
 
         <p className="mt-5 text-justify">{businessPoint.description}</p>
 
@@ -59,19 +83,31 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
           </div>
         </div>
 
-        <div className="mt-10 h-[600px] w-full">
-          <Image
-            src={`${BaseUrls.IMG}/${businessPoint.images[1]}`}
-            alt=""
-            width={1000}
-            height={1000}
-            className="h-full w-full object-cover"
-          />
-        </div>
+        {image2 && (
+          <div className="mt-10 h-[600px] w-full">
+            <Image
+              src={`${BaseUrls.IMG}/${image2}`}
+              alt=""
+              width={1000}
+              height={1000}
+              className="h-full w-full object-cover"
+            />
+          </div>
+        )}
 
-        <div className="mt-10 space-y-6">
-          <h2>Saber mais</h2>
+        <button
+          type="button"
+          onClick={handleGetBusinessPointDetails}
+          data-value={showDetails}
+          className="mt-10 data-[value=true]:hidden"
+        >
+          Saber mais
+        </button>
 
+        <div
+          data-value={showDetails}
+          className="mt-10 space-y-6 data-[value=false]:hidden"
+        >
           <div className="space-y-4">
             <h4>Destaque</h4>
 
@@ -86,96 +122,104 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
             </ul>
           </div>
 
-          <div className="space-y-4">
-            <h4>Opções de serviço</h4>
+          {businessPointDetails?.serviceOptions?.length ? (
+            <div className="space-y-4">
+              <h4>Opções de serviço</h4>
+              <ul className="list-inside list-disc">
+                {businessPointDetails.serviceOptions.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
-            <ul className="list-inside list-disc">
-              <li>Entrega no mesmo dia</li>
-              <li>Pedido por telefone ou app</li>
-              <li>Serviço de self-service</li>
-              <li>
-                Opções de menu para dietas especiais (vegetariano, sem glúten,
-                etc.)
-              </li>
-              <li>Happy hour com descontos especiais</li>
-            </ul>
-          </div>
+          {businessPointDetails?.payments?.length ? (
+            <div className="space-y-4">
+              <h4>Pagamentos</h4>
+              <ul className="list-inside list-disc">
+                {businessPointDetails.payments.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
-          <div className="space-y-4">
-            <h4>Pagamentos</h4>
+          {businessPointDetails?.menu?.length ? (
+            <div className="space-y-4">
+              <h4>Menu</h4>
+              <ul className="list-inside list-disc">
+                {businessPointDetails.menu.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
-            <ul className="list-inside list-disc">
-              <li>Cartão de crédito</li>
-              <li>Cartão de débito</li>
-              <li>Pagamentos por dispositvo móvel via NFC</li>
-            </ul>
-          </div>
+          {businessPointDetails?.amenities?.length ? (
+            <div className="space-y-4">
+              <h4>Comodidade</h4>
+              <ul className="list-inside list-disc">
+                {businessPointDetails.amenities?.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
-          <div className="space-y-4">
-            <h4>Menu</h4>
+          {businessPointDetails?.audience?.length ? (
+            <div className="space-y-4">
+              <h4>Público</h4>
+              <ul className="list-inside list-disc">
+                {businessPointDetails?.audience?.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
-            <ul className="list-inside list-disc">
-              <li>Alimentação</li>
-              <li>Salgado</li>
-              <li>Bebidas</li>
-              <li>Sobremesas</li>
-            </ul>
-          </div>
+          {businessPointDetails?.accessibility?.length ? (
+            <div className="space-y-4">
+              <h4>Acessibilidade</h4>
+              <ul className="list-inside list-disc">
+                {businessPointDetails?.accessibility?.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
-          <div className="space-y-4">
-            <h4>Comodidade</h4>
+          {businessPointDetails?.planning?.length ? (
+            <div className="space-y-4">
+              <h4>planejamento</h4>
+              <ul className="list-inside list-disc">
+                {businessPointDetails?.planning?.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
-            <ul className="list-inside list-disc">
-              <li>Banheiro</li>
-              <li>Bar local</li>
-              <li>Bom para levar crianças</li>
-              <li>Estacionamento</li>
-            </ul>
-          </div>
+          {businessPointDetails?.pets?.length ? (
+            <div className="space-y-4">
+              <h4>Aimais de estimação</h4>
+              <ul className="list-inside list-disc">
+                {businessPointDetails?.pets?.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
-          <div className="space-y-4">
-            <h4>Público</h4>
-
-            <ul className="list-inside list-disc">
-              <li>Público</li>
-            </ul>
-          </div>
-
-          <div className="space-y-4">
-            <h4>Acessibilidade</h4>
-
-            <ul className="list-inside list-disc">
-              <li>Rampa de acesso para cadeirantes</li>
-              <li>Cardápio em braille</li>
-              <li>Mesas adaptadas para cadeiras de rodas</li>
-              <li>Atendimento prioritário para pessoas com deficiência</li>
-              <li>Banheiro acessível</li>
-            </ul>
-          </div>
-
-          <div className="space-y-4">
-            <h4>planejamento</h4>
-
-            <ul className="list-inside list-disc">
-              <li>Aceita reserva</li>
-              <li>Atendimento para eventos e festas</li>
-              <li>Opções de combos e cardápios personalizados</li>
-              <li>Horário de funcionamento estendido</li>
-              <li>Programação de promoções e descontos sazonais</li>
-            </ul>
-          </div>
-
-          <div className="space-y-4">
-            <h4>Aimais de estimação</h4>
-
-            <ul className="list-inside list-disc">
-              <li>Cães de pequeno e médio porte</li>
-              <li>Gatos</li>
-              <li>Cães-guia e de assistência</li>
-              <li>Animais em transporte adequado (como caixa de transporte)</li>
-              <li>Regras específicas para a permanência de pets no local</li>
-            </ul>
-          </div>
+          {businessPointDetails?.categories?.length ? (
+            <div className="space-y-4">
+              <h4>Categorias</h4>
+              <ul className="list-inside list-disc">
+                {businessPointDetails?.categories?.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </div>
       </div>
     </section>
