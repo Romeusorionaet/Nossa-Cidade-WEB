@@ -5,12 +5,16 @@ import { UserContext } from "@/contexts/user.context";
 import { LogIn } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useContext } from "react";
+import Dropdown from "react-bootstrap/Dropdown";
 
 export function Header() {
   const { profile, refetchUserProfile, isLoadingDataUserProfile } =
     useContext(UserContext);
   const { data } = useSession();
+
+  const router = useRouter();
 
   const handleLogout = async () => {
     const logOutFromGoogle = !!data?.user;
@@ -20,6 +24,10 @@ export function Header() {
     } else {
       await Promise.all([cleanAuthCookies(), refetchUserProfile()]);
     }
+  };
+
+  const handleLogin = () => {
+    router.push("/sign-in");
   };
 
   return (
@@ -37,9 +45,6 @@ export function Header() {
               <Link href="/sign-up">Sign up</Link>
             </li>
             <li>
-              <Link href="/profile">Perfil</Link>
-            </li>
-            <li>
               <Link href="/business-point/register-business-point">
                 Registrar ponto comercial
               </Link>
@@ -47,33 +52,51 @@ export function Header() {
           </ul>
         </nav>
 
-        {isLoadingDataUserProfile ? (
-          <p>Carregando....</p>
-        ) : (
-          <div className="flex items-center justify-between gap-8">
-            <div className="w-full">
-              {!profile.username ? (
-                <div className="flex flex-col gap-4">
-                  <Link
-                    href="/sign-in"
-                    className="flex w-32 items-center justify-center gap-4 border font-bold uppercase"
-                  >
-                    Login
-                    <LogIn size={18} />
-                  </Link>
-                </div>
+        <Dropdown>
+          <Dropdown.Toggle
+            variant="success"
+            id="dropdown-basic"
+            className="h-10 w-10 rounded-full bg-black text-white"
+          >
+            Perfil
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu className="flex flex-col bg-black p-1 text-white">
+            <Dropdown.Item href="/profile">Perfil</Dropdown.Item>
+            <Dropdown.Item href="/my-business-points">
+              Meus Pontos comerciais
+            </Dropdown.Item>
+            <Dropdown.Item>
+              {isLoadingDataUserProfile ? (
+                <p>Carregando....</p>
               ) : (
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="hover:bg-base_one_reference_header hover:text-base_color_text_top w-full gap-4 font-semibold duration-700"
-                >
-                  <LogIn size={26} />
-                </button>
+                <div className="flex items-center justify-between gap-8">
+                  <div className="w-full">
+                    {!profile.username ? (
+                      <div className="flex flex-col gap-4">
+                        <button
+                          type="button"
+                          onClick={handleLogin}
+                          className="flex w-32 items-center justify-center gap-4 border font-bold uppercase"
+                        >
+                          Login
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleLogout}
+                        className="hover:bg-base_one_reference_header hover:text-base_color_text_top w-full gap-4 font-semibold duration-700"
+                      >
+                        <LogIn size={26} />
+                      </button>
+                    )}
+                  </div>
+                </div>
               )}
-            </div>
-          </div>
-        )}
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </div>
     </header>
   );
