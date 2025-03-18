@@ -1,4 +1,4 @@
-export type businessPointOverviewType = {
+export type BusinessPointOverviewType = {
   id: string;
   categoryId: string;
   name: string;
