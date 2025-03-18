@@ -1,6 +1,6 @@
+import { getAccessTokenFromCookies } from "@/utils/get-access-token-from-cookies";
 import type { userProfileType } from "@/@types/user-profile-type";
 import { api } from "@/lib/api";
-import { getAccessTokenFromCookies } from "@/utils/get-access-token-from-cookies";
 
 export const getDataUser = async () => {
   const accessToken = await getAccessTokenFromCookies();
