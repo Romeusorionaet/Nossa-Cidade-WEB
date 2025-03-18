@@ -14,4 +14,5 @@ export type ListItemsForBusinessPointDetailsType = {
   menu: ItemType[];
   serviceOptions: ItemType[];
   environments: ItemType[];
+  categories: ItemType[];
 };
