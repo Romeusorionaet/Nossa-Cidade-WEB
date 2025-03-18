@@ -1,8 +1,8 @@
 "use client";
 
-import { BusinessPointDetailsType } from "@/@types/business-point-details";
-import { businessPointOverviewType } from "@/@types/business-point-overview-type";
-import { getBusinessPointDetails } from "@/actions/get/business-point/get-business-point-details";
+import { BusinessPointDetailsType } from "@/@types/business-point-details-type";
+import { BusinessPointOverviewType } from "@/@types/business-point-overview-type";
+import { getSharedItemsAssociatedBusinessPoint } from "@/actions/get/business-point/get-business-point-details";
 import { getBusinessPointOverview } from "@/actions/get/business-point/get-business-point-overview";
 import { OpeningHoursList } from "@/components/opening-hours-list";
 import { BaseUrls } from "@/constants/base-urls";
@@ -20,7 +20,7 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
     data: businessPoint,
     isLoading,
     error,
-  } = useQuery<businessPointOverviewType>({
+  } = useQuery<BusinessPointOverviewType>({
     queryKey: ["businessPointDetails", id],
     queryFn: () => getBusinessPointOverview(id),
     staleTime: 1000 * 60 * 60,
@@ -39,7 +39,8 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
   const image2 = businessPoint.images?.[1];
 
   const handleGetBusinessPointDetails = async () => {
-    const result: BusinessPointDetailsType = await getBusinessPointDetails(id);
+    const result: BusinessPointDetailsType =
+      await getSharedItemsAssociatedBusinessPoint(id);
     setBusinessPointDetails(result);
     setShowDetails((prev) => !prev);
   };
