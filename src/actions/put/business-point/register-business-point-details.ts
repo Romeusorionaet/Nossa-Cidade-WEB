@@ -2,12 +2,14 @@ import { getAccessTokenFromCookies } from "@/utils/get-access-token-from-cookies
 import { api } from "@/lib/api";
 
 interface BusinessPointRegisterProps {
-  data: Record<string, string[]>;
+  newListItems: Record<string, string[]>;
+  removedListItems: Record<string, string[]>;
   businessPointId: string;
 }
 
-export async function registerBusinessPointDetails({
-  data,
+export async function updateBusinessPointDetails({
+  newListItems,
+  removedListItems,
   businessPointId,
 }: BusinessPointRegisterProps) {
   const accessToken = await getAccessTokenFromCookies();
@@ -20,9 +22,9 @@ export async function registerBusinessPointDetails({
   }
 
   try {
-    const response = await api.post(
-      "/business-point/add-details",
-      { ...data, businessPointId },
+    const response = await api.put(
+      "/shared-items/associated/update-details",
+      { businessPointId, newListItems, removedListItems },
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

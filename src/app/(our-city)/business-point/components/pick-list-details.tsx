@@ -9,6 +9,7 @@ import { useContext, useState } from "react";
 import { filterAssociateItems } from "../helpers/filter-associate-items";
 import { CheckboxListAssociateItems } from "./checkbox-list-associate-items";
 import { categories } from "@/constants/list-of-association-items";
+import { updateBusinessPointDetails } from "@/actions/put/business-point/register-business-point-details";
 
 interface Props {
   businessPointId: string;
@@ -103,18 +104,19 @@ export function PickListDetails({ businessPointId }: Props) {
         associatedItems.some((associatedItem) => associatedItem.id === itemId),
     );
 
-    console.log("selecionados", filteredSelectedItems);
-    console.log("removidos", filteredRemovedItems);
+    if (filteredRemovedItems && filteredSelectedItems) {
+      alert("Nada a ser alterado.");
+      return;
+    }
 
-    //TODO agora resolver na api para atualizar a lista de associação
-    // Aqui oque sempre será enviado é se houver algo novo ou algo que tinha for removido.
+    const { messageError, messageSuccess } = await updateBusinessPointDetails({
+      removedListItems: filteredRemovedItems,
+      newListItems: filteredSelectedItems,
+      businessPointId,
+    });
 
-    // const { messageError, messageSuccess } = await registerBusinessPointDetails(
-    //   { data: selectedItems, businessPointId },
-    // );
-
-    // if (messageSuccess) return alert(messageSuccess);
-    // if (messageError) return alert(messageError);
+    if (messageSuccess) return alert(messageSuccess);
+    if (messageError) return alert(messageError);
   };
 
   return (
