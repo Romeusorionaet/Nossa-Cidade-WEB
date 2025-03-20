@@ -10,6 +10,7 @@ import { filterAssociateItems } from "../helpers/filter-associate-items";
 import { CheckboxListAssociateItems } from "./checkbox-list-associate-items";
 import { categories } from "@/constants/list-of-association-items";
 import { updateBusinessPointDetails } from "@/actions/put/business-point/register-business-point-details";
+import { useRouter } from "next/navigation";
 
 interface Props {
   businessPointId: string;
@@ -23,6 +24,8 @@ export function PickListDetails({ businessPointId }: Props) {
     {},
   );
   const { profile } = useContext(UserContext);
+
+  const router = useRouter();
 
   const {
     data: listItems,
@@ -106,6 +109,7 @@ export function PickListDetails({ businessPointId }: Props) {
 
     if (filteredRemovedItems && filteredSelectedItems) {
       alert("Nada a ser alterado.");
+      router.push("/my-business-points");
       return;
     }
 
@@ -115,8 +119,14 @@ export function PickListDetails({ businessPointId }: Props) {
       businessPointId,
     });
 
-    if (messageSuccess) return alert(messageSuccess);
-    if (messageError) return alert(messageError);
+    if (messageSuccess) {
+      alert(messageSuccess);
+      router.push("/my-business-points");
+    }
+    if (messageError) {
+      alert(messageError);
+      router.push("/my-business-points");
+    }
   };
 
   return (
