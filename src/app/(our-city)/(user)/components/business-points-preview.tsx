@@ -41,6 +41,10 @@ export function BusinessPointsPreview() {
         <div key={item.id} className="w-96 bg-zinc-400">
           <div className="mb-6 flex flex-col">
             <Link href="/business-point/edit">Editar</Link>
+            <Link href={`/business-point/details/${item.id}`}>Visualizar</Link>
+            <Link href={`/business-point/register-image/${item.id}`}>
+              Adicone imagem
+            </Link>
             <button type="button">Desativar</button>
             <Link href={`/business-point/register-details/${item.id}`}>
               Adicionar detalhes

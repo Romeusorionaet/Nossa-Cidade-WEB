@@ -11,6 +11,7 @@ import { CheckboxListAssociateItems } from "./checkbox-list-associate-items";
 import { categories } from "@/constants/list-of-association-items";
 import { updateBusinessPointDetails } from "@/actions/put/business-point/register-business-point-details";
 import { useRouter } from "next/navigation";
+import { QueryKeyCache } from "@/constants/query-key-cache";
 
 interface Props {
   businessPointId: string;
@@ -32,9 +33,8 @@ export function PickListDetails({ businessPointId }: Props) {
     isLoading,
     error,
   } = useQuery<ListItemsForBusinessPointDetailsType>({
-    queryKey: ["listItemsForBusinessPointDetails"],
+    queryKey: [QueryKeyCache.LIBPD],
     queryFn: () => getListItemsForBusinessPointDetails(),
-    staleTime: 1000 * 60 * 60,
     enabled: !!profile.publicId,
   });
 
@@ -42,10 +42,10 @@ export function PickListDetails({ businessPointId }: Props) {
     data: listItemsAssociated,
     isLoading: isLoadingAssociatedData,
     error: errAssociatedData,
+    refetch: refetchAssociatedData,
   } = useQuery<ListItemsForBusinessPointDetailsType>({
-    queryKey: ["sharedItemsAssociatedBusinessPoint"],
+    queryKey: [QueryKeyCache.SIABP],
     queryFn: () => getSharedItemsAssociatedBusinessPoint(businessPointId),
-    staleTime: 1000 * 60 * 60,
     enabled: !!profile.publicId,
   });
 
@@ -107,9 +107,12 @@ export function PickListDetails({ businessPointId }: Props) {
         associatedItems.some((associatedItem) => associatedItem.id === itemId),
     );
 
-    if (filteredRemovedItems && filteredSelectedItems) {
+    if (
+      Object.keys(filteredSelectedItems).length === 0 &&
+      Object.keys(filteredRemovedItems).length === 0
+    ) {
       alert("Nada a ser alterado.");
-      router.push("/my-business-points");
+      router.replace("/my-business-points");
       return;
     }
 
@@ -121,11 +124,13 @@ export function PickListDetails({ businessPointId }: Props) {
 
     if (messageSuccess) {
       alert(messageSuccess);
+      refetchAssociatedData();
       router.push("/my-business-points");
     }
+
     if (messageError) {
       alert(messageError);
-      router.push("/my-business-points");
+      router.replace("/my-business-points");
     }
   };
 
