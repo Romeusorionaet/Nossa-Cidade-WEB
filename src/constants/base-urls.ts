@@ -1,3 +1,3 @@
 export const BaseUrls = {
-  IMG: "https://utfs.io/f",
+  IMG: "https://totpi0dl7f.ufs.sh/f",
 };

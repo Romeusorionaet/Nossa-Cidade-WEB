@@ -6,7 +6,7 @@ export type BusinessPointOverviewType = {
   description: string | null;
   highlight: string;
   address: string;
-  images: string[] | null;
+  imageUrls: { id: string; url: string }[] | null;
   openingHours: Record<string, any>;
   location: {
     latitude: number;

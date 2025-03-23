@@ -35,8 +35,8 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
     return <p>Erro ao carregar os dados.</p>;
   }
 
-  const image1 = businessPoint.images?.[0];
-  const image2 = businessPoint.images?.[1];
+  const image1 = businessPoint.imageUrls?.[0].url;
+  const image2 = businessPoint.imageUrls?.[1].url;
 
   const handleGetBusinessPointDetails = async () => {
     const result: BusinessPointDetailsType =
