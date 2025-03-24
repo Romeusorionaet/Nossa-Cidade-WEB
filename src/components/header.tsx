@@ -62,8 +62,8 @@ export function Header() {
           </Dropdown.Toggle>
 
           <Dropdown.Menu className="flex flex-col bg-black p-1 text-white">
-            <Dropdown.Item href="/profile">Perfil</Dropdown.Item>
-            <Dropdown.Item href="/my-business-points">
+            <Dropdown.Item href="/user/profile">Perfil</Dropdown.Item>
+            <Dropdown.Item href="/user/my-business-points">
               Meus Pontos comerciais
             </Dropdown.Item>
             <Dropdown.Item>

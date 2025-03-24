@@ -42,7 +42,7 @@ export function BusinessPointsPreview() {
           <div className="mb-6 flex flex-col">
             <Link href="/business-point/edit">Editar</Link>
             <Link href={`/business-point/details/${item.id}`}>Visualizar</Link>
-            <Link href={`/business-point/register-image/${item.id}`}>
+            <Link href={`/business-point/save-image/${item.id}`}>
               Imagens do ponto comercial
             </Link>
             <button type="button">Desativar</button>
