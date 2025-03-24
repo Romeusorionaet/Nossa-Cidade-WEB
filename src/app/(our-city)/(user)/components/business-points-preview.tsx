@@ -43,7 +43,7 @@ export function BusinessPointsPreview() {
             <Link href="/business-point/edit">Editar</Link>
             <Link href={`/business-point/details/${item.id}`}>Visualizar</Link>
             <Link href={`/business-point/register-image/${item.id}`}>
-              Adicone imagem
+              Imagens do ponto comercial
             </Link>
             <button type="button">Desativar</button>
             <Link href={`/business-point/register-details/${item.id}`}>

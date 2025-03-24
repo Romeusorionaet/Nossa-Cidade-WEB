@@ -1,3 +1,5 @@
+export type ImageBusinessPointType = { id: string; url: string };
+
 export type BusinessPointOverviewType = {
   id: string;
   categoryId: string;
@@ -6,7 +8,7 @@ export type BusinessPointOverviewType = {
   description: string | null;
   highlight: string;
   address: string;
-  imageUrls: { id: string; url: string }[] | null;
+  imageUrls: ImageBusinessPointType[] | null;
   openingHours: Record<string, any>;
   location: {
     latitude: number;
