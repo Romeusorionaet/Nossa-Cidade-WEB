@@ -1,7 +1,7 @@
 import { daysOfWeek } from "@/constants/day-of-week";
 import { z } from "zod";
 
-const openingHoursSchema = z.object(
+export const openingHoursSchema = z.object(
   Object.fromEntries(
     daysOfWeek.map((day) => [
       day,
@@ -12,6 +12,17 @@ const openingHoursSchema = z.object(
     ]),
   ),
 );
+
+export const locationSchema = z.object({
+  latitude: z
+    .string()
+    .min(6, { message: "Preencha corretamente" })
+    .regex(/^[-+]?[0-9]*\.?[0-9]+$/, { message: "Latitude inválida" }),
+  longitude: z
+    .string()
+    .min(6, { message: "Preencha corretamente" })
+    .regex(/^[-+]?[0-9]*\.?[0-9]+$/, { message: "Longitude inválida" }),
+});
 
 export const businessPointSchema = z.object({
   categoryId: z.string().min(1, { message: "Selecione uma categoria" }),
@@ -28,16 +39,7 @@ export const businessPointSchema = z.object({
     .min(10, { message: "Muito curto.." })
     .max(100, { message: "Muito longo. (max = 100 caracteres)" })
     .optional(),
-  location: z.object({
-    latitude: z
-      .string()
-      .min(6, { message: "Preencha corretamente" })
-      .regex(/^[-+]?[0-9]*\.?[0-9]+$/, { message: "Latitude inválida" }),
-    longitude: z
-      .string()
-      .min(6, { message: "Preencha corretamente" })
-      .regex(/^[-+]?[0-9]*\.?[0-9]+$/, { message: "Longitude inválida" }),
-  }),
+  location: locationSchema,
   street: z.string().min(1, { message: "Campo obrigatório" }),
   houseNumber: z.string().min(1, { message: "Campo obrigatório" }),
   neighborhood: z.string().min(1, { message: "Campo obrigatório" }),
