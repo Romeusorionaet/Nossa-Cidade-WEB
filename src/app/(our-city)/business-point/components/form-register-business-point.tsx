@@ -5,10 +5,13 @@ import { useQuery } from "@tanstack/react-query";
 import { getBusinessPointCategories } from "@/actions/get/business-point/get-business-point-categories";
 import { useContext, useEffect } from "react";
 import { ControlLocationForBusinessPointContext } from "@/contexts/control-location-for-business-point.context";
-import { UserLocationMap } from "./user-location-map";
 import { FormBusinessPointContext } from "@/contexts/form-business-point.context";
 import { ManageTags } from "./manage-tags";
 import { daysOfWeek } from "@/constants/day-of-week";
+import dynamic from "next/dynamic";
+const UserLocationMap = dynamic(() => import("./user-location-map"), {
+  ssr: false,
+});
 
 export function FormRegisterBusinessPoint() {
   const { handleGetUserLocation, businessLocation, handleSearchLocation } =

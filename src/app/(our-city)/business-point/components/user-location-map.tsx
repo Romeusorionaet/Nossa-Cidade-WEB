@@ -6,7 +6,7 @@ import L from "leaflet";
 import { useContext } from "react";
 import { ControlLocationForBusinessPointContext } from "@/contexts/control-location-for-business-point.context";
 
-export function UserLocationMap() {
+function UserLocationMap() {
   const { handleCaptureUserLocation, businessLocation } = useContext(
     ControlLocationForBusinessPointContext,
   );
@@ -56,3 +56,5 @@ export function UserLocationMap() {
     </MapContainer>
   );
 }
+
+export default UserLocationMap;

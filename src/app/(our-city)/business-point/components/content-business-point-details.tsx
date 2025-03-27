@@ -2,8 +2,8 @@
 
 import { BusinessPointDetailsType } from "@/@types/business-point-details-type";
 import { BusinessPointOverviewType } from "@/@types/business-point-overview-type";
-import { getSharedItemsAssociatedBusinessPoint } from "@/actions/get/business-point/get-business-point-details";
 import { getBusinessPointOverview } from "@/actions/get/business-point/get-business-point-overview";
+import { getSharedItemsAssociatedBusinessPoint } from "@/actions/get/business-point/get-shared-items-associated-business-point";
 import { OpeningHoursList } from "@/components/opening-hours-list";
 import { BaseUrls } from "@/constants/base-urls";
 import { orderDays, weekDays } from "@/constants/week-days-order";

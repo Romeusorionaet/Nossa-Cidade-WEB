@@ -1,7 +1,6 @@
 "use client";
 
 import { ListItemsForBusinessPointDetailsType } from "@/@types/list-items-for-business-point-details-type";
-import { getSharedItemsAssociatedBusinessPoint } from "@/actions/get/business-point/get-business-point-details";
 import { getListItemsForBusinessPointDetails } from "@/actions/get/business-point/get-list-items-for-business-point-details";
 import { UserContext } from "@/contexts/user.context";
 import { useQuery } from "@tanstack/react-query";
@@ -12,6 +11,7 @@ import { categories } from "@/constants/list-of-association-items";
 import { updateBusinessPointDetails } from "@/actions/put/business-point/register-business-point-details";
 import { useRouter } from "next/navigation";
 import { QueryKeyCache } from "@/constants/query-key-cache";
+import { getSharedItemsAssociatedBusinessPoint } from "@/actions/get/business-point/get-shared-items-associated-business-point";
 
 interface Props {
   businessPointId: string;
