@@ -32,3 +32,7 @@ export const updateBusinessPointStepTwoSchema = z.object({
 export type UpdateBusinessPointFormDataStepTwoType = z.infer<
   typeof updateBusinessPointStepTwoSchema
 >;
+
+export type UpdateBusinessPointFormDataMerged =
+  UpdateBusinessPointFormDataStepOneType &
+    UpdateBusinessPointFormDataStepTwoType;

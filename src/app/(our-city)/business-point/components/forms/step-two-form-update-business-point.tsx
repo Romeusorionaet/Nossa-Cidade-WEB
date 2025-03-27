@@ -11,6 +11,8 @@ import {
 } from "@/schemas/update-business-point.schema";
 import dynamic from "next/dynamic";
 import { useQueryClient } from "@tanstack/react-query";
+import { useParams, useRouter } from "next/navigation";
+import { updateBusinessPointOverview } from "@/actions/put/business-point/update-business-point-overview";
 const UserLocationMap = dynamic(() => import("../user-location-map"), {
   ssr: false,
 });
@@ -23,6 +25,11 @@ type LocationType = {
 };
 
 export function StepTwoFormUpdateBusinessPoint() {
+  const { id } = useParams();
+  const businessPointId = id as string;
+
+  const router = useRouter();
+
   const { handleGetUserLocation, businessLocation, handleSearchLocation } =
     useContext(ControlLocationForBusinessPointContext);
 
@@ -63,7 +70,18 @@ export function StepTwoFormUpdateBusinessPoint() {
   const handleUpdateBusinessPointFormStepTwo = async (
     baseData: UpdateBusinessPointFormDataStepTwoType,
   ) => {
-    console.log(baseData, "==");
+    const { messageError, messageSuccess } = await updateBusinessPointOverview({
+      businessPoint: baseData,
+      businessPointId,
+    });
+
+    if (messageSuccess) {
+      alert(messageSuccess);
+      router.push("/user/my-business-points");
+      return;
+    }
+
+    alert(messageError);
   };
 
   return (

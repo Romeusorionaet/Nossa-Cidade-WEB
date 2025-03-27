@@ -15,6 +15,8 @@ import {
   UpdateBusinessPointFormDataStepOneType,
   updateBusinessPointStepOneSchema,
 } from "@/schemas/update-business-point.schema";
+import { updateBusinessPointOverview } from "@/actions/put/business-point/update-business-point-overview";
+import { useParams, useRouter } from "next/navigation";
 
 interface FormUpdateStepOneBusinessPointContextType {
   register: UseFormRegister<UpdateBusinessPointFormDataStepOneType>;
@@ -39,6 +41,11 @@ export const FormUpdateStepOneBusinessPointContext = createContext(
 export function FormUpdateStepOneBusinessPointContextProvider({
   children,
 }: FormUpdateStepOneBusinessPointContextProps) {
+  const { id } = useParams();
+  const businessPointId = id as string;
+
+  const router = useRouter();
+
   const queryClient = useQueryClient();
   const businessPointData =
     queryClient.getQueryData<UpdateBusinessPointFormDataStepOneType>([
@@ -59,7 +66,18 @@ export function FormUpdateStepOneBusinessPointContextProvider({
   const handleUpdateStepOneBusinessPointForm = async (
     baseData: UpdateBusinessPointFormDataStepOneType,
   ) => {
-    console.log(baseData, "==");
+    const { messageError, messageSuccess } = await updateBusinessPointOverview({
+      businessPoint: baseData,
+      businessPointId,
+    });
+
+    if (messageSuccess) {
+      alert(messageSuccess);
+      router.push("/user/my-business-points");
+      return;
+    }
+
+    alert(messageError);
   };
 
   useEffect(() => {
