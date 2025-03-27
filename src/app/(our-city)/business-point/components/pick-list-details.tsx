@@ -8,10 +8,10 @@ import { useContext, useState } from "react";
 import { filterAssociateItems } from "../helpers/filter-associate-items";
 import { CheckboxListAssociateItems } from "./checkbox-list-associate-items";
 import { categories } from "@/constants/list-of-association-items";
-import { updateBusinessPointDetails } from "@/actions/put/business-point/register-business-point-details";
 import { useRouter } from "next/navigation";
 import { QueryKeyCache } from "@/constants/query-key-cache";
 import { getSharedItemsAssociatedBusinessPoint } from "@/actions/get/business-point/get-shared-items-associated-business-point";
+import { updateBusinessPointDetails } from "@/actions/put/business-point/update-business-point-details";
 
 interface Props {
   businessPointId: string;
