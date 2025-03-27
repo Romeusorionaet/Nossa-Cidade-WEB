@@ -9,6 +9,7 @@ import LocomotiveScroll, {
 } from "locomotive-scroll";
 import { SessionProvider } from "next-auth/react";
 import { useEffect, useRef, type ReactNode } from "react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 interface CustomLocomotiveScrollOptions extends ILocomotiveScrollOptions {
   el?: HTMLElement | null;
@@ -33,6 +34,7 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
   return (
     <div ref={scrollContainerRef}>
       <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
         <SessionProvider>
           <UserContextProvider>
             <FilterBusinessPointsContextProvider>
