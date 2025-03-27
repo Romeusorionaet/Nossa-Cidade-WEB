@@ -40,7 +40,7 @@ export function BusinessPointsPreview() {
       {businessPointsPreviewData.map((item) => (
         <div key={item.id} className="w-96 bg-zinc-400">
           <div className="mb-6 flex flex-col">
-            <Link href="/business-point/edit">Editar</Link>
+            <Link href={`/business-point/update/${item.id}`}>Editar</Link>
             <Link href={`/business-point/details/${item.id}`}>Visualizar</Link>
             <Link href={`/business-point/save-image/${item.id}`}>
               Imagens do ponto comercial

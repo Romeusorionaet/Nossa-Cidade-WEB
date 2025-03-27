@@ -67,7 +67,7 @@ export function FormBusinessPointContextProvider({
 
     if (messageSuccess) {
       alert(messageSuccess);
-      // router.push("/");
+      router.push("/");
     } else {
       alert(messageError);
     }
@@ -88,8 +88,8 @@ export function FormBusinessPointContextProvider({
         handleSubmit,
         handleBusinessPointForm,
         setValue,
-        handleSelect,
         getValues,
+        handleSelect,
         errors,
         isLoadingForm,
         selectedCategories,
