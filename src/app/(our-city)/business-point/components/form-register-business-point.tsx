@@ -186,20 +186,20 @@ export function FormRegisterBusinessPoint() {
       <div className="flex flex-col gap-4">
         <label>
           Rua
-          <input type="text" {...register("street")} />
-          <FormError errors={errors.street?.message} />
+          <input type="text" {...register("address.street")} />
+          <FormError errors={errors.address?.street?.message} />
         </label>
 
         <label>
           Número do local
-          <input type="text" {...register("houseNumber")} />
-          <FormError errors={errors.houseNumber?.message} />
+          <input type="text" {...register("address.houseNumber")} />
+          <FormError errors={errors.address?.houseNumber?.message} />
         </label>
 
         <label>
           Bairro
-          <input type="text" {...register("neighborhood")} />
-          <FormError errors={errors.neighborhood?.message} />
+          <input type="text" {...register("address.neighborhood")} />
+          <FormError errors={errors.address?.neighborhood?.message} />
         </label>
       </div>
 

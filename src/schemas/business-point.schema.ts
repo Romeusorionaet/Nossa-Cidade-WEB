@@ -40,9 +40,13 @@ export const businessPointSchema = z.object({
     .max(100, { message: "Muito longo. (max = 100 caracteres)" })
     .optional(),
   location: locationSchema,
-  street: z.string().min(1, { message: "Campo obrigatório" }),
-  houseNumber: z.string().min(1, { message: "Campo obrigatório" }),
-  neighborhood: z.string().min(1, { message: "Campo obrigatório" }),
+  address: z.object({
+    street: z.string().min(1, { message: "Rua obrigatório" }),
+    houseNumber: z.coerce
+      .number()
+      .min(1, { message: "Número da casa obrigatório" }),
+    neighborhood: z.string().min(1, { message: "Nome da rua obrigatório" }),
+  }),
   openingHours: openingHoursSchema,
 });
 
