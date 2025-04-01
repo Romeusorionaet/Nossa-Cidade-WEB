@@ -7,7 +7,9 @@ export type BusinessPointOverviewType = {
   censorship: boolean;
   description: string | null;
   highlight: string;
-  address: string;
+  neighborhood: string;
+  houseNumber: string;
+  street: string;
   imageUrls: ImageBusinessPointType[] | null;
   openingHours: Record<string, any>;
   location: {

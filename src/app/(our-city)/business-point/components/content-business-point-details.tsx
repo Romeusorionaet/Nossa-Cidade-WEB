@@ -52,7 +52,10 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
       <div className="mt-10">
         <p className="text-center">{businessPoint.highlight}</p>
 
-        <p className="mt-10 text-base">{businessPoint.address}</p>
+        <p className="mt-10 text-base">
+          {businessPoint.neighborhood} - {businessPoint.street} -
+          {businessPoint.houseNumber} - Canguaretama - RN
+        </p>
 
         {image1 && (
           <div className="h-[600px] w-full">
