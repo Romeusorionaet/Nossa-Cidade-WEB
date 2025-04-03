@@ -1,26 +1,23 @@
 "use client";
 
-import { getBusinessPointForMapping } from "@/actions/get/business-point/get-business-point-for-mapping";
 import { openRouteServiceDriveCar } from "@/actions/services/open-route-services";
 import { getMarkerElement } from "@/utils/get-marker-element";
-import { useQuery } from "@tanstack/react-query";
 import { useContext, useEffect, useRef, useState } from "react";
 import "maplibre-gl/dist/maplibre-gl.css";
 import maplibregl from "maplibre-gl";
 import "@/assets/styles/utilities/scrollbar.css";
-import { getBusinessPointCategories } from "@/actions/get/business-point/get-business-point-categories";
 import { SearchBusinessPoint } from "@/components/search-business-points";
 import { useProviderMapContainer } from "@/hooks/use-provider-map-container";
 import { checkBusinessStatus } from "@/utils/check-business-status";
 import Link from "next/link";
 import { initializeMap } from "../helpers/initialize-map";
 import { ArrowLeftSquare, ArrowRightSquare } from "lucide-react";
-import type { businessPointType } from "@/@types/business-point-type";
 import { OpeningHoursList } from "@/components/opening-hours-list";
 import { FilterBusinessPointsContext } from "@/contexts/filter-business-points.context";
 import { WEEK_DAYS } from "@/constants/week-days-order";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
-import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
+import { useGetBusinessPointCategories } from "@/hooks/use-app-queries/use-get-business-point-categories";
+import { useGetBusinessPointForMapping } from "@/hooks/use-app-queries/use-get-business-point-for-mapping";
 
 interface TravelInfo {
   duration: number;
@@ -45,19 +42,9 @@ export function MapComponent() {
 
   const businessPointNotFound = businessPointsFiltered.length > 0;
 
-  const { data: businessPoints } = useQuery<businessPointType[]>({
-    queryKey: [QUERY_KEY_CACHE.ABP],
-    queryFn: () => getBusinessPointForMapping(),
-    staleTime: 1000 * 60 * 60,
-  });
+  const { data: businessPoints } = useGetBusinessPointForMapping();
 
-  const { data: businessPointCategories } = useQuery<
-    { id: string; name: string }[]
-  >({
-    queryKey: [QUERY_KEY_CACHE.ABPC],
-    queryFn: () => getBusinessPointCategories(),
-    staleTime: 1000 * 60 * 60,
-  });
+  const { data: businessPointCategories } = useGetBusinessPointCategories();
 
   const handleAsideRouteControl = () => {
     isOpenAsideControl

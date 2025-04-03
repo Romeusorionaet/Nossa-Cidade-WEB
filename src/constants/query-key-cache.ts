@@ -6,7 +6,7 @@ export const QUERY_KEY_CACHE = {
   CF: "categories-form",
   ABPC: "allBusinessPointCategories",
   BPPD: "businessPointPreviewData",
-  ABP: "allBusinessPoints",
+  ABPFM: "businessPointsForMapping",
   BPF: "businessPointsFiltered",
   PROFILE: "profile",
 };

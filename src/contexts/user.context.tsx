@@ -2,10 +2,8 @@
 
 import type { userProfileType } from "@/@types/user-profile-type";
 import { getDataRefreshToken } from "@/actions/auth/refresh-token/get-data-refresh-token";
-import { getDataUser } from "@/actions/get/user/get-data.user";
 import { KEY_LOCAL_STORAGE } from "@/constants/key-local-storage";
-import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
-import { useQuery } from "@tanstack/react-query";
+import { useGetDataUser } from "@/hooks/use-app-queries/use-get-data-user";
 import type {
   QueryObserverResult,
   RefetchOptions,
@@ -48,11 +46,7 @@ export function UserContextProvider({ children }: UserContextProps) {
     data,
     refetch: refetchUserProfile,
     isLoading: isLoadingDataUserProfile,
-  } = useQuery({
-    queryKey: [QUERY_KEY_CACHE.PROFILE],
-    queryFn: () => getDataUser(),
-    enabled: !profile.username,
-  });
+  } = useGetDataUser({ username: profile.username });
 
   useEffect(() => {
     const refreshDataUser = async () => {

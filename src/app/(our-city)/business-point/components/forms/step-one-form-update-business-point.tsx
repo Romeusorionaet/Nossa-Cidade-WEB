@@ -1,13 +1,11 @@
 "use client";
 
-import { getBusinessPointCategories } from "@/actions/get/business-point/get-business-point-categories";
 import { FormError } from "@/components/form/form-error";
-import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import { ManageTags } from "../manage-tags";
 import { FormUpdateStepOneBusinessPointContext } from "@/contexts/form-update-step-one-business-point.context";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
-import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
+import { useGetBusinessPointCategories } from "@/hooks/use-app-queries/use-get-business-point-categories";
 
 export function StepOneFormUpdateBusinessPoint() {
   const {
@@ -20,13 +18,9 @@ export function StepOneFormUpdateBusinessPoint() {
 
   const {
     data: categories,
-    isLoading: isLoadingCategories,
     error,
-  } = useQuery<{ id: string; name: string }[]>({
-    queryKey: [QUERY_KEY_CACHE.CF],
-    queryFn: () => getBusinessPointCategories(),
-    staleTime: 1000 * 60 * 60, // 60 minutes
-  });
+    isLoading: isLoadingCategories,
+  } = useGetBusinessPointCategories();
 
   return (
     <form

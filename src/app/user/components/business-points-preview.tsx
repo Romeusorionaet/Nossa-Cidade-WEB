@@ -1,14 +1,11 @@
 "use client";
 
-import { getBusinessPointsPreviewUser } from "@/actions/get/business-point/get-business-point-preview-user";
-import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import { UserContext } from "@/contexts/user.context";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import Link from "next/link";
-import { BusinessPointPreviewType } from "@/@types/business-point-preview-type";
-import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
+import { useGetBusinessPointPreviewUser } from "@/hooks/use-app-queries/use-get-business-point-preview-user";
 
 export function BusinessPointsPreview() {
   const { profile } = useContext(UserContext);
@@ -17,12 +14,7 @@ export function BusinessPointsPreview() {
     data: businessPointsPreviewData,
     isLoading,
     error,
-  } = useQuery<BusinessPointPreviewType[]>({
-    queryKey: [QUERY_KEY_CACHE.BPPD],
-    queryFn: () => getBusinessPointsPreviewUser(),
-    staleTime: 1000 * 60 * 60,
-    enabled: !!profile.publicId,
-  });
+  } = useGetBusinessPointPreviewUser({ profileId: profile.publicId });
 
   if (!profile.publicId) {
     return <p>Faça login</p>;

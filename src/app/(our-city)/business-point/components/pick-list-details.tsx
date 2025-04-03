@@ -1,17 +1,14 @@
 "use client";
 
-import { ListItemsForBusinessPointDetailsType } from "@/@types/list-items-for-business-point-details-type";
-import { getListItemsForBusinessPointDetails } from "@/actions/get/business-point/get-list-items-for-business-point-details";
 import { UserContext } from "@/contexts/user.context";
-import { useQuery } from "@tanstack/react-query";
 import { useContext, useState } from "react";
 import { filterAssociateItems } from "../helpers/filter-associate-items";
 import { CheckboxListAssociateItems } from "./checkbox-list-associate-items";
 import { useRouter } from "next/navigation";
-import { getSharedItemsAssociatedBusinessPoint } from "@/actions/get/business-point/get-shared-items-associated-business-point";
 import { updateBusinessPointDetails } from "@/actions/put/business-point/update-business-point-details";
 import { ASSOCIATION_LIST } from "@/constants/association-list";
-import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
+import { useGetListItemsForBusinessPointDetails } from "@/hooks/use-app-queries/use-get-list-items-for-business-point-details";
+import { useGetSharedItemsAssociatedBusinessPoint } from "@/hooks/use-app-queries/use-get-shared-items-associated-business-point";
 
 interface Props {
   businessPointId: string;
@@ -32,21 +29,16 @@ export function PickListDetails({ businessPointId }: Props) {
     data: listItems,
     isLoading,
     error,
-  } = useQuery<ListItemsForBusinessPointDetailsType>({
-    queryKey: [QUERY_KEY_CACHE.LIFBPD],
-    queryFn: () => getListItemsForBusinessPointDetails(),
-    enabled: !!profile.publicId,
-  });
+  } = useGetListItemsForBusinessPointDetails({ profileId: profile.publicId });
 
   const {
     data: listItemsAssociated,
     isLoading: isLoadingAssociatedData,
     error: errAssociatedData,
     refetch: refetchAssociatedData,
-  } = useQuery<ListItemsForBusinessPointDetailsType>({
-    queryKey: [QUERY_KEY_CACHE.SIABP],
-    queryFn: () => getSharedItemsAssociatedBusinessPoint(businessPointId),
-    enabled: !!profile.publicId,
+  } = useGetSharedItemsAssociatedBusinessPoint({
+    businessPointId,
+    profileId: profile.publicId,
   });
 
   if (!profile.publicId) return <p>Faça login</p>;

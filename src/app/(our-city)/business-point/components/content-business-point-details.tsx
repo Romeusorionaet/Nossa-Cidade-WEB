@@ -1,16 +1,13 @@
 "use client";
 
 import { BusinessPointDetailsType } from "@/@types/business-point-details-type";
-import { BusinessPointOverviewType } from "@/@types/business-point-overview-type";
-import { getBusinessPointOverview } from "@/actions/get/business-point/get-business-point-overview";
 import { getSharedItemsAssociatedBusinessPoint } from "@/actions/get/business-point/get-shared-items-associated-business-point";
 import { OpeningHoursList } from "@/components/opening-hours-list";
 import { BASE_URLS } from "@/constants/base-urls";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
-import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 import { WEEK_DAYS } from "@/constants/week-days-order";
+import { useBusinessPointOverview } from "@/hooks/use-app-queries/use-business-point-overview,";
 import { checkBusinessStatus } from "@/utils/check-business-status";
-import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -22,12 +19,7 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
     data: businessPoint,
     isLoading,
     error,
-  } = useQuery<BusinessPointOverviewType>({
-    queryKey: [QUERY_KEY_CACHE.BPD, id],
-    queryFn: () => getBusinessPointOverview(id),
-    staleTime: 1000 * 60 * 60,
-    enabled: !!id,
-  });
+  } = useBusinessPointOverview(id);
 
   if (isLoading) {
     return <p>Carregando...</p>;

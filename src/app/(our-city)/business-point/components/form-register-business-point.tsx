@@ -1,15 +1,13 @@
 "use client";
 
 import { FormError } from "@/components/form/form-error";
-import { useQuery } from "@tanstack/react-query";
-import { getBusinessPointCategories } from "@/actions/get/business-point/get-business-point-categories";
 import { useContext, useEffect } from "react";
 import { ControlLocationForBusinessPointContext } from "@/contexts/control-location-for-business-point.context";
 import { FormBusinessPointContext } from "@/contexts/form-business-point.context";
 import { ManageTags } from "./manage-tags";
 import dynamic from "next/dynamic";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
-import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
+import { useGetBusinessPointCategories } from "@/hooks/use-app-queries/use-get-business-point-categories";
 const UserLocationMap = dynamic(() => import("./user-location-map"), {
   ssr: false,
 });
@@ -33,11 +31,7 @@ export function FormRegisterBusinessPoint() {
     data: categories,
     isLoading: isLoadingCategories,
     error,
-  } = useQuery<{ id: string; name: string }[]>({
-    queryKey: [QUERY_KEY_CACHE.CF],
-    queryFn: () => getBusinessPointCategories(),
-    staleTime: 1000 * 60 * 60, // 60 minutes
-  });
+  } = useGetBusinessPointCategories();
 
   useEffect(() => {
     setValue("location.latitude", businessLocation.lat.toString());

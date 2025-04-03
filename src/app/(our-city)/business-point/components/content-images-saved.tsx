@@ -1,24 +1,16 @@
 "use client";
 
-import { ImageBusinessPointType } from "@/@types/business-point-overview-type";
 import { deleteBusinessPointImage } from "@/actions/delete/delete-business-point-image";
-import { getImageBusinessPoint } from "@/actions/get/business-point/get-image-business-point";
 import { BASE_URLS } from "@/constants/base-urls";
-import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
-import { useQuery } from "@tanstack/react-query";
+import { useGetImageBusinessPoints } from "@/hooks/use-app-queries/use-get-image-business-point";
 import Image from "next/image";
 
 export function ContentImagesSaved({ id }: { id: string }) {
   const {
     data: imageBusinessPoint,
-    isLoading,
     error,
-  } = useQuery<ImageBusinessPointType[]>({
-    queryKey: [QUERY_KEY_CACHE.IBP, id],
-    queryFn: () => getImageBusinessPoint(id),
-    staleTime: 1000 * 60 * 60,
-    enabled: !!id,
-  });
+    isLoading,
+  } = useGetImageBusinessPoints(id);
 
   if (isLoading) {
     return <p>Carregando...</p>;

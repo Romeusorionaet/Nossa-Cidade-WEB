@@ -1,9 +1,7 @@
 "use client";
 
 import type { businessPointType } from "@/@types/business-point-type";
-import { searchBusinessPoints } from "@/actions/get/business-point/search-business-points";
-import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
-import { useQuery } from "@tanstack/react-query";
+import { useSearchBusinessPoints } from "@/hooks/use-app-queries/use-search-business-points";
 import { createContext, useState } from "react";
 
 interface FilterBusinessPointsContextType {
@@ -24,11 +22,8 @@ export function FilterBusinessPointsContextProvider({
 }: FilterBusinessPointsContextProps) {
   const [query, setQuery] = useState("");
 
-  const { data: businessPointsFiltered = [] } = useQuery({
-    queryKey: [QUERY_KEY_CACHE.BPF, query],
-    queryFn: () => (query ? searchBusinessPoints(query) : Promise.resolve([])),
-    staleTime: 1000 * 60 * 60, // 60 minutes
-    enabled: !!query,
+  const { data: businessPointsFiltered = [] } = useSearchBusinessPoints({
+    query,
   });
 
   const accessQuery = (value: string) => {

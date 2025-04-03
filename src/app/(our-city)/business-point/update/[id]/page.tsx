@@ -4,6 +4,7 @@ import { StepTwoFormUpdateBusinessPoint } from "../../components/forms/step-two-
 import { queryClient } from "@/lib/query-client";
 import { getBusinessPointOverview } from "@/actions/get/business-point/get-business-point-overview";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 
 interface ParamsProps {
   params: {
@@ -15,7 +16,7 @@ export default async function Update({ params }: ParamsProps) {
   const { id } = await params;
 
   await queryClient.prefetchQuery({
-    queryKey: ["businessPointData"],
+    queryKey: [QUERY_KEY_CACHE.BPD],
     queryFn: () => getBusinessPointOverview(id),
     staleTime: 0,
   });
