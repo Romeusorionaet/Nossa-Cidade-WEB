@@ -1,4 +1,4 @@
-export const merchantMenu = [
+export const MERCHANT_MENU = [
   {
     title: "Visibilidade para comerciantes",
     items: [

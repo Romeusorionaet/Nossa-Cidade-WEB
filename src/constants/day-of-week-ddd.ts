@@ -1,4 +1,4 @@
-export const daysOfWeek = [
+export const DAYS_OF_WEEK_DDD = [
   "dom",
   "seg",
   "ter",
@@ -6,4 +6,4 @@ export const daysOfWeek = [
   "qui",
   "sex",
   "sab",
-] as const;
+];

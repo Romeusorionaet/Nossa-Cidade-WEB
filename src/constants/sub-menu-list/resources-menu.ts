@@ -1,4 +1,4 @@
-export const resourcesMenu = [
+export const RESOURCES_MENU = [
   {
     title: "Guias e tutoriais",
     items: [

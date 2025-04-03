@@ -1,4 +1,4 @@
-import { KeyCookies } from "@/constants/key-cookies";
+import { KEY_COOKIES } from "@/constants/key-cookies";
 import { api } from "@/lib/api";
 import { setAuthTokenForCookies } from "@/utils/set-auth-token-for-cookies";
 import type { AuthOptions } from "next-auth";
@@ -45,11 +45,11 @@ export const authOptions: AuthOptions = {
 
             await setAuthTokenForCookies({
               token: accessToken,
-              key: KeyCookies.AT_OC,
+              key: KEY_COOKIES.AT_OC,
             });
             await setAuthTokenForCookies({
               token: refreshToken,
-              key: KeyCookies.RT_OC,
+              key: KEY_COOKIES.RT_OC,
             });
           }
         } catch (err: any) {

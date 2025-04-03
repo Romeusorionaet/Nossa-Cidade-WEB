@@ -1,4 +1,4 @@
-export const pricesMenu = [
+export const PRICES_MENU = [
   {
     title: "Como funciona a plataforma",
     items: [

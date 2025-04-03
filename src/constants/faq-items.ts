@@ -1,4 +1,4 @@
-export const faqItems = [
+export const FAQ_ITEMS = [
   {
     question: "Como são estruturados os encontros da mentoria?",
     answer:

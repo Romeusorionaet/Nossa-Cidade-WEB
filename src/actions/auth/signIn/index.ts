@@ -1,4 +1,4 @@
-import { KeyCookies } from "@/constants/key-cookies";
+import { KEY_COOKIES } from "@/constants/key-cookies";
 import { api } from "@/lib/api";
 import { setAuthTokenForCookies } from "@/utils/set-auth-token-for-cookies";
 
@@ -24,12 +24,12 @@ export const signInWithEmailAndPassword = async ({
 
     await setAuthTokenForCookies({
       token: response.data.accessToken,
-      key: KeyCookies.AT_OC,
+      key: KEY_COOKIES.AT_OC,
     });
 
     await setAuthTokenForCookies({
       token: response.data.refreshToken,
-      key: KeyCookies.RT_OC,
+      key: KEY_COOKIES.RT_OC,
     });
 
     return {

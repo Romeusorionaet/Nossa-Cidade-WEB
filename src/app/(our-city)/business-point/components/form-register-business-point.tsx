@@ -7,8 +7,8 @@ import { useContext, useEffect } from "react";
 import { ControlLocationForBusinessPointContext } from "@/contexts/control-location-for-business-point.context";
 import { FormBusinessPointContext } from "@/contexts/form-business-point.context";
 import { ManageTags } from "./manage-tags";
-import { daysOfWeek } from "@/constants/day-of-week";
 import dynamic from "next/dynamic";
+import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 const UserLocationMap = dynamic(() => import("./user-location-map"), {
   ssr: false,
 });
@@ -204,7 +204,7 @@ export function FormRegisterBusinessPoint() {
       </div>
 
       <div>
-        {daysOfWeek.map((day) => (
+        {DAYS_OF_WEEK_DDD.map((day) => (
           <fieldset key={day}>
             <legend>{day.toUpperCase()}</legend>
             <label>

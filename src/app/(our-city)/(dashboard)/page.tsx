@@ -4,7 +4,7 @@ import "swiper/css";
 import "@/assets/styles/utilities/background-section.css";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import Image from "next/image";
-import { faqItems } from "@/constants/faq-items";
+import { FAQ_ITEMS } from "@/constants/faq-items";
 
 export default function Dashboard() {
   return (
@@ -150,7 +150,7 @@ export default function Dashboard() {
           </div>
 
           <div className="mx-auto mt-10 space-y-4 px-1 md:max-w-4xl">
-            {faqItems.map((item) => (
+            {FAQ_ITEMS.map((item) => (
               <details
                 key={item.question}
                 className="rounded-lg border border-gray-200 bg-gray-100 p-4"

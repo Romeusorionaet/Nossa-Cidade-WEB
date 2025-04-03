@@ -5,8 +5,9 @@ import { BusinessPointOverviewType } from "@/@types/business-point-overview-type
 import { getBusinessPointOverview } from "@/actions/get/business-point/get-business-point-overview";
 import { getSharedItemsAssociatedBusinessPoint } from "@/actions/get/business-point/get-shared-items-associated-business-point";
 import { OpeningHoursList } from "@/components/opening-hours-list";
-import { BaseUrls } from "@/constants/base-urls";
-import { orderDays, weekDays } from "@/constants/week-days-order";
+import { BASE_URLS } from "@/constants/base-urls";
+import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
+import { WEEK_DAYS } from "@/constants/week-days-order";
 import { checkBusinessStatus } from "@/utils/check-business-status";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -60,7 +61,7 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
         {image1 && (
           <div className="h-[600px] w-full">
             <Image
-              src={`${BaseUrls.IMG}/${image1}`}
+              src={`${BASE_URLS.img}/${image1}`}
               alt=""
               width={1000}
               height={1000}
@@ -81,8 +82,8 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
           <div className="w-full md:w-1/3">
             <OpeningHoursList
               openingHours={businessPoint.openingHours}
-              orderDays={orderDays}
-              weekDays={weekDays}
+              orderDays={DAYS_OF_WEEK_DDD}
+              weekDays={WEEK_DAYS}
             />
           </div>
         </div>
@@ -90,7 +91,7 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
         {image2 && (
           <div className="mt-10 h-[600px] w-full">
             <Image
-              src={`${BaseUrls.IMG}/${image2}`}
+              src={`${BASE_URLS.img}/${image2}`}
               alt=""
               width={1000}
               height={1000}

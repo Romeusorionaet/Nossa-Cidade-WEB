@@ -1,11 +1,11 @@
 "use server";
 
-import { KeyCookies } from "@/constants/key-cookies";
+import { KEY_COOKIES } from "@/constants/key-cookies";
 import { cookies } from "next/headers";
 
 export async function getAccessTokenFromCookies() {
   const cookiesOC = await cookies();
-  const accessToken = cookiesOC.get(KeyCookies.AT_OC);
+  const accessToken = cookiesOC.get(KEY_COOKIES.AT_OC);
 
   if (!accessToken) {
     return;
@@ -16,7 +16,7 @@ export async function getAccessTokenFromCookies() {
 
 export async function getRefreshTokenFromCookies() {
   const cookiesOC = await cookies();
-  const refreshToken = cookiesOC.get(KeyCookies.RT_OC);
+  const refreshToken = cookiesOC.get(KEY_COOKIES.RT_OC);
 
   if (!refreshToken) {
     return null;

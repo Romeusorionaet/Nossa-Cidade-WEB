@@ -1,9 +1,9 @@
-import { daysOfWeek } from "@/constants/day-of-week";
+import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 import { z } from "zod";
 
 export const openingHoursSchema = z.object(
   Object.fromEntries(
-    daysOfWeek.map((day) => [
+    DAYS_OF_WEEK_DDD.map((day) => [
       day,
       z.object({
         abertura: z.string().min(5, "Horário inválido").nullable(),

@@ -1,4 +1,4 @@
-import { markers } from "@/constants/markers";
+import { MARKERS } from "@/constants/markers";
 
 const sizes = {
   large: "25px",
@@ -38,9 +38,9 @@ export function getMarkerElement({
   size,
   name,
 }: {
-  icon: keyof typeof markers;
+  icon: keyof typeof MARKERS;
   size: keyof typeof sizes;
   name: string;
 }) {
-  return createCustomMarker({ icon: markers[icon], size: sizes[size], name });
+  return createCustomMarker({ icon: MARKERS[icon], size: sizes[size], name });
 }

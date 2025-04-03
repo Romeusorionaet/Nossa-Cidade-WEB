@@ -3,7 +3,7 @@
 import { ImageBusinessPointType } from "@/@types/business-point-overview-type";
 import { deleteBusinessPointImage } from "@/actions/delete/delete-business-point-image";
 import { getImageBusinessPoint } from "@/actions/get/business-point/get-image-business-point";
-import { BaseUrls } from "@/constants/base-urls";
+import { BASE_URLS } from "@/constants/base-urls";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 
@@ -49,7 +49,7 @@ export function ContentImagesSaved({ id }: { id: string }) {
             <li key={item.id}>
               <div className="h-96 w-96">
                 <Image
-                  src={`${BaseUrls.IMG}/${item.url}`}
+                  src={`${BASE_URLS.img}/${item.url}`}
                   alt=""
                   width={400}
                   height={400}

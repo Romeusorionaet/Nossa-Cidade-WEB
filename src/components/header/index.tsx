@@ -11,8 +11,8 @@ import { useHoverBackground } from "@/hooks/use-hover-background";
 import { MobileSideMenuFormContext } from "@/contexts/mobile-side-menu-provider";
 import { useScroll } from "@/hooks/use-scroll";
 import { SubMenu } from "../sub-menu";
-import { mainListNavigation } from "@/constants/main-list-navigation";
 import "@/assets/styles/utilities/custom-animations.css";
+import { MAIN_LIST_NAVIGATION } from "@/constants/main-list-navigation";
 
 export function Header() {
   const { eventIndicator, handleEventMenu, handleMouseLeave, navRef } =
@@ -45,7 +45,7 @@ export function Header() {
           )}
 
           <ul ref={navRef} className="flex gap-0.5 lg:gap-2">
-            {mainListNavigation.map((item, index) => {
+            {MAIN_LIST_NAVIGATION.map((item, index) => {
               const isHovered =
                 eventIndicator.visible && eventIndicator.index === index;
 

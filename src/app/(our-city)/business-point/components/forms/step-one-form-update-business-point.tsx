@@ -5,8 +5,8 @@ import { FormError } from "@/components/form/form-error";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 import { ManageTags } from "../manage-tags";
-import { daysOfWeek } from "@/constants/day-of-week";
 import { FormUpdateStepOneBusinessPointContext } from "@/contexts/form-update-step-one-business-point.context";
+import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 
 export function StepOneFormUpdateBusinessPoint() {
   const {
@@ -77,7 +77,7 @@ export function StepOneFormUpdateBusinessPoint() {
       </div>
 
       <div>
-        {daysOfWeek.map((day) => (
+        {DAYS_OF_WEEK_DDD.map((day) => (
           <fieldset key={day}>
             <legend>{day.toUpperCase()}</legend>
             <label>

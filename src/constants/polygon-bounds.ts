@@ -1,6 +1,6 @@
-export const polygonBounds: [number, number, number, number] = [
+export const POLYGON_BOUNDS: [number, number, number, number] = [
   -35.17, -6.42, -35.1, -6.35,
 ];
 
-export const centerLng = (polygonBounds[0] + polygonBounds[2]) / 2;
-export const centerLat = (polygonBounds[1] + polygonBounds[3]) / 2;
+export const CENTER_LNG = (POLYGON_BOUNDS[0] + POLYGON_BOUNDS[2]) / 2;
+export const CENTER_LAT = (POLYGON_BOUNDS[1] + POLYGON_BOUNDS[3]) / 2;

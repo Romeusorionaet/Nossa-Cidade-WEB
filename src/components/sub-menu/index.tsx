@@ -1,9 +1,9 @@
 import { SubMenuItem } from "@/components/sub-menu/sub-menu-item";
+import { MAP_MENU } from "@/constants/sub-menu-list/map-menu";
+import { MERCHANT_MENU } from "@/constants/sub-menu-list/merchant-menu";
+import { PRICES_MENU } from "@/constants/sub-menu-list/prices-menu";
+import { RESOURCES_MENU } from "@/constants/sub-menu-list/resources-menu";
 import { useEffect, useRef } from "react";
-import { pricesMenu } from "@/constants/sub-menu-list/prices-menu";
-import { resourcesMenu } from "@/constants/sub-menu-list/resources-menu";
-import { merchantMenu } from "@/constants/sub-menu-list/merchant-menu";
-import { mapMenu } from "@/constants/sub-menu-list/map-menu";
 
 export interface SubMenuProps {
   eventIndicator: { visible: boolean };
@@ -53,7 +53,7 @@ export const SubMenu = ({ eventIndicator, menuIndex }: SubMenuProps) => {
             data-value={menuIndex === 0}
             className="flex w-full data-[value=false]:hidden"
           >
-            {merchantMenu.map((section, index) => (
+            {MERCHANT_MENU.map((section, index) => (
               <SubMenuItem
                 key={index}
                 title={section.title}
@@ -69,7 +69,7 @@ export const SubMenu = ({ eventIndicator, menuIndex }: SubMenuProps) => {
             data-value={menuIndex === 1}
             className="flex w-full data-[value=false]:hidden"
           >
-            {mapMenu.map((section, index) => (
+            {MAP_MENU.map((section, index) => (
               <SubMenuItem
                 key={index}
                 title={section.title}
@@ -85,7 +85,7 @@ export const SubMenu = ({ eventIndicator, menuIndex }: SubMenuProps) => {
             data-value={menuIndex === 2}
             className="flex w-full data-[value=false]:hidden"
           >
-            {pricesMenu.map((section, index) => (
+            {PRICES_MENU.map((section, index) => (
               <SubMenuItem
                 key={index}
                 title={section.title}
@@ -101,7 +101,7 @@ export const SubMenu = ({ eventIndicator, menuIndex }: SubMenuProps) => {
             data-value={menuIndex === 3}
             className="flex w-full data-[value=false]:hidden"
           >
-            {resourcesMenu.map((section, index) => (
+            {RESOURCES_MENU.map((section, index) => (
               <SubMenuItem
                 key={index}
                 title={section.title}

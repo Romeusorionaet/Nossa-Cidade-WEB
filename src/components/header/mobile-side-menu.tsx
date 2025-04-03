@@ -3,10 +3,10 @@ import { useContext, useState } from "react";
 import Link from "next/link";
 import { MobileSideMenuFormContext } from "@/contexts/mobile-side-menu-provider";
 import { AppStoreLinks } from "../app-store-links";
-import { merchantMenu } from "@/constants/sub-menu-list/merchant-menu";
-import { mapMenu } from "@/constants/sub-menu-list/map-menu";
-import { resourcesMenu } from "@/constants/sub-menu-list/resources-menu";
-import { pricesMenu } from "@/constants/sub-menu-list/prices-menu";
+import { MERCHANT_MENU } from "@/constants/sub-menu-list/merchant-menu";
+import { MAP_MENU } from "@/constants/sub-menu-list/map-menu";
+import { RESOURCES_MENU } from "@/constants/sub-menu-list/resources-menu";
+import { PRICES_MENU } from "@/constants/sub-menu-list/prices-menu";
 
 export function MobileSideMenu() {
   const { sideMenuIsOpen, handleSideMenu } = useContext(
@@ -48,7 +48,7 @@ export function MobileSideMenu() {
             data-value={menuItem === "Comerciantes"}
             className="mt-12 space-y-3 text-2xl data-[value=false]:hidden"
           >
-            {merchantMenu.map((resource) => (
+            {MERCHANT_MENU.map((resource) => (
               <li key={resource.title}>
                 {resource.title}
                 {resource.items.length > 0 && (
@@ -68,7 +68,7 @@ export function MobileSideMenu() {
             data-value={menuItem === "Mapa"}
             className="mt-12 space-y-3 text-2xl data-[value=false]:hidden"
           >
-            {mapMenu.map((resource) => (
+            {MAP_MENU.map((resource) => (
               <li key={resource.title}>
                 {resource.title}
                 {resource.items.length > 0 && (
@@ -88,7 +88,7 @@ export function MobileSideMenu() {
             data-value={menuItem === "Recursos"}
             className="mt-12 space-y-3 text-2xl data-[value=false]:hidden"
           >
-            {resourcesMenu.map((resource) => (
+            {RESOURCES_MENU.map((resource) => (
               <li key={resource.title}>
                 {resource.title}
                 {resource.items.length > 0 && (
@@ -108,7 +108,7 @@ export function MobileSideMenu() {
             data-value={menuItem === "Prices"}
             className="mt-12 space-y-3 text-2xl data-[value=false]:hidden"
           >
-            {pricesMenu.map((resource) => (
+            {PRICES_MENU.map((resource) => (
               <li key={resource.title}>
                 {resource.title}
                 {resource.items.length > 0 && (

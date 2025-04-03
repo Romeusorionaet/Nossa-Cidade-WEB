@@ -1,6 +1,6 @@
 "use server";
 
-import { KeyCookies } from "@/constants/key-cookies";
+import { KEY_COOKIES } from "@/constants/key-cookies";
 import { api } from "@/lib/api";
 import { getRefreshTokenFromCookies } from "@/utils/get-access-token-from-cookies";
 import { setAuthTokenForCookies } from "@/utils/set-auth-token-for-cookies";
@@ -27,7 +27,7 @@ export const getDataRefreshToken = async (): Promise<BooleanResponse> => {
 
     setAuthTokenForCookies({
       token: accessToken,
-      key: KeyCookies.AT_OC,
+      key: KEY_COOKIES.AT_OC,
     });
 
     return { success: true };

@@ -1,4 +1,4 @@
-export const weekDays: Record<string, string> = {
+export const WEEK_DAYS: Record<string, string> = {
   dom: "Domingo",
   seg: "Segunda-feira",
   ter: "Terça-feira",
@@ -7,5 +7,3 @@ export const weekDays: Record<string, string> = {
   sex: "Sexta-feira",
   sab: "Sábado",
 };
-
-export const orderDays = ["dom", "seg", "ter", "qua", "qui", "sex", "sab"];

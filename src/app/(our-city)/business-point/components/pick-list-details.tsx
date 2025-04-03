@@ -7,11 +7,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useContext, useState } from "react";
 import { filterAssociateItems } from "../helpers/filter-associate-items";
 import { CheckboxListAssociateItems } from "./checkbox-list-associate-items";
-import { categories } from "@/constants/list-of-association-items";
 import { useRouter } from "next/navigation";
-import { QueryKeyCache } from "@/constants/query-key-cache";
 import { getSharedItemsAssociatedBusinessPoint } from "@/actions/get/business-point/get-shared-items-associated-business-point";
 import { updateBusinessPointDetails } from "@/actions/put/business-point/update-business-point-details";
+import { ASSOCIATION_LIST } from "@/constants/association-list";
+import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 
 interface Props {
   businessPointId: string;
@@ -33,7 +33,7 @@ export function PickListDetails({ businessPointId }: Props) {
     isLoading,
     error,
   } = useQuery<ListItemsForBusinessPointDetailsType>({
-    queryKey: [QueryKeyCache.LIBPD],
+    queryKey: [QUERY_KEY_CACHE.LIFBPD],
     queryFn: () => getListItemsForBusinessPointDetails(),
     enabled: !!profile.publicId,
   });
@@ -44,7 +44,7 @@ export function PickListDetails({ businessPointId }: Props) {
     error: errAssociatedData,
     refetch: refetchAssociatedData,
   } = useQuery<ListItemsForBusinessPointDetailsType>({
-    queryKey: [QueryKeyCache.SIABP],
+    queryKey: [QUERY_KEY_CACHE.SIABP],
     queryFn: () => getSharedItemsAssociatedBusinessPoint(businessPointId),
     enabled: !!profile.publicId,
   });
@@ -136,7 +136,7 @@ export function PickListDetails({ businessPointId }: Props) {
 
   return (
     <section className="border border-black p-1">
-      {categories.map(({ key, title }) => (
+      {ASSOCIATION_LIST.map(({ key, title }) => (
         <CheckboxListAssociateItems
           key={key}
           title={title}

@@ -1,4 +1,4 @@
-export const markers = {
+export const MARKERS = {
   click: "📍",
   dot: "𓈒",
   Farmácia: "💊",

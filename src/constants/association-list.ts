@@ -1,4 +1,4 @@
-export const categories = [
+export const ASSOCIATION_LIST = [
   { key: "payments", title: "Métodos de pagamentos" },
   { key: "accessibility", title: "Acessibilidade" },
   { key: "amenities", title: "Comodidade" },

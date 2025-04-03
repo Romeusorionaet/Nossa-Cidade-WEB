@@ -1,8 +1,10 @@
-export const mapMenu = [
+import { APP_ROUTES } from "../app-routes";
+
+export const MAP_MENU = [
   {
     title: "Exploração interativa",
     items: [
-      { label: "Navegue pelo mapa da cidade", href: "/map-city" },
+      { label: "Navegue pelo mapa da cidade", href: APP_ROUTES.public.mapCity },
       {
         label: "Encontre estabelecimentos próximos",
         href: "#",

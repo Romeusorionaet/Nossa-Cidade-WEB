@@ -10,7 +10,6 @@ import maplibregl from "maplibre-gl";
 import "@/assets/styles/utilities/scrollbar.css";
 import { getBusinessPointCategories } from "@/actions/get/business-point/get-business-point-categories";
 import { SearchBusinessPoint } from "@/components/search-business-points";
-import { orderDays, weekDays } from "@/constants/week-days-order";
 import { useProviderMapContainer } from "@/hooks/use-provider-map-container";
 import { checkBusinessStatus } from "@/utils/check-business-status";
 import Link from "next/link";
@@ -19,6 +18,8 @@ import { ArrowLeftSquare, ArrowRightSquare } from "lucide-react";
 import type { businessPointType } from "@/@types/business-point-type";
 import { OpeningHoursList } from "@/components/opening-hours-list";
 import { FilterBusinessPointsContext } from "@/contexts/filter-business-points.context";
+import { WEEK_DAYS } from "@/constants/week-days-order";
+import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 
 interface TravelInfo {
   duration: number;
@@ -413,8 +414,8 @@ export function MapComponent() {
 
               <OpeningHoursList
                 openingHours={item.openingHours}
-                orderDays={orderDays}
-                weekDays={weekDays}
+                orderDays={DAYS_OF_WEEK_DDD}
+                weekDays={WEEK_DAYS}
               />
 
               <div className="mt-2 flex w-full justify-end">

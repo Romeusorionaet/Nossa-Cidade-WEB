@@ -3,7 +3,7 @@
 import type { userProfileType } from "@/@types/user-profile-type";
 import { getDataRefreshToken } from "@/actions/auth/refresh-token/get-data-refresh-token";
 import { getDataUser } from "@/actions/get/user/get-data.user";
-import { KeyLocalStorage } from "@/constants/key-local-storage";
+import { KEY_LOCAL_STORAGE } from "@/constants/key-local-storage";
 import { useQuery } from "@tanstack/react-query";
 import type {
   QueryObserverResult,
@@ -55,7 +55,7 @@ export function UserContextProvider({ children }: UserContextProps) {
 
   useEffect(() => {
     const refreshDataUser = async () => {
-      const userLogged = localStorage.getItem(KeyLocalStorage.USER_LOGGED);
+      const userLogged = localStorage.getItem(KEY_LOCAL_STORAGE.USER_LOGGED);
 
       const hasSessionData = !data?.props?.profile && session.data;
       const hasUserLogged = !data?.props?.profile && userLogged === "true";
@@ -64,8 +64,8 @@ export function UserContextProvider({ children }: UserContextProps) {
         const { success } = await getDataRefreshToken();
 
         if (!success) {
-          localStorage.removeItem(KeyLocalStorage.USER_LOGGED);
-          localStorage.removeItem(KeyLocalStorage.PUBLIC_ID);
+          localStorage.removeItem(KEY_LOCAL_STORAGE.USER_LOGGED);
+          localStorage.removeItem(KEY_LOCAL_STORAGE.PUBLIC_ID);
 
           await signOut();
 
@@ -85,11 +85,11 @@ export function UserContextProvider({ children }: UserContextProps) {
     const setData = async () => {
       if (data?.props?.profile) {
         setProfile(data?.props.profile);
-        localStorage.setItem(KeyLocalStorage.USER_LOGGED, "true");
+        localStorage.setItem(KEY_LOCAL_STORAGE.USER_LOGGED, "true");
       }
 
       if (profile.publicId) {
-        localStorage.setItem(KeyLocalStorage.PUBLIC_ID, profile.publicId);
+        localStorage.setItem(KEY_LOCAL_STORAGE.PUBLIC_ID, profile.publicId);
       }
     };
 
