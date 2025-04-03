@@ -9,16 +9,16 @@ import { faqItems } from "@/constants/faq-items";
 export default function Dashboard() {
   return (
     <div>
-      <main className="pt-16">
-        <section className="relative flex flex-col justify-between bg-[url('/imgs/others/deco-4.png')] bg-cover bg-top bg-no-repeat pt-20 text-center">
-          <div className="relative px-2">
+      <main className="pt-20 max-md:pt-32 lg:pt-28">
+        <section className="relative flex flex-col justify-between bg-[url('/imgs/others/deco-4.png')] bg-cover bg-top bg-no-repeat text-center">
+          <div className="relative px-2 pt-16">
             <h1 className="drop-shadow-h1 leading-none font-bold max-md:text-start">
               Encontre. <br /> Conecte. <br /> Compre. <br /> Tudo na Nossa
               Cidade.
             </h1>
 
             <div className="pt-12">
-              <p className="drop-shadow-p font-bold font-light text-white">
+              <p className="drop-shadow-p font-bold text-white">
                 Saiba exatamente onde comprar na nossa cidade – veja no mapa e
                 aproveite!
               </p>
