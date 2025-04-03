@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@layer utilities {
+   .bg-rise-fade {
+    padding: clamp(0.50rem, 0.90vw, 1rem);
+
+     @apply relative overflow-hidden whitespace-nowrap rounded-full;
+     
+     &:hover {
+      @apply text-white duration-300 before:scale-y-100;
+     }
+
+     &::before {
+      content: "";
+      @apply z-0 bg-blue-500 scale-y-0 origin-bottom absolute inset-0 rounded-2xl transition-transform 
+      duration-300;
+    }
+
+    .bg-rise-fade-content {
+      @apply relative z-10 block -translate-y-9; 
+
+      &::before {
+        @apply z-10 absolute 
+        transition-transform translate-y-9 group-hover:-translate-y-9;
+      }
+    }
+   }
+}
