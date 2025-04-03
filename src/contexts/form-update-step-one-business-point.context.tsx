@@ -17,6 +17,7 @@ import {
 } from "@/schemas/update-business-point.schema";
 import { updateBusinessPointOverview } from "@/actions/put/business-point/update-business-point-overview";
 import { useParams, useRouter } from "next/navigation";
+import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 
 interface FormUpdateStepOneBusinessPointContextType {
   register: UseFormRegister<UpdateBusinessPointFormDataStepOneType>;
@@ -49,7 +50,7 @@ export function FormUpdateStepOneBusinessPointContextProvider({
   const queryClient = useQueryClient();
   const businessPointData =
     queryClient.getQueryData<UpdateBusinessPointFormDataStepOneType>([
-      "businessPointData",
+      QUERY_KEY_CACHE.BPD,
     ]);
 
   const {

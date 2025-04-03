@@ -9,6 +9,7 @@ import { FormBusinessPointContext } from "@/contexts/form-business-point.context
 import { ManageTags } from "./manage-tags";
 import dynamic from "next/dynamic";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
+import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 const UserLocationMap = dynamic(() => import("./user-location-map"), {
   ssr: false,
 });
@@ -33,7 +34,7 @@ export function FormRegisterBusinessPoint() {
     isLoading: isLoadingCategories,
     error,
   } = useQuery<{ id: string; name: string }[]>({
-    queryKey: ["categories-form"],
+    queryKey: [QUERY_KEY_CACHE.CF],
     queryFn: () => getBusinessPointCategories(),
     staleTime: 1000 * 60 * 60, // 60 minutes
   });

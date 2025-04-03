@@ -20,6 +20,7 @@ import { OpeningHoursList } from "@/components/opening-hours-list";
 import { FilterBusinessPointsContext } from "@/contexts/filter-business-points.context";
 import { WEEK_DAYS } from "@/constants/week-days-order";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
+import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 
 interface TravelInfo {
   duration: number;
@@ -45,7 +46,7 @@ export function MapComponent() {
   const businessPointNotFound = businessPointsFiltered.length > 0;
 
   const { data: businessPoints } = useQuery<businessPointType[]>({
-    queryKey: ["allBusinessPoints"],
+    queryKey: [QUERY_KEY_CACHE.ABP],
     queryFn: () => getBusinessPointForMapping(),
     staleTime: 1000 * 60 * 60,
   });
@@ -53,7 +54,7 @@ export function MapComponent() {
   const { data: businessPointCategories } = useQuery<
     { id: string; name: string }[]
   >({
-    queryKey: ["allBusinessPointCategories"],
+    queryKey: [QUERY_KEY_CACHE.ABPC],
     queryFn: () => getBusinessPointCategories(),
     staleTime: 1000 * 60 * 60,
   });

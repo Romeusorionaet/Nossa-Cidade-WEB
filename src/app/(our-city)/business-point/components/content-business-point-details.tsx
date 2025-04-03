@@ -7,6 +7,7 @@ import { getSharedItemsAssociatedBusinessPoint } from "@/actions/get/business-po
 import { OpeningHoursList } from "@/components/opening-hours-list";
 import { BASE_URLS } from "@/constants/base-urls";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
+import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 import { WEEK_DAYS } from "@/constants/week-days-order";
 import { checkBusinessStatus } from "@/utils/check-business-status";
 import { useQuery } from "@tanstack/react-query";
@@ -22,7 +23,7 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
     isLoading,
     error,
   } = useQuery<BusinessPointOverviewType>({
-    queryKey: ["businessPointDetails", id],
+    queryKey: [QUERY_KEY_CACHE.BPD, id],
     queryFn: () => getBusinessPointOverview(id),
     staleTime: 1000 * 60 * 60,
     enabled: !!id,

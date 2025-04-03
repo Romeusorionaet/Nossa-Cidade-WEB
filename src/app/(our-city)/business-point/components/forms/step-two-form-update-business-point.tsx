@@ -13,6 +13,7 @@ import dynamic from "next/dynamic";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { updateBusinessPointOverview } from "@/actions/put/business-point/update-business-point-overview";
+import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 const UserLocationMap = dynamic(() => import("../user-location-map"), {
   ssr: false,
 });
@@ -46,7 +47,7 @@ export function StepTwoFormUpdateBusinessPoint() {
 
   const queryClient = useQueryClient();
   const cachedData = queryClient.getQueryData<LocationType>([
-    "businessPointData",
+    QUERY_KEY_CACHE.BPD,
   ]);
 
   useEffect(() => {

@@ -4,6 +4,7 @@ import type { userProfileType } from "@/@types/user-profile-type";
 import { getDataRefreshToken } from "@/actions/auth/refresh-token/get-data-refresh-token";
 import { getDataUser } from "@/actions/get/user/get-data.user";
 import { KEY_LOCAL_STORAGE } from "@/constants/key-local-storage";
+import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 import { useQuery } from "@tanstack/react-query";
 import type {
   QueryObserverResult,
@@ -48,7 +49,7 @@ export function UserContextProvider({ children }: UserContextProps) {
     refetch: refetchUserProfile,
     isLoading: isLoadingDataUserProfile,
   } = useQuery({
-    queryKey: ["profile"],
+    queryKey: [QUERY_KEY_CACHE.PROFILE],
     queryFn: () => getDataUser(),
     enabled: !profile.username,
   });

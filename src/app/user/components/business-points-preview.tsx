@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import Link from "next/link";
 import { BusinessPointPreviewType } from "@/@types/business-point-preview-type";
+import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 
 export function BusinessPointsPreview() {
   const { profile } = useContext(UserContext);
@@ -17,7 +18,7 @@ export function BusinessPointsPreview() {
     isLoading,
     error,
   } = useQuery<BusinessPointPreviewType[]>({
-    queryKey: ["businessPointPreviewData"],
+    queryKey: [QUERY_KEY_CACHE.BPPD],
     queryFn: () => getBusinessPointsPreviewUser(),
     staleTime: 1000 * 60 * 60,
     enabled: !!profile.publicId,
