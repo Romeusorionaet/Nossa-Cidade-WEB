@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 import { FormError } from "./form-error";
+import { APP_ROUTES } from "@/constants/app-routes";
 
 type LoginFormData = z.infer<typeof signUpFormSchema>;
 
@@ -42,7 +43,7 @@ export function FormSignUp() {
   }
 
   const handleNavigateToSignIn = () => {
-    router.push("/sign-in");
+    router.push(APP_ROUTES.public.auth.signIn);
   };
 
   return (

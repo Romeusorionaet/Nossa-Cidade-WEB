@@ -11,6 +11,7 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import type z from "zod";
 import { FormError } from "./form-error";
+import { APP_ROUTES } from "@/constants/app-routes";
 
 type LoginFormData = z.infer<typeof signInFormSchema>;
 
@@ -40,17 +41,17 @@ export function FormSignIn() {
     if (response.success && !isSubmitting) {
       await refetchUserProfile();
 
-      router.push("/map-city");
+      router.push(APP_ROUTES.public.mapCity);
     }
   }
 
   function handleNavigateToSignUp() {
-    router.push("/sign-up");
+    router.push(APP_ROUTES.public.auth.signUp);
   }
 
   const handleLoginWithGoogle = async () => {
     try {
-      await signIn("google", { callbackUrl: "/" });
+      await signIn("google", { callbackUrl: APP_ROUTES.public.dashboard });
     } catch (err: any) {
       console.log(err.message);
     }

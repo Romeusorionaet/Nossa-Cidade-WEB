@@ -13,6 +13,7 @@ import { useScroll } from "@/hooks/use-scroll";
 import { SubMenu } from "../sub-menu";
 import "@/assets/styles/utilities/custom-animations.css";
 import { MAIN_LIST_NAVIGATION } from "@/constants/main-list-navigation";
+import { APP_ROUTES } from "@/constants/app-routes";
 
 export function Header() {
   const { eventIndicator, handleEventMenu, handleMouseLeave, navRef } =
@@ -79,7 +80,7 @@ export function Header() {
               data-value={eventIndicator.visible}
               className="bg-rise-fade group cursor-pointer font-medium hover:border-transparent data-[scroll=true]:border-black data-[value=true]:border-black data-[value=true]:hover:text-white data-[value=true]:hover:before:bg-blue-500 md:border"
             >
-              <Link href="/news">
+              <Link href="#">
                 <div className="overflow-hidden">
                   <span className="bg-rise-fade-content group-hover:animate-rise-from-bottom before:content-['Notícias']">
                     Notícias
@@ -97,7 +98,7 @@ export function Header() {
               className="data-[scroll=true]:hidden max-[850px]:hidden md:-ml-20 lg:ml-8"
             >
               <Link
-                href="/"
+                href={APP_ROUTES.public.dashboard}
                 className="text-[clamp(0.90rem,1.4vw,1.9rem)] font-medium tracking-wider uppercase"
               >
                 Nossa Cidade
@@ -116,7 +117,7 @@ export function Header() {
               data-scroll={scrolled}
               className="data-[scroll=true]:flex min-[850px]:hidden"
             >
-              <Link href="/">Nossa Cidade</Link>
+              <Link href={APP_ROUTES.public.dashboard}>Nossa Cidade</Link>
             </li>
           </ul>
         </nav>
@@ -134,7 +135,7 @@ export function Header() {
 
           <nav data-scroll={scrolled} className="flex items-center gap-2">
             <Link
-              href="/sign-in"
+              href={APP_ROUTES.public.auth.signIn}
               data-value={eventIndicator.visible}
               className="bg-rise-fade group px-3 py-2 data-[value=true]:hover:before:bg-blue-500 md:p-[clamp(0.60rem,0.95vw,1.4rem)]"
             >
@@ -145,7 +146,7 @@ export function Header() {
               </div>
             </Link>
             <Link
-              href="/sign-up"
+              href={APP_ROUTES.public.auth.signUp}
               data-value={eventIndicator.visible}
               className="bg-rise-fade group rounded-full px-4 py-2 font-medium text-black data-[value=true]:bg-blue-500 data-[value=true]:text-white md:p-[clamp(0.60rem,0.95vw,1.4rem)] md:px-6"
             >

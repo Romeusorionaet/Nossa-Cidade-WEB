@@ -18,6 +18,7 @@ import { WEEK_DAYS } from "@/constants/week-days-order";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 import { useGetBusinessPointCategories } from "@/hooks/use-app-queries/use-get-business-point-categories";
 import { useGetBusinessPointForMapping } from "@/hooks/use-app-queries/use-get-business-point-for-mapping";
+import { APP_ROUTES } from "@/constants/app-routes";
 
 interface TravelInfo {
   duration: number;
@@ -248,7 +249,7 @@ export function MapComponent() {
   return (
     <div className="relative h-screen overflow-hidden">
       <Link
-        href="/"
+        href={APP_ROUTES.public.dashboard}
         className="online-block absolute top-0 left-0 z-30 rounded-br-md border bg-white p-2 text-base text-black"
       >
         Sair

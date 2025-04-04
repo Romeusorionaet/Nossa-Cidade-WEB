@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import Link from "next/link";
 import { useGetBusinessPointPreviewUser } from "@/hooks/use-app-queries/use-get-business-point-preview-user";
+import { APP_ROUTES } from "@/constants/app-routes";
 
 export function BusinessPointsPreview() {
   const { profile } = useContext(UserContext);
@@ -36,12 +37,20 @@ export function BusinessPointsPreview() {
             <Link href="#" className="cursor-not-allowed opacity-50">
               Editar (função em desenvolvimento)
             </Link>
-            <Link href={`/business-point/details/${item.id}`}>Visualizar</Link>
-            <Link href={`/business-point/save-image/${item.id}`}>
+            <Link
+              href={`${APP_ROUTES.public.businessPoint.details}/${item.id}`}
+            >
+              Visualizar
+            </Link>
+            <Link
+              href={`${APP_ROUTES.public.businessPoint.saveImage}/${item.id}`}
+            >
               Imagens do ponto comercial
             </Link>
             <button type="button">Desativar</button>
-            <Link href={`/business-point/register-details/${item.id}`}>
+            <Link
+              href={`${APP_ROUTES.public.businessPoint.registerDetails}/${item.id}`}
+            >
               Adicionar detalhes
             </Link>
           </div>

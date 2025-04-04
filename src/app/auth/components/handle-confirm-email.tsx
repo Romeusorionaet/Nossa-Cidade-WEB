@@ -5,6 +5,7 @@ import { NotFoundTokenError } from "./not-found-token-error";
 import { useState } from "react";
 import { confirmationEmail } from "@/actions/auth/confirmation-email";
 import { sendNewTokenConfirmation } from "@/actions/auth/send-new-token-confirmation";
+import { APP_ROUTES } from "@/constants/app-routes";
 
 export function HandleConfirmEmail() {
   const [tokenExpired, setTokenExpired] = useState(false);
@@ -23,7 +24,7 @@ export function HandleConfirmEmail() {
 
     if (messageSuccess) {
       alert(messageSuccess);
-      router.push("/sign-in");
+      router.push(APP_ROUTES.public.auth.signIn);
     }
 
     if (messageError) {
@@ -45,7 +46,7 @@ export function HandleConfirmEmail() {
 
     if (messageSuccess) {
       alert(messageSuccess);
-      router.push("/sign-in");
+      router.push(APP_ROUTES.public.auth.signIn);
     }
 
     if (messageError) {

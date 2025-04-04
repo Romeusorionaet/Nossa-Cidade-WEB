@@ -1,3 +1,5 @@
+import { APP_ROUTES } from "@/constants/app-routes";
+
 interface Props {
   name: string;
   status: string;
@@ -14,7 +16,7 @@ export function popupContent({ name, status, id }: Props) {
 
   const link = document.createElement("a");
   link.textContent = "Entrar";
-  link.href = `/business-point/details/${id}`;
+  link.href = `${APP_ROUTES.public.businessPoint.details}/${id}`;
   link.classList.add("text-blue-600", "underline", "cursor-pointer", "text-xs");
 
   popupContent.appendChild(textElement);
