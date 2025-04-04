@@ -14,6 +14,7 @@ import { SubMenu } from "../sub-menu";
 import "@/assets/styles/utilities/custom-animations.css";
 import { MAIN_LIST_NAVIGATION } from "@/constants/main-list-navigation";
 import { APP_ROUTES } from "@/constants/app-routes";
+import { OurCityLogo } from "../our-city-logo";
 
 export function Header() {
   const { eventIndicator, handleEventMenu, handleMouseLeave, navRef } =
@@ -95,13 +96,13 @@ export function Header() {
           <ul className="flex items-center gap-3">
             <li
               data-scroll={scrolled}
-              className="data-[scroll=true]:hidden max-[850px]:hidden md:-ml-20 lg:ml-8"
+              className="data-[scroll=true]:hidden max-[850px]:hidden"
             >
               <Link
                 href={APP_ROUTES.public.dashboard}
-                className="text-[clamp(0.90rem,1.4vw,1.9rem)] font-medium tracking-wider uppercase"
+                className="font-medium tracking-wider uppercase"
               >
-                Nossa Cidade
+                <OurCityLogo />
               </Link>
             </li>
             <li className="md:hidden">
@@ -117,7 +118,9 @@ export function Header() {
               data-scroll={scrolled}
               className="data-[scroll=true]:flex min-[850px]:hidden"
             >
-              <Link href={APP_ROUTES.public.dashboard}>Nossa Cidade</Link>
+              <Link href={APP_ROUTES.public.dashboard}>
+                <OurCityLogo />
+              </Link>
             </li>
           </ul>
         </nav>

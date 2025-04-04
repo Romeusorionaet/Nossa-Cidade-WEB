@@ -30,24 +30,11 @@
     color: var(--color-zinc-700);
     font-weight: 300;
   }
-  h1 {
-    font-size: clamp(2.4rem, 3vw, 3.6rem) !important;
-  }
-  h2 {
-    font-size: clamp(2rem, 2.5vw, 3rem) !important;
-  }
-  h3 {
-    font-size: clamp(1.6rem, 2.1vw, 2.6rem) !important;
-  }
-  h4 {
-    font-size: clamp(1.4rem, 1.9vw, 2.4rem) !important;
-  }
   p, button, span, a {
-    font-size: clamp(0.90rem, 1vw, 1.2rem) !important;
-    font-family: var(--font-geist-sans) !important;
+    font-size: clamp(0.90rem, 1vw, 1.1rem);
+    font-family: var(--font-geist-sans);
   }
   button {
     cursor: pointer;
   }
 }
-
