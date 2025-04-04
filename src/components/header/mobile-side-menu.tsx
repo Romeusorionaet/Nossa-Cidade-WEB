@@ -7,6 +7,7 @@ import { MERCHANT_MENU } from "@/constants/sub-menu-list/merchant-menu";
 import { MAP_MENU } from "@/constants/sub-menu-list/map-menu";
 import { RESOURCES_MENU } from "@/constants/sub-menu-list/resources-menu";
 import { PRICES_MENU } from "@/constants/sub-menu-list/prices-menu";
+import { OurCityLogo } from "../our-city-logo";
 
 export function MobileSideMenu() {
   const { sideMenuIsOpen, handleSideMenu } = useContext(
@@ -33,7 +34,9 @@ export function MobileSideMenu() {
         className="absolute z-40 w-full bg-black text-white duration-300 data-[value=false]:-ml-[800px]"
       >
         <div className="relative w-full pt-16">
-          <h1 className="text-center text-lg">{menuItem}</h1>
+          <h1 className="border-b border-blue-500/50 pb-2 text-center text-2xl text-white">
+            {menuItem}
+          </h1>
           <button
             type="button"
             onClick={() => handleSubMenuAside("")}
@@ -43,19 +46,21 @@ export function MobileSideMenu() {
           </button>
         </div>
 
-        <nav className="h-screen w-full overflow-auto px-4 pb-44">
+        <nav className="h-screen w-full overflow-auto px-4">
           <ul
             data-value={menuItem === "Comerciantes"}
             className="mt-12 space-y-3 text-2xl data-[value=false]:hidden"
           >
             {MERCHANT_MENU.map((resource) => (
               <li key={resource.title}>
-                {resource.title}
+                <span className="text-xl text-blue-200">{resource.title}</span>
                 {resource.items.length > 0 && (
                   <ul className="mt-6 space-y-2 opacity-50">
                     {resource.items.map((item) => (
-                      <li key={item.label} className="flex">
-                        <CornerDownRight size={18} /> {item.label}
+                      <li key={item.label}>
+                        <span className="flex text-lg">
+                          <CornerDownRight size={18} /> {item.label}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -70,12 +75,14 @@ export function MobileSideMenu() {
           >
             {MAP_MENU.map((resource) => (
               <li key={resource.title}>
-                {resource.title}
+                <span className="text-xl text-blue-200">{resource.title}</span>
                 {resource.items.length > 0 && (
                   <ul className="mt-6 space-y-2 opacity-50">
                     {resource.items.map((item) => (
-                      <li key={item.label} className="flex">
-                        <CornerDownRight size={18} /> {item.label}
+                      <li key={item.label}>
+                        <span className="flex text-lg">
+                          <CornerDownRight size={18} /> {item.label}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -90,12 +97,14 @@ export function MobileSideMenu() {
           >
             {RESOURCES_MENU.map((resource) => (
               <li key={resource.title}>
-                {resource.title}
+                <span className="text-xl text-blue-200">{resource.title}</span>
                 {resource.items.length > 0 && (
                   <ul className="mt-6 space-y-2 opacity-50">
                     {resource.items.map((item) => (
-                      <li key={item.label} className="flex">
-                        <CornerDownRight size={18} /> {item.label}
+                      <li key={item.label}>
+                        <span className="flex text-lg">
+                          <CornerDownRight size={18} /> {item.label}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -110,12 +119,14 @@ export function MobileSideMenu() {
           >
             {PRICES_MENU.map((resource) => (
               <li key={resource.title}>
-                {resource.title}
+                <span className="text-xl text-blue-200">{resource.title}</span>
                 {resource.items.length > 0 && (
                   <ul className="mt-6 space-y-2 opacity-50">
                     {resource.items.map((item) => (
-                      <li key={item.label} className="flex">
-                        <CornerDownRight size={18} /> {item.label}
+                      <li key={item.label}>
+                        <span className="flex text-lg">
+                          <CornerDownRight size={18} /> {item.label}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -137,8 +148,10 @@ export function MobileSideMenu() {
         >
           <X size={32} />
         </button>
-        <div className="w-full pt-16">
-          <h1 className="text-center text-xs uppercase">Nossa Cidade</h1>
+        <div className="flex w-full items-center justify-center pt-10">
+          <div className="rounded-full bg-white p-0.5">
+            <OurCityLogo />
+          </div>
         </div>
 
         <ul className="mt-14 space-y-3 text-2xl">

@@ -33,7 +33,7 @@ export function Header() {
     >
       <MobileSideMenu />
 
-      <div className="relative flex w-full items-center justify-between gap-2 p-[clamp(1rem,2.5vw,3rem)] max-md:flex-wrap">
+      <div className="relative flex w-full items-center justify-between gap-2 p-[clamp(1rem,1.3vw,1.3rem)] max-md:flex-wrap">
         <div className="absolute top-0 left-0 flex w-full items-end max-md:hidden">
           <SubMenu
             menuIndex={eventIndicator.index}
@@ -151,7 +151,7 @@ export function Header() {
             <Link
               href={APP_ROUTES.public.auth.signUp}
               data-value={eventIndicator.visible}
-              className="bg-rise-fade group rounded-full px-4 py-2 font-medium text-black data-[value=true]:bg-blue-500 data-[value=true]:text-white md:p-[clamp(0.60rem,0.95vw,1.4rem)] md:px-6"
+              className="bg-rise-fade group rounded-full px-4 py-2 font-medium text-black data-[value=true]:bg-blue-400 data-[value=true]:text-white md:p-[clamp(0.60rem,0.95vw,1.4rem)] md:px-6"
             >
               <div className="overflow-hidden">
                 <span className="bg-rise-fade-content group-hover:animate-rise-from-bottom before:content-['Registrar']">

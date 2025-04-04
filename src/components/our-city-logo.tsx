@@ -1,7 +1,20 @@
+import Image from "next/image";
+
 export function OurCityLogo() {
   return (
-    <p className="text-[clamp(0.90rem,1.6vw,2rem)]">
-      Nossa <br className="lg:hidden" /> Cidade
-    </p>
+    <div
+      style={{
+        width: "clamp(2rem, 6vw, 4rem)",
+        height: "clamp(2rem, 6vw, 4rem)",
+      }}
+    >
+      <Image
+        src="/imgs/logos/our-city-logo.png"
+        alt="logo nossa cidade"
+        width={500}
+        height={500}
+        className="h-full w-full object-contain"
+      />
+    </div>
   );
 }

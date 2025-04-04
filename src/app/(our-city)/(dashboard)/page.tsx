@@ -8,7 +8,7 @@ import { FAQ_ITEMS } from "@/constants/faq-items";
 export default function Dashboard() {
   return (
     <div>
-      <main className="pt-20 max-md:pt-32 lg:pt-28">
+      <main className="pt-24 max-md:pt-24 lg:pt-28">
         <section className="relative flex flex-col justify-between bg-[url('/imgs/others/deco-4.png')] bg-cover bg-top bg-no-repeat text-center">
           <div className="relative px-2 pt-16">
             <h1 className="drop-shadow-h1 text-[clamp(2.4rem,3vw,3.6rem)] leading-none font-bold max-md:text-start">

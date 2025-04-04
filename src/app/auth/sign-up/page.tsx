@@ -1,12 +1,16 @@
 import { OurCityLogo } from "@/components/our-city-logo";
 import { FormSignUp } from "../components/form-sign-up";
+import Link from "next/link";
+import { APP_ROUTES } from "@/constants/app-routes";
 
 export default async function SignUp() {
   return (
-    <main className="background-1 min-h-screen flex-row-reverse lg:flex">
-      <div className="p-10">
-        <OurCityLogo />
-      </div>
+    <main className="background-1 min-h-screen flex-row-reverse md:p-10 lg:flex">
+      <Link href={APP_ROUTES.public.dashboard}>
+        <div className="h-24 w-24">
+          <OurCityLogo />
+        </div>
+      </Link>
 
       <FormSignUp />
 
