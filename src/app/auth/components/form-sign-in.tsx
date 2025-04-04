@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import type z from "zod";
 import { FormError } from "./form-error";
 import { APP_ROUTES } from "@/constants/app-routes";
+import Image from "next/image";
 
 type LoginFormData = z.infer<typeof signInFormSchema>;
 
@@ -59,37 +60,35 @@ export function FormSignIn() {
 
   return (
     <motion.div
-      className="bg-base_color_text_top mx-auto mt-10 w-[90vw] max-w-[450px] rounded-xl p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-hidden md:mt-28"
+      className="mx-auto mt-10 w-[90vw] max-w-[450px] p-4 text-slate-800 drop-shadow-2xl focus:outline-hidden md:mt-28"
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{
         duration: 1,
       }}
     >
-      <h1 className="text-base_one_reference_header mb-4 text-center font-bold uppercase">
-        Fazer login
-      </h1>
+      <h1 className="mb-4 text-center font-bold uppercase">Fazer login</h1>
 
       <form className="space-y-8" onSubmit={handleSubmit(handleSignInForm)}>
         <fieldset className="flex flex-col gap-6">
-          <label className="flex flex-col" htmlFor="email">
+          <label className="flex flex-col gap-1" htmlFor="email">
             Email
             <input
               id="email"
               placeholder="pedro@gmail.com"
-              className="p-2"
+              className="rounded-md bg-slate-200 p-2"
               {...register("email")}
             />
             <FormError errors={errors.email?.message} />
           </label>
 
-          <label className="flex flex-col" htmlFor="password">
+          <label className="flex flex-col gap-1" htmlFor="password">
             Senha
             <input
               type="password"
               id="password"
               placeholder="******"
-              className="p-2"
+              className="rounded-md bg-slate-200 p-2"
               {...register("password")}
             />
             <FormError errors={errors.password?.message} />
@@ -99,30 +98,37 @@ export function FormSignIn() {
         <div className="flex justify-center">
           <button
             type="submit"
-            className="hover:bg-base_one_reference_header hover:text-base_color_text_top w-60 gap-4 font-semibold"
+            className="group w-32 gap-4 rounded-md bg-blue-400 p-1 text-white hover:bg-blue-500 hover:duration-300"
           >
             {isSubmitting ? <p>Carregando...</p> : <p>Entrar</p>}
           </button>
         </div>
       </form>
 
-      <div className="mt-4 flex justify-center">
+      <div className="mt-6 flex justify-center">
         <button
           type={"button"}
           onClick={handleLoginWithGoogle}
-          className="hover:bg-base_one_reference_header hover:text-base_color_text_top w-60 gap-4 font-semibold"
+          className="h-10 w-10 gap-4 hover:scale-110"
         >
-          Entrar com Google
+          <Image
+            src="/imgs/logos/google-logo.png"
+            alt="logo google"
+            width={100}
+            height={100}
+          />
         </button>
       </div>
 
-      <button
-        type="button"
-        onClick={handleNavigateToSignUp}
-        className="hover:bg-base_one_reference_header w-full text-center"
-      >
-        Criar conta
-      </button>
+      <div className="mt-6 flex justify-center">
+        <button
+          type="button"
+          onClick={handleNavigateToSignUp}
+          className="w-32 gap-4 rounded-md bg-blue-400 p-1 text-white hover:bg-blue-500 hover:duration-300"
+        >
+          Criar conta
+        </button>
+      </div>
     </motion.div>
   );
 }

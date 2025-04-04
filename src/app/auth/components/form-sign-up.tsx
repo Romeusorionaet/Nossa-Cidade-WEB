@@ -152,7 +152,7 @@ export function FormSignUp() {
         <div className="flex justify-center">
           <button
             type="submit"
-            className="group w-32 gap-4 rounded-md bg-blue-400 p-1 font-semibold text-white hover:bg-blue-500 hover:duration-300"
+            className="group w-32 gap-4 rounded-md bg-blue-400 p-1 text-white hover:bg-blue-500 hover:duration-300"
           >
             {isSubmitting ? <p>Carregando...</p> : <p>Criar</p>}
           </button>
@@ -163,7 +163,7 @@ export function FormSignUp() {
         <button
           type="button"
           onClick={handleNavigateToSignIn}
-          className="w-full gap-4 font-semibold"
+          className="w-full gap-4 font-semibold hover:underline"
         >
           Voltar a tela de login
         </button>
