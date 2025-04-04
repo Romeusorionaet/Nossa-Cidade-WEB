@@ -1,11 +1,16 @@
+import { OurCityLogo } from "@/components/our-city-logo";
 import { FormSignUp } from "../components/form-sign-up";
 
 export default async function SignUp() {
   return (
-    <div className="flex-row-reverse lg:flex">
+    <main className="background-1 min-h-screen flex-row-reverse lg:flex">
+      <div className="p-10">
+        <OurCityLogo />
+      </div>
+
       <FormSignUp />
 
-      <div className="max-lg:bg-base_one_reference_header max-lg:text-base_color_text_top mt-10 p-4 text-justify lg:w-96">
+      <div className="mt-10 p-4 text-justify lg:w-96">
         <p>
           <strong>Nota</strong>: Ao criar uma conta, você receberá um e-mail com
           um token de confirmação. Verifique sua caixa de entrada para confirmar
@@ -13,6 +18,6 @@ export default async function SignUp() {
           seu e-mail.
         </p>
       </div>
-    </div>
+    </main>
   );
 }

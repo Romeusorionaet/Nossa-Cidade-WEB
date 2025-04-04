@@ -6,7 +6,7 @@ interface Props {
   username: string;
   email: string;
   password: string;
-  picture: string;
+  file?: File | null;
 }
 
 interface ResponseProps {
@@ -18,14 +18,19 @@ export const signUp = async ({
   username,
   email,
   password,
-  picture,
+  file,
 }: Props): Promise<ResponseProps> => {
+  const formData = new FormData();
+  if (file) formData.append("file", file);
+  formData.append("username", username);
+  formData.append("email", email);
+  formData.append("password", password);
+
   try {
-    const response = await api.post("/auth/register", {
-      username,
-      email,
-      password,
-      picture,
+    const response = await api.post("/auth/register/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
 
     return {
@@ -33,6 +38,7 @@ export const signUp = async ({
       message: response.data.message,
     };
   } catch (err: any) {
+    console.log(err.response.data, "==");
     const errorMessage =
       err.response?.data?.message ||
       "Aconteceu um erro inesperado, tente novamente mais tarde.";
