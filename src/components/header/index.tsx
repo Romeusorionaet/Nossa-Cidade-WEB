@@ -29,7 +29,7 @@ export function Header() {
       onMouseLeave={handleMouseLeave}
       data-value={eventIndicator.visible}
       data-scroll={scrolled}
-      className="fixed top-0 left-0 z-20 w-screen duration-300 data-[scroll=true]:bg-white/70 data-[scroll=true]:text-black data-[scroll=true]:backdrop-blur-sm data-[value=true]:text-black data-[scroll=true]:max-md:h-24"
+      className="fixed top-0 left-0 z-30 w-screen duration-300 data-[scroll=true]:bg-white/70 data-[scroll=true]:text-black data-[scroll=true]:backdrop-blur-sm data-[value=true]:text-black data-[scroll=true]:max-md:h-24"
     >
       <MobileSideMenu />
 

@@ -4,20 +4,55 @@ import "swiper/css";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { FAQ_ITEMS } from "@/constants/faq-items";
+import { PricingSection } from "@/components/pricing-section";
+import { ImpactChart } from "@/components/impact-chart";
+import { DummyNewsSection } from "@/components/dummy-news-section";
 
 export default function Dashboard() {
   return (
     <div>
       <main className="pt-24 max-md:pt-24 lg:pt-28">
-        <section className="relative flex flex-col justify-between bg-[url('/imgs/others/deco-4.png')] bg-cover bg-top bg-no-repeat text-center">
+        <section className="relative flex flex-col justify-between text-center">
           <div className="relative px-2 pt-16">
-            <h1 className="drop-shadow-h1 text-[clamp(2.4rem,3vw,3.6rem)] leading-none font-bold max-md:text-start">
-              Encontre. <br /> Conecte. <br /> Compre. <br /> Tudo na Nossa
-              Cidade.
+            <div className="flex cursor-default items-center justify-center max-md:flex-col">
+              <div
+                style={{
+                  clipPath: "polygon(0 0, 100% 25%, 100% 75%, 0% 100%)",
+                }}
+                className="flex h-28 w-[clamp(12rem,20vw,30rem)] items-center justify-center bg-gradient-to-r from-slate-500 to-blue-400"
+              >
+                <span className="text-[clamp(2.4rem,3vw,3.6rem)] text-white">
+                  Encontre
+                </span>
+              </div>
+              <div
+                style={{
+                  clipPath: "polygon(0 25%, 100% 0, 100% 100%, 0% 75%)",
+                }}
+                className="flex h-28 w-[clamp(12rem,20vw,30rem)] items-center justify-center bg-gradient-to-r from-blue-400 to-blue-500"
+              >
+                <span className="text-[clamp(2.4rem,3vw,3.6rem)] text-white">
+                  Conecte
+                </span>
+              </div>
+              <div
+                style={{
+                  clipPath: "polygon(0 0, 100% 25%, 100% 75%, 0% 100%)",
+                }}
+                className="flex h-28 w-[clamp(12rem,20vw,30rem)] items-center justify-center bg-gradient-to-r from-blue-500 to-slate-500"
+              >
+                <span className="text-[clamp(2.4rem,3vw,3.6rem)] text-white">
+                  Compre
+                </span>
+              </div>
+            </div>
+
+            <h1 className="drop-shadow-h1 mt-10 text-[clamp(2.4rem,3vw,3.6rem)] leading-none font-bold max-md:text-start">
+              Tudo na Nossa Cidade
             </h1>
 
             <div className="pt-12">
-              <p className="drop-shadow-p font-bold text-white">
+              <p className="drop-shadow-p font-bold text-zinc-500">
                 Saiba exatamente onde comprar na nossa cidade – veja no mapa e
                 aproveite!
               </p>
@@ -47,19 +82,19 @@ export default function Dashboard() {
           <div className="absolute -bottom-28 left-0 z-10 h-10 w-full bg-black blur-2xl" />
         </section>
 
-        <section className="background-1 relative space-y-10 overflow-x-hidden py-28">
-          <div className="mx-auto h-screen w-full max-w-[1600px] rounded-md px-4 pt-10 md:h-[650px]">
+        <div className="background-1 relative h-[300vh] pt-44 pb-28">
+          <section className="sticky top-20 z-10 mx-auto h-screen w-full max-w-[1600px] px-4 pt-10">
             <Image
               src="/imgs/others/deco-8.png"
               alt=""
               width={1000}
               height={1000}
-              className="absolute top-[500px] h-[400px] w-full object-cover md:top-72 md:left-1/2 md:w-96"
+              className="absolute top-[100px] h-[400px] w-full object-cover md:top-56 md:left-1/2 md:w-96"
               data-scroll
               data-scroll-speed={0.4}
             />
 
-            <h2>
+            <h2 className="text-[clamp(2rem,2.4vw,3rem)]">
               Destacando <br /> a conexão local
             </h2>
 
@@ -73,61 +108,181 @@ export default function Dashboard() {
                 sempre a melhor opção?
               </p>
             </div>
-          </div>
+          </section>
 
-          <div className="relative h-screen">
-            <h2
-              data-scroll
-              data-scroll-speed={0.1}
-              className="px-4 text-center"
-            >
-              Conforto e Conveniência: <br /> Compre de Casa ou Encontre o
-              Melhor Perto de Você
-            </h2>
+          <div className="pointer-events-none absolute top-[100vh] z-20 h-[100vh] w-full">
+            <section className="sticky top-0 h-screen bg-amber-50">
+              <h2
+                data-scroll
+                data-scroll-speed={0.1}
+                className="px-4 pt-20 text-center"
+              >
+                Conforto e Conveniência: <br /> Compre de Casa ou Encontre o
+                Melhor Perto de Você
+              </h2>
 
-            <div className="mx-auto h-full w-full max-w-[1600px] rounded-md bg-[url('/imgs/others/deco-1.png')] bg-left bg-no-repeat md:bg-center" />
+              <div className="mx-auto h-full w-full max-w-[1600px] rounded-md bg-[url('/imgs/others/deco-1.png')] bg-left bg-no-repeat md:bg-center" />
 
-            <div className="top-72 right-44 -mt-20 px-4 md:absolute md:w-96">
-              <p className="text-zinc-700">
-                Na Nossa Cidade, trazemos essa facilidade para você! Aqui, você
-                tem a mesma experiência de comprar com conforto, direto de casa.
-                E se preferir sair, já saberá exatamente onde ir.
-              </p>
-            </div>
-          </div>
+              <div className="top-72 right-44 -mt-10 px-4 md:absolute md:w-96">
+                <p>
+                  Na Nossa Cidade, trazemos essa facilidade para você! Aqui,
+                  você tem a mesma experiência de comprar com conforto, direto
+                  de casa. E se preferir sair, já saberá exatamente onde ir.
+                </p>
+              </div>
+            </section>
 
-          <div className="max-md:mt-96 md:-mt-56">
-            <div className="mx-auto h-screen w-full max-w-[1600px] rounded-md bg-cyan-950 bg-[url('/imgs/others/deco-2.png')] bg-bottom bg-no-repeat px-4 pt-10 md:pt-72">
-              <h2 className="text-white mix-blend-exclusion">
+            <section className="background-1 mx-auto w-full max-w-[1600px] rounded-md bg-[url('/imgs/others/deco-2.png')] bg-bottom bg-no-repeat px-4 pt-56 max-md:pb-20">
+              <h2 className="text-[clamp(2rem,2.4vw,3rem)]">
                 Conectando Você ao Comércio Local: <br /> Encontre as Melhores
                 Ofertas Perto de Você
               </h2>
+
+              <div className="mt-20 grid grid-cols-1 gap-6 md:grid-cols-3">
+                <div className="rounded-lg bg-white/60 p-4 shadow-lg backdrop-blur-md">
+                  <h3 className="text-lg font-semibold">
+                    Pizzaria da Esquina 🍕
+                  </h3>
+                  <p className="text-sm text-zinc-700">
+                    Combo família com 30% OFF
+                  </p>
+                </div>
+                <div className="rounded-lg bg-white/60 p-4 shadow-lg backdrop-blur-md">
+                  <h3 className="text-lg font-semibold">
+                    Mercadinho Central 🛒
+                  </h3>
+                  <p className="text-sm text-zinc-700">
+                    Leve 3, pague 2 no hortifruti
+                  </p>
+                </div>
+                <div className="rounded-lg bg-white/60 p-4 shadow-lg backdrop-blur-md">
+                  <h3 className="text-lg font-semibold">Salão Top Beleza 💇‍♀️</h3>
+                  <p className="text-sm text-zinc-700">
+                    Agende e ganhe 20% de desconto
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-20 flex flex-col items-center justify-center gap-4 text-center">
+                <p className="text-lg font-medium text-zinc-800">
+                  Descubra promoções incríveis perto de você!
+                </p>
+                <button
+                  type="button"
+                  className="rounded-full bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700"
+                >
+                  Ativar Localização
+                </button>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <section className="mx-auto mt-96 mb-16 w-full max-w-[500px] space-y-10 px-4 text-center md:mt-20">
+          <p data-scroll data-scroll-speed={0.1} className="font-light">
+            A Nossa Cidade é uma plataforma focada no comércio local,
+            impulsionando as vendas da sua região e conectando comerciantes aos
+            clientes próximos.
+          </p>
+
+          <Image
+            src="/imgs/others/deco-5.png"
+            alt=""
+            width={500}
+            height={500}
+            className="mx-auto h-20 w-20"
+          />
+
+          <p className="font-light">
+            Agora, ao sair de casa, você já sabe onde encontrar aquele sapato
+            pelo melhor preço ou aquela bolsa estilosa que tanto procurava—e
+            muitas vezes, com um valor ainda melhor do que imaginava, bem
+            pertinho de você!
+          </p>
+        </section>
+
+        <section className="px-4 py-10">
+          <h3 className="text-[clamp(2rem,2.4vw,3rem)]">
+            Veja como a Nossa Cidade já faz a diferença!
+          </h3>
+
+          <blockquote className="mt-10 rounded-md bg-white/60 p-6 text-zinc-800 italic shadow-md backdrop-blur-md">
+            “Ia comprar um fone online, mas achei o mesmo modelo numa loja a
+            duas ruas de casa. Pude testar na hora e ainda paguei mais barato!”
+            <footer className="mt-2 text-sm text-zinc-600">
+              — Lucas, Belo Horizonte
+            </footer>
+          </blockquote>
+
+          <blockquote className="mt-6 rounded-md bg-white/60 p-6 text-zinc-800 italic shadow-md backdrop-blur-md">
+            “Sempre achava que só dava pra encontrar essas ofertas na
+            internet... agora vejo que o comércio local tem muito a oferecer!”
+            <footer className="mt-2 text-sm text-zinc-600">
+              — Mariana, Fortaleza
+            </footer>
+          </blockquote>
+
+          <blockquote className="mt-6 rounded-md bg-white/60 p-6 text-zinc-800 italic shadow-md backdrop-blur-md">
+            “Comprei meu liquidificador na loja do bairro. Cheguei lá e ainda
+            ganhei desconto só por ter visto pela plataforma. Muito mais
+            prático!”
+            <footer className="mt-2 text-sm text-zinc-600">
+              — Diego, Curitiba
+            </footer>
+          </blockquote>
+
+          <blockquote className="mt-6 rounded-md bg-white/60 p-6 text-zinc-800 italic shadow-md backdrop-blur-md">
+            “Eu sou do tipo que gosta de ver o produto de perto. Com a
+            plataforma, achei a loja certa rapidinho — sem perder tempo com
+            entrega.”
+            <footer className="mt-2 text-sm text-zinc-600">
+              — Patrícia, Recife
+            </footer>
+          </blockquote>
+
+          <blockquote className="mt-6 rounded-md bg-white/60 p-6 text-zinc-800 italic shadow-md backdrop-blur-md">
+            “Ia comprar uma camiseta pela Shopee, mas preferi pagar um pouco
+            mais e buscar na loja aqui perto no mesmo dia. Valeu muito a pena —
+            pude experimentar na hora e sair com o tamanho certo, sem dúvidas.”
+            <footer className="mt-2 text-sm text-zinc-600">
+              — Renan, São Paulo
+            </footer>
+          </blockquote>
+        </section>
+
+        <section className="bg-white px-6 py-16">
+          <h2 className="mb-8 text-center text-3xl font-bold">
+            Resultados de quem usa a Nossa Cidade
+          </h2>
+
+          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 text-center md:grid-cols-3">
+            <div className="rounded-xl bg-slate-100 p-6 shadow-sm">
+              <p className="text-5xl font-bold text-blue-500">+65%</p>
+              <p className="mt-2 text-zinc-700">
+                Visibilidade nos primeiros 15 dias
+              </p>
             </div>
 
-            <div className="mx-auto mt-28 w-full max-w-[500px] space-y-10 px-4 text-center text-white">
-              <p data-scroll data-scroll-speed={0.1} className="font-light">
-                A Nossa Cidade é uma plataforma focada no comércio local,
-                impulsionando as vendas da sua região e conectando comerciantes
-                aos clientes próximos.
+            <div className="rounded-xl bg-slate-100 p-6 shadow-sm">
+              <p className="text-5xl font-bold text-green-500">+40%</p>
+              <p className="mt-2 text-zinc-700">
+                Mais pessoas visitando a loja
               </p>
+            </div>
 
-              <Image
-                src="/imgs/others/deco-5.png"
-                alt=""
-                width={500}
-                height={500}
-                className="mx-auto h-20 w-20"
-              />
-
-              <p className="font-light">
-                Agora, ao sair de casa, você já sabe onde encontrar aquele
-                sapato pelo melhor preço ou aquela bolsa estilosa que tanto
-                procurava—e muitas vezes, com um valor ainda melhor do que
-                imaginava, bem pertinho de você!
+            <div className="rounded-xl bg-slate-100 p-6 shadow-sm">
+              <p className="text-5xl font-bold text-orange-500">92%</p>
+              <p className="mt-2 text-zinc-700">
+                Dos usuários dizem que preferem comprar perto quando encontram o
+                produto
               </p>
             </div>
           </div>
+
+          <ImpactChart />
         </section>
+
+        <PricingSection />
 
         <section
           id="faq"
@@ -162,18 +317,16 @@ export default function Dashboard() {
             ))}
           </div>
 
-          <div className="mt-16 flex flex-wrap justify-center gap-16 md:justify-around">
-            <div className="text-center">
-              <h3 className="font-extrabold">Ficou alguma dúvida?</h3>
-              <div>
-                <p className="uppercase">Me chame agora mesmo no</p>
-                <button
-                  type="button"
-                  className="rounded-md bg-green-600 p-2 text-white duration-500 hover:bg-green-500"
-                >
-                  WhatsApp
-                </button>
-              </div>
+          <div className="mt-16 flex flex-col items-center justify-center gap-10 text-center">
+            <h3 className="font-extrabold">Ficou alguma dúvida?</h3>
+            <div className="space-y-4">
+              <p className="uppercase">Me chame agora mesmo no</p>
+              <button
+                type="button"
+                className="rounded-md bg-green-600 p-2 text-white duration-500 hover:bg-green-500"
+              >
+                WhatsApp
+              </button>
             </div>
           </div>
         </section>
@@ -205,6 +358,8 @@ export default function Dashboard() {
             clientes e expandir seu negócio.
           </p>
         </section>
+
+        <DummyNewsSection />
       </main>
     </div>
   );
