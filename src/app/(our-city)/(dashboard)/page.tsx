@@ -13,15 +13,15 @@ export default function Dashboard() {
     <div>
       <main className="pt-24 max-md:pt-24 lg:pt-28">
         <section className="relative flex flex-col justify-between text-center">
-          <div className="relative px-2 pt-16">
+          <div className="relative z-10 px-2 pt-16">
             <div className="flex cursor-default items-center justify-center max-md:flex-col">
               <div
                 style={{
                   clipPath: "polygon(0 0, 100% 25%, 100% 75%, 0% 100%)",
                 }}
-                className="flex h-28 w-[clamp(12rem,20vw,30rem)] items-center justify-center bg-gradient-to-r from-slate-500 to-blue-400"
+                className="flex h-28 w-[clamp(12rem,20vw,30rem)] items-center justify-center rounded-md bg-gradient-to-r from-amber-100 to-blue-200"
               >
-                <span className="text-[clamp(2.4rem,3vw,3.6rem)] text-white">
+                <span className="text-[clamp(2.4rem,3vw,3.6rem)]">
                   Encontre
                 </span>
               </div>
@@ -29,45 +29,41 @@ export default function Dashboard() {
                 style={{
                   clipPath: "polygon(0 25%, 100% 0, 100% 100%, 0% 75%)",
                 }}
-                className="flex h-28 w-[clamp(12rem,20vw,30rem)] items-center justify-center bg-gradient-to-r from-blue-400 to-blue-500"
+                className="flex h-28 w-[clamp(12rem,20vw,30rem)] items-center justify-center bg-gradient-to-r from-blue-200 to-blue-200"
               >
-                <span className="text-[clamp(2.4rem,3vw,3.6rem)] text-white">
-                  Conecte
-                </span>
+                <span className="text-[clamp(2.4rem,3vw,3.6rem)]">Conecte</span>
               </div>
               <div
                 style={{
                   clipPath: "polygon(0 0, 100% 25%, 100% 75%, 0% 100%)",
                 }}
-                className="flex h-28 w-[clamp(12rem,20vw,30rem)] items-center justify-center bg-gradient-to-r from-blue-500 to-slate-500"
+                className="flex h-28 w-[clamp(12rem,20vw,30rem)] items-center justify-center bg-gradient-to-r from-blue-200 to-amber-200"
               >
-                <span className="text-[clamp(2.4rem,3vw,3.6rem)] text-white">
-                  Compre
-                </span>
+                <span className="text-[clamp(2.4rem,3vw,3.6rem)]">Compre</span>
               </div>
             </div>
 
-            <h1 className="drop-shadow-h1 mt-10 text-[clamp(2.4rem,3vw,3.6rem)] leading-none font-bold max-md:text-start">
+            <h1 className="mt-10 text-[clamp(2.4rem,3vw,3.6rem)] leading-none font-bold text-white max-md:text-start">
               Tudo na Nossa Cidade
             </h1>
 
-            <div className="pt-12">
-              <p className="drop-shadow-p font-bold text-zinc-500">
+            <div className="w-full pt-12">
+              <p className="drop-shadow-p font-bold text-zinc-50">
                 Saiba exatamente onde comprar na nossa cidade – veja no mapa e
                 aproveite!
               </p>
 
-              <div className="mt-10 flex items-center justify-center gap-10">
+              <div className="mt-10 flex w-full justify-around">
                 <Link
                   href="/map-city"
-                  className="inline-block w-44 rounded-md bg-zinc-500 p-1 text-white duration-500 hover:bg-zinc-700"
+                  className="block w-44 rounded-md border border-white/20 p-1 text-white duration-500 hover:bg-zinc-700"
                 >
                   Ir para o mapa
                 </Link>
 
                 <Link
                   href="/shopping"
-                  className="inline-block w-44 rounded-md bg-zinc-500 p-1 text-white duration-500 hover:bg-zinc-700"
+                  className="block w-44 rounded-md border border-white/20 p-1 text-white duration-500 hover:bg-zinc-700"
                 >
                   Ver produtos
                 </Link>
@@ -75,7 +71,18 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="mt-16 -mb-16">
+          <div className="absolute top-0 -z-20 h-full w-full bg-black">
+            <video
+              src="/mp4/lathe-gradients.mp4"
+              controls={false}
+              autoPlay
+              muted
+              loop
+              className="h-full w-full mix-blend-exclusion"
+            />
+          </div>
+
+          <div className="mt-16 -mb-32">
             <CarouselPreviewsMap />
           </div>
 
@@ -111,28 +118,30 @@ export default function Dashboard() {
           </section>
 
           <div className="pointer-events-none absolute top-[100vh] z-20 h-[100vh] w-full">
-            <section className="sticky top-0 h-screen bg-amber-50">
-              <h2
-                data-scroll
-                data-scroll-speed={0.1}
-                className="px-4 pt-20 text-center"
-              >
-                Conforto e Conveniência: <br /> Compre de Casa ou Encontre o
-                Melhor Perto de Você
-              </h2>
+            <section className="border-top rounded-t-2xl border-4 border-x-1 border-white pt-20 backdrop-blur-sm">
+              <div className="sticky top-0 h-screen rounded-t-2xl bg-amber-50">
+                <h2
+                  data-scroll
+                  data-scroll-speed={0.1}
+                  className="px-4 pt-20 text-center"
+                >
+                  Conforto e Conveniência: <br /> Compre de Casa ou Encontre o
+                  Melhor Perto de Você
+                </h2>
 
-              <div className="mx-auto h-full w-full max-w-[1600px] rounded-md bg-[url('/imgs/others/deco-1.png')] bg-left bg-no-repeat md:bg-center" />
+                <div className="mt-20 rounded-md bg-white p-1 px-4 md:absolute md:top-72 md:right-44 md:-mt-10 md:w-96">
+                  <p>
+                    Na Nossa Cidade, trazemos essa facilidade para você! Aqui,
+                    você tem a mesma experiência de comprar com conforto, direto
+                    de casa. E se preferir sair, já saberá exatamente onde ir.
+                  </p>
+                </div>
 
-              <div className="top-72 right-44 -mt-10 px-4 md:absolute md:w-96">
-                <p>
-                  Na Nossa Cidade, trazemos essa facilidade para você! Aqui,
-                  você tem a mesma experiência de comprar com conforto, direto
-                  de casa. E se preferir sair, já saberá exatamente onde ir.
-                </p>
+                <div className="mx-auto h-full w-full max-w-[1200px] rounded-md bg-[url('/imgs/others/deco-14.png')] bg-contain bg-center bg-no-repeat max-md:-mt-20" />
               </div>
             </section>
 
-            <section className="background-1 mx-auto w-full max-w-[1600px] rounded-md bg-[url('/imgs/others/deco-2.png')] bg-bottom bg-no-repeat px-4 pt-56 max-md:pb-20">
+            <section className="background-1 mx-auto w-full max-w-[1600px] rounded-md px-4 pt-20 max-md:pb-20 md:pt-56">
               <h2 className="text-[clamp(2rem,2.4vw,3rem)]">
                 Conectando Você ao Comércio Local: <br /> Encontre as Melhores
                 Ofertas Perto de Você
@@ -178,7 +187,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <section className="mx-auto mt-96 mb-16 w-full max-w-[500px] space-y-10 px-4 text-center md:mt-20">
+        <section className="mx-auto mt-60 mb-16 w-full max-w-[500px] space-y-10 px-4 text-center md:mt-20">
           <p data-scroll data-scroll-speed={0.1} className="font-light">
             A Nossa Cidade é uma plataforma focada no comércio local,
             impulsionando as vendas da sua região e conectando comerciantes aos
@@ -201,7 +210,7 @@ export default function Dashboard() {
           </p>
         </section>
 
-        <section className="px-4 py-10">
+        <section className="mx-auto w-full max-w-[1200px] px-4 py-10">
           <h3 className="text-[clamp(2rem,2.4vw,3rem)]">
             Veja como a Nossa Cidade já faz a diferença!
           </h3>

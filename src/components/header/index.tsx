@@ -128,7 +128,7 @@ export function Header() {
         <div className="flex max-md:flex-col-reverse">
           <div
             data-scroll={scrolled}
-            className="flex duration-300 max-md:absolute max-md:top-[4rem] max-md:left-2 max-md:w-[95%] max-md:justify-center data-[scroll=true]:max-md:justify-start md:w-auto md:pr-2 lg:w-64 lg:justify-end 2xl:w-96"
+            className="flex duration-300 max-md:absolute max-md:top-[3.5rem] max-md:left-2 max-md:w-[95%] max-md:justify-center data-[scroll=true]:max-md:justify-start md:w-auto md:pr-2 lg:w-64 lg:justify-end 2xl:w-96"
           >
             <InputHeader
               eventIndicatorVisible={eventIndicator.visible}
