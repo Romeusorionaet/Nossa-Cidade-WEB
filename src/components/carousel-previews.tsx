@@ -7,20 +7,21 @@ import type { Swiper as SwiperCore } from "swiper";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-export function CarouselPreviewsMap() {
+export function CarouselPreviews() {
   const { widthScreen } = useWidthScreen();
   const swiperRef = useRef<SwiperCore | null>(null);
 
   const getSlidesPerView = () => {
     if (!widthScreen) return 1.2;
-    if (widthScreen > 768) return 2.5;
-    if (widthScreen <= 768 && widthScreen > 568) return 2;
+    if (widthScreen > 1000) return 4.2;
+    if (widthScreen > 768 && widthScreen < 1000) return 2.5;
+    if (widthScreen <= 768 && widthScreen > 568) return 2.2;
     if (widthScreen <= 568) return 1.2;
     return 1.2;
   };
 
   return (
-    <div className="relative">
+    <div className="relative max-md:pl-16">
       <button
         type="button"
         onClick={() => swiperRef.current?.slidePrev()}
@@ -37,7 +38,6 @@ export function CarouselPreviewsMap() {
       </button>
       <Swiper
         modules={[Autoplay]}
-        spaceBetween={20}
         loop
         autoplay={{
           delay: 4000,
@@ -49,58 +49,69 @@ export function CarouselPreviewsMap() {
           swiperRef.current = swiper;
         }}
       >
-        <SwiperSlide className="wrapper-preview hover:scale-105 hover:duration-500">
-          <div className="h-80">
-            <Image
-              src="/imgs/previews/supermarket.png"
-              alt=""
-              width={1000}
-              height={1000}
-              className="h-full w-full rounded-md object-contain"
-            />
-          </div>
-        </SwiperSlide>
-        <SwiperSlide className="wrapper-preview hover:scale-105 hover:duration-500">
-          <div className="h-80">
-            <Image
-              src="/imgs/previews/butcher-shop.png"
-              alt=""
-              width={1000}
-              height={1000}
-              className="h-full w-full rounded-md object-contain"
-            />
-          </div>
-        </SwiperSlide>
-        <SwiperSlide className="wrapper-preview hover:scale-105 hover:duration-500">
-          <div className="h-80">
+        <SwiperSlide className="wrapper-preview group">
+          <div className="h-56 w-56 rounded-md p-3 group-hover:p-0 group-hover:duration-500 md:h-60 md:w-60">
             <Image
               src="/imgs/previews/bakery.png"
               alt=""
               width={1000}
               height={1000}
-              className="h-full w-full rounded-md object-contain"
+              className="h-full w-full rounded-md object-cover"
             />
           </div>
         </SwiperSlide>
-        <SwiperSlide className="wrapper-preview hover:scale-105 hover:duration-500">
-          <div className="h-80">
-            <Image
-              src="/imgs/previews/clinic.png"
-              alt=""
-              width={1000}
-              height={1000}
-              className="h-full w-full rounded-md object-contain"
-            />
-          </div>
-        </SwiperSlide>
-        <SwiperSlide className="wrapper-preview hover:scale-105 hover:duration-500">
-          <div className="h-80">
+        <SwiperSlide className="wrapper-preview group">
+          <div className="h-56 w-56 rounded-md p-3 group-hover:p-0 group-hover:duration-500 md:h-60 md:w-60">
             <Image
               src="/imgs/previews/beauty-salon.png"
               alt=""
               width={1000}
               height={1000}
-              className="h-full w-full rounded-md object-contain"
+              className="h-full w-full rounded-md object-cover"
+            />
+          </div>
+        </SwiperSlide>
+        <SwiperSlide className="wrapper-preview group">
+          <div className="h-56 w-56 rounded-md p-3 group-hover:p-0 group-hover:duration-500 md:h-60 md:w-60">
+            <Image
+              src="/imgs/previews/butcher-shop.png"
+              alt=""
+              width={1000}
+              height={1000}
+              className="h-full w-full rounded-md object-cover"
+            />
+          </div>
+        </SwiperSlide>
+        <SwiperSlide className="wrapper-preview group">
+          <div className="h-56 w-56 rounded-md p-3 group-hover:p-0 group-hover:duration-500 md:h-60 md:w-60">
+            <Image
+              src="/imgs/previews/clinic.png"
+              alt=""
+              width={1000}
+              height={1000}
+              className="h-full w-full rounded-md object-cover"
+            />
+          </div>
+        </SwiperSlide>
+        <SwiperSlide className="wrapper-preview group">
+          <div className="h-56 w-56 rounded-md p-3 group-hover:p-0 group-hover:duration-500 md:h-60 md:w-60">
+            <Image
+              src="/imgs/previews/restaurant.png"
+              alt=""
+              width={1000}
+              height={1000}
+              className="h-full w-full rounded-md object-cover"
+            />
+          </div>
+        </SwiperSlide>
+        <SwiperSlide className="wrapper-preview group">
+          <div className="h-56 w-56 rounded-md p-3 group-hover:p-0 group-hover:duration-500 md:h-60 md:w-60">
+            <Image
+              src="/imgs/previews/supermarket.png"
+              alt=""
+              width={1000}
+              height={1000}
+              className="h-full w-full rounded-md object-cover"
             />
           </div>
         </SwiperSlide>
