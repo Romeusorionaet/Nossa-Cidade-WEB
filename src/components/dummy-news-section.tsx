@@ -49,7 +49,7 @@ export function DummyNewsSection() {
                   className="object-cover"
                 />
               </div>
-              <div className="bg-zinc-50 p-6">
+              <div className="p-6">
                 <h3 className="mb-2 text-xl font-semibold text-zinc-800">
                   {news.title}
                 </h3>
@@ -62,9 +62,11 @@ export function DummyNewsSection() {
         <div className="mt-12 text-center">
           <button
             type="button"
-            className="rounded-xl bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700"
+            className="bg-rise-fade group rounded-xl border-blue-200 px-6 py-3 font-medium transition"
           >
-            Ver todas as notícias
+            <span className="bg-rise-fade-content group-hover:animate-rise-from-bottom text-black group-hover:text-white before:content-['Ver_todas_as_notícias']">
+              Ver todas as notícias
+            </span>
           </button>
         </div>
       </div>
