@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, ReactNode } from "react";
 import * as THREE from "three";
+import Image from "next/image";
 
 interface VantaBackgroundProps {
   className?: string;
@@ -14,6 +15,7 @@ export function VantaCloudsBackground({
 }: VantaBackgroundProps) {
   const vantaRef = useRef<HTMLDivElement>(null);
   const [vantaEffect, setVantaEffect] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!vantaEffect) {
@@ -37,6 +39,7 @@ export function VantaCloudsBackground({
               speed: 0.7,
             });
             setVantaEffect(effect);
+            setIsLoading(false);
           }
         };
         document.body.appendChild(script);
@@ -52,7 +55,17 @@ export function VantaCloudsBackground({
 
   return (
     <div ref={vantaRef} className={`relative h-full w-full ${className}`}>
-      <div className="absolute inset-0 z-20">{children}</div>
+      {isLoading && (
+        <div className="absolute inset-0 z-20 transition-opacity">
+          <Image
+            src="/imgs/previews/preview-effect-clounds-vanta.png"
+            alt=""
+            width={1000}
+            height={1000}
+            className="h-full w-full object-cover"
+          />
+        </div>
+      )}
     </div>
   );
 }

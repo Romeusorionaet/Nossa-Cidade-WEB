@@ -19,7 +19,7 @@ export default function Dashboard() {
         <VantaCloudsBackground />
       </div>
 
-      <section className="relative flex h-screen flex-col justify-evenly px-2 pt-16">
+      <section className="relative z-20 flex h-screen flex-col justify-evenly px-2 pt-16">
         <div className="mx-auto md:w-1/2">
           <h1 className="px-4 leading-none font-bold text-cyan-50">
             <span className="text-start text-[clamp(1.8rem,2.3vw,2.8rem)] drop-shadow-lg">
