@@ -77,7 +77,7 @@ export function Header() {
             <li
               data-scroll={scrolled}
               data-value={eventIndicator.visible}
-              className="bg-rise-fade group cursor-pointer font-medium hover:border-transparent data-[scroll=true]:border-black data-[value=true]:border-black data-[value=true]:hover:text-white data-[value=true]:hover:before:bg-blue-500 md:border"
+              className="bg-rise-fade group cursor-pointer border border-white font-medium hover:border-transparent data-[scroll=true]:border-black data-[value=true]:border-black data-[value=true]:hover:text-white data-[value=true]:hover:before:bg-blue-500"
             >
               <Link href="#">
                 <div className="overflow-hidden">
