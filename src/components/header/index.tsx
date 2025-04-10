@@ -1,5 +1,3 @@
-"use client";
-
 import { HoverBackgroundIndicator } from "./hover-background-Indicator";
 import { MobileSideMenu } from "./mobile-side-menu";
 import "@/assets/styles/utilities/bg-rise-fade.css";

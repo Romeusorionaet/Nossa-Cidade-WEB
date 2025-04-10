@@ -9,7 +9,9 @@ import LocomotiveScroll, {
 } from "locomotive-scroll";
 import { SessionProvider } from "next-auth/react";
 import { useEffect, useRef, type ReactNode } from "react";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import "@/assets/styles/base/globals.css";
+import "@/assets/styles/utilities/background-section.css";
+import "@/assets/styles/utilities/no-spinner-input-number.css";
 
 interface CustomLocomotiveScrollOptions extends ILocomotiveScrollOptions {
   el?: HTMLElement | null;
@@ -34,7 +36,6 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
   return (
     <div ref={scrollContainerRef}>
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
         <SessionProvider>
           <UserContextProvider>
             <FilterBusinessPointsContextProvider>
