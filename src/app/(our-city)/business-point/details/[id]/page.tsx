@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { ContentBusinessPointDetails } from "../../components/content-business-point-details";
 
-interface ParamsProps {
-  params: {
+interface PageProps {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default async function Details({ params }: ParamsProps) {
+export default async function Details({ params }: PageProps) {
   const { id } = await params;
 
   return (

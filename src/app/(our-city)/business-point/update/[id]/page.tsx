@@ -7,9 +7,9 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 
 interface ParamsProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function Update({ params }: ParamsProps) {

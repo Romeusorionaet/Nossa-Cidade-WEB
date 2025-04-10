@@ -1,9 +1,9 @@
 import { PickListDetails } from "../../components/pick-list-details";
 
 interface ParamsProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function RegisterDetails({ params }: ParamsProps) {
