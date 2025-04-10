@@ -6,12 +6,10 @@ import Image from "next/image";
 
 interface VantaBackgroundProps {
   className?: string;
-  children?: ReactNode;
 }
 
 export function VantaCloudsBackground({
   className = "",
-  children,
 }: VantaBackgroundProps) {
   const vantaRef = useRef<HTMLDivElement>(null);
   const [vantaEffect, setVantaEffect] = useState<any>(null);
