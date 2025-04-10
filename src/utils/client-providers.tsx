@@ -10,7 +10,6 @@ import LocomotiveScroll, {
 import { SessionProvider } from "next-auth/react";
 import { useEffect, useRef, type ReactNode } from "react";
 import "@/assets/styles/base/globals.css";
-import "@/assets/styles/base/browser-scrollbar.css";
 import "@/assets/styles/utilities/background-section.css";
 import "@/assets/styles/utilities/no-spinner-input-number.css";
 
