@@ -26,7 +26,7 @@ export default function Dashboard() {
               Tudo na
             </span>
             <br />
-            <span className="inline-block w-full rounded-md bg-cyan-50 p-1 text-center text-[clamp(2.4rem,3vw,3.6rem)] text-blue-300 shadow-2xl drop-shadow-lg">
+            <span className="inline-block w-full rounded-md bg-cyan-50 p-1 text-center text-[clamp(2.4rem,3vw,3.6rem)] text-black/70 shadow-2xl drop-shadow-lg">
               Nossa
             </span>
             <br />
@@ -66,7 +66,7 @@ export default function Dashboard() {
             }}
             className="flex w-[clamp(12rem,20vw,30rem)] items-center justify-center rounded-md bg-gradient-to-r from-red-200/10 to-red-100 md:h-28"
           >
-            <span className="text-[clamp(1.5rem,3vw,3.6rem)] font-light text-cyan-800 xl:font-extralight">
+            <span className="text-[clamp(1.5rem,3vw,3.6rem)] font-light text-black/70 xl:font-extralight">
               Encontre
             </span>
           </div>
@@ -76,7 +76,7 @@ export default function Dashboard() {
             }}
             className="flex w-[clamp(12rem,20vw,30rem)] items-center justify-center bg-gradient-to-r from-blue-200 to-blue-200/10 md:h-28"
           >
-            <span className="text-[clamp(1.5rem,3vw,3.6rem)] font-light text-cyan-800 xl:font-extralight">
+            <span className="text-[clamp(1.5rem,3vw,3.6rem)] font-light text-black/70 xl:font-extralight">
               Conecte
             </span>
           </div>
@@ -86,7 +86,7 @@ export default function Dashboard() {
             }}
             className="flex w-[clamp(12rem,20vw,30rem)] items-center justify-center bg-gradient-to-r from-blue-200/10 to-red-100 md:h-28"
           >
-            <span className="text-[clamp(1.5rem,3vw,3.6rem)] font-light text-cyan-800 xl:font-extralight">
+            <span className="text-[clamp(1.5rem,3vw,3.6rem)] font-light text-black/70 xl:font-extralight">
               Compre
             </span>
           </div>
@@ -115,12 +115,12 @@ export default function Dashboard() {
               data-scroll-speed={-0.04}
               className="text-cyan-50 mix-blend-exclusion"
             >
-              Muitas vezes, quando precisamos comprar algo, nem sempre temos
-              tempo ou paciência para ir até o centro da cidade procurar. O que
-              a maioria das pessoas faz? Abre um app de compras online, encontra
-              o que precisa e finaliza a compra. Isso pode ser eficiente em
-              comparação com a busca tradicional, mas será que é sempre a melhor
-              opção?
+              Muitas vezes, quando precisamos comprar algo, acabamos recorrendo
+              direto aos apps de compras online — pela praticidade e rapidez.
+              Mas e se o que você procura estiver disponível na sua própria
+              cidade, por um preço justo e pronto para levar na hora? Será que
+              vale mesmo a pena esperar dias por algo que poderia estar logo
+              ali, do lado?
             </p>
           </div>
         </section>
@@ -139,13 +139,16 @@ export default function Dashboard() {
 
               <div className="mt-20 rounded-md bg-white p-1 px-4 md:absolute md:top-72 md:right-44 md:-mt-10 md:w-96">
                 <p>
-                  Na Nossa Cidade, trazemos essa facilidade para você! Aqui,
-                  você tem a mesma experiência de comprar com conforto, direto
-                  de casa. E se preferir sair, já saberá exatamente onde ir.
+                  Na Nossa Cidade, unimos praticidade com valorização do
+                  comércio local. Você pode explorar produtos com a mesma
+                  comodidade de uma vitrine online, direto de casa. E se quiser
+                  sair para comprar, já saberá exatamente onde encontrar — com o
+                  benefício de fortalecer a economia da sua região e ter a
+                  confiança de levar o produto certo.
                 </p>
               </div>
 
-              <div className="mx-auto h-full w-full max-w-[1200px] rounded-md bg-[url('/imgs/others/deco-14.png')] bg-contain bg-center bg-no-repeat max-md:-mt-20" />
+              <div className="mx-auto h-full w-full max-w-[1200px] rounded-md bg-[url('/imgs/others/deco-14.png')] bg-contain bg-center bg-no-repeat max-md:-mt-40" />
             </div>
           </section>
 
