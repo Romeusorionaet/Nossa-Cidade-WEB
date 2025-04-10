@@ -5,7 +5,15 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "utfs.io",
+        hostname: "totpi0dl7f.ufs.sh",
+      },
+      {
+        protocol: "https",
+        hostname: "media.licdn.com", //TODO for while
+      },
+      {
+        protocol: "https",
+        hostname: "c14.patreon.com", //TODO for while
       },
     ],
   },
