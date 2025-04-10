@@ -36,6 +36,7 @@ export function VantaFogBackground({
               minWidth: 200.0,
               highlightColor: 0x638d9d,
               midtoneColor: 0x0877ff,
+              speed: 5.0,
             });
             setVantaEffect(effect);
           }

@@ -52,7 +52,7 @@ export function VantaCloudsBackground({
 
   return (
     <div ref={vantaRef} className={`relative h-full w-full ${className}`}>
-      <div className="absolute inset-0 z-10">{children}</div>
+      <div className="absolute inset-0 z-20">{children}</div>
     </div>
   );
 }
