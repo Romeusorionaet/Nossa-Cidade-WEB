@@ -1,5 +1,6 @@
 "use client";
 
+import { Footer } from "@/components/footer";
 import { Header } from "@/components/header/index";
 import { ControlLocationForBusinessPointContextProvider } from "@/contexts/control-location-for-business-point.context";
 import { FormBusinessPointContextProvider } from "@/contexts/form-business-point.context";
@@ -18,6 +19,7 @@ export default function BusinessPointLayout({
           <MobileSideMenuFormContextProvider>
             <Header />
             {children}
+            <Footer />
           </MobileSideMenuFormContextProvider>
         </FormBusinessPointContextProvider>
       </ManageTagsForBusinessPointContextProvider>
