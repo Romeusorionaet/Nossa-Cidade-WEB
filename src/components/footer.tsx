@@ -117,7 +117,7 @@ export function Footer() {
       <div className="flex flex-col items-center px-4 pb-4 text-cyan-50/50">
         <Crown />
         <span className="text-xs">
-          Desenvolvido por Romeu Saores - Desenvolvedor Web
+          Desenvolvido por Romeu Soares - Desenvolvedor Web
         </span>
         <span className="text-xs">romeusoares14569@gmail.com</span>
       </div>
