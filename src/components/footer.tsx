@@ -38,7 +38,7 @@ export function Footer() {
 
             <button
               type="button"
-              className="bg-rise-fade group h-10 w-full bg-gradient-to-r from-blue-400 to-blue-200 md:w-1/2 md:p-[clamp(0.60rem,0.95vw,1rem)]"
+              className="bg-rise-fade group w-full bg-gradient-to-r from-blue-400 to-blue-200 md:w-1/2 md:p-[clamp(0.60rem,0.95vw,1rem)]"
             >
               <span className="bg-rise-fade-content group-hover:animate-rise-from-bottom text-center text-white group-hover:duration-300 before:content-['Enviar']">
                 Enviar
