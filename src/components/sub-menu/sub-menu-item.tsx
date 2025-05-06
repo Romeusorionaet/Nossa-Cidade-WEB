@@ -12,13 +12,10 @@ interface Props {
 
 export const SubMenuItem = ({ title, items }: Props) => (
   <li className="w-full">
-    <Link
-      href="#"
-      className="group inline-block text-[clamp(0.80rem,1.1vw,1.2rem)] font-medium"
-    >
+    <p className="group inline-block text-[clamp(0.80rem,1.1vw,1.2rem)] font-medium">
       {title}
       <span className="ml-1.5 inline-block whitespace-nowrap duration-300 group-hover:translate-x-1 group-focus:translate-x-1 after:content-['->'] group-hover:after:text-blue-500" />
-    </Link>
+    </p>
 
     <ul
       className="submenu mt-[clamp(1rem,1.9vw,2.5rem)] flex w-full max-w-72 min-w-32 flex-col gap-[clamp(0.60rem,0.80vw,1.2rem)]"

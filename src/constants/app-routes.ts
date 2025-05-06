@@ -2,6 +2,7 @@ export const APP_ROUTES = {
   private: [],
   public: {
     dashboard: "/",
+    prices: "/prices",
     auth: {
       confirmEmail: "/auth/confirm-email",
       forgotPassword: "/auth/forgot-password",

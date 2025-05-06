@@ -37,7 +37,10 @@ export function PricingSection() {
   ];
 
   return (
-    <section className="w-full bg-gradient-to-b from-white to-zinc-50 px-4 py-20 md:px-8">
+    <section
+      id="plans"
+      className="w-full bg-gradient-to-b from-white to-zinc-50 px-4 py-20 md:px-8"
+    >
       <div className="mx-auto max-w-6xl text-center">
         <h2 className="mb-4 text-4xl font-bold">Escolha o plano ideal</h2>
         <p className="mb-12 text-zinc-600">
