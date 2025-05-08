@@ -4,8 +4,14 @@ export const MERCHANT_MENU = [
   {
     title: "Visibilidade para comerciantes",
     items: [
-      { label: "Cadastre seu estabelecimento", href: "#" },
-      { label: "Gerencie sua página comercial", href: "#" },
+      {
+        label: "Cadastre seu estabelecimento",
+        href: APP_ROUTES.public.businessPoint.registerBusinessPoint,
+      },
+      {
+        label: "Gerencie sua página comercial",
+        href: APP_ROUTES.public.user.myBusinessPoints,
+      },
       { label: "Personalize seu perfil", href: APP_ROUTES.public.user.profile },
       { label: "Receba avaliações de clientes", href: "#" },
     ],

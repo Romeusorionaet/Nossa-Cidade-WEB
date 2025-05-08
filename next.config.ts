@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "c14.patreon.com", //TODO for while
       },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com", //TODO for while
+      },
     ],
   },
 };

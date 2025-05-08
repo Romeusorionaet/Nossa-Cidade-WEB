@@ -13,10 +13,15 @@ import "@/assets/styles/utilities/custom-animations.css";
 import { MAIN_LIST_NAVIGATION } from "@/constants/main-list-navigation";
 import { APP_ROUTES } from "@/constants/app-routes";
 import { OurCityLogo } from "../our-city-logo";
+import { UserContext } from "@/contexts/user.context";
+import Image from "next/image";
 
 export function Header() {
   const { eventIndicator, handleEventMenu, handleMouseLeave, navRef } =
     useHoverBackground();
+  const { profile } = useContext(UserContext);
+
+  const userLogged = profile.publicId;
 
   const { scrolled } = useScroll();
 
@@ -27,7 +32,7 @@ export function Header() {
       onMouseLeave={handleMouseLeave}
       data-value={eventIndicator.visible}
       data-scroll={scrolled}
-      className="fixed top-0 left-0 z-30 w-screen duration-300 data-[scroll=true]:bg-white/70 data-[scroll=true]:text-black data-[scroll=true]:backdrop-blur-sm data-[value=true]:text-black data-[scroll=true]:max-md:h-24"
+      className="fixed top-0 left-0 z-30 mx-auto w-full max-w-[2000px] duration-300 data-[scroll=true]:bg-white/70 data-[scroll=true]:text-black data-[scroll=true]:backdrop-blur-sm data-[value=true]:text-black data-[scroll=true]:max-md:h-24"
     >
       <MobileSideMenu />
 
@@ -123,7 +128,7 @@ export function Header() {
           </ul>
         </nav>
 
-        <div className="flex max-md:flex-col-reverse">
+        <div className="flex items-center max-md:flex-col-reverse">
           <div
             data-scroll={scrolled}
             className="flex duration-300 max-md:absolute max-md:top-[3.5rem] max-md:left-2 max-md:w-[95%] max-md:justify-center data-[scroll=true]:max-md:justify-start md:w-auto md:pr-2 lg:w-64 lg:justify-end 2xl:w-96"
@@ -134,29 +139,46 @@ export function Header() {
             />
           </div>
 
-          <nav data-scroll={scrolled} className="flex items-center gap-2">
-            <Link
-              href={APP_ROUTES.public.auth.signIn}
-              data-value={eventIndicator.visible}
-              className="bg-rise-fade group px-3 py-2 data-[value=true]:hover:before:bg-blue-500 md:p-[clamp(0.60rem,0.95vw,1.4rem)]"
-            >
-              <div className="overflow-hidden">
-                <span className="bg-rise-fade-content group-hover:animate-rise-from-bottom text-black group-hover:text-white group-hover:duration-300 before:content-['Login']">
-                  login_
-                </span>
+          <nav className="z-10">
+            {userLogged ? (
+              <Link
+                href={APP_ROUTES.public.user.profile}
+                className="mx-4 inline-block h-9.5 md:h-12 md:w-12"
+              >
+                <Image
+                  src={profile.avatar}
+                  alt="avatar"
+                  width={100}
+                  height={100}
+                  className="h-full w-full rounded-full object-cover"
+                />
+              </Link>
+            ) : (
+              <div data-scroll={scrolled} className="flex items-center gap-2">
+                <Link
+                  href={APP_ROUTES.public.auth.signIn}
+                  data-value={eventIndicator.visible}
+                  className="bg-rise-fade group px-3 py-2 data-[value=true]:hover:before:bg-blue-500 md:p-[clamp(0.60rem,0.95vw,1.4rem)]"
+                >
+                  <div className="overflow-hidden">
+                    <span className="bg-rise-fade-content group-hover:animate-rise-from-bottom text-black group-hover:text-white group-hover:duration-300 before:content-['Login']">
+                      login_
+                    </span>
+                  </div>
+                </Link>
+                <Link
+                  href={APP_ROUTES.public.auth.signUp}
+                  data-value={eventIndicator.visible}
+                  className="bg-rise-fade group rounded-full px-4 py-2 font-medium text-black data-[value=true]:bg-blue-400 data-[value=true]:text-white md:p-[clamp(0.60rem,0.95vw,1.4rem)] md:px-6"
+                >
+                  <div className="overflow-hidden">
+                    <span className="bg-rise-fade-content group-hover:animate-rise-from-bottom before:content-['Registrar']">
+                      Registrar
+                    </span>
+                  </div>
+                </Link>
               </div>
-            </Link>
-            <Link
-              href={APP_ROUTES.public.auth.signUp}
-              data-value={eventIndicator.visible}
-              className="bg-rise-fade group rounded-full px-4 py-2 font-medium text-black data-[value=true]:bg-blue-400 data-[value=true]:text-white md:p-[clamp(0.60rem,0.95vw,1.4rem)] md:px-6"
-            >
-              <div className="overflow-hidden">
-                <span className="bg-rise-fade-content group-hover:animate-rise-from-bottom before:content-['Registrar']">
-                  Registrar
-                </span>
-              </div>
-            </Link>
+            )}
           </nav>
         </div>
       </div>

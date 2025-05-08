@@ -19,6 +19,7 @@ export const APP_ROUTES = {
     user: {
       myBusinessPoints: "/user/my-business-points",
       profile: "/user/profile",
+      myReviews: "/user/my-reviews",
     },
     mapCity: "/map-city",
   },
