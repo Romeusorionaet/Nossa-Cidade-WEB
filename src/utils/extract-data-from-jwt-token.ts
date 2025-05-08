@@ -15,7 +15,7 @@ export function extractDataFromJwtToken(token: string) {
   const tokenExpires = decodedAccessToken.exp;
   const tokenSub = decodedAccessToken.sub;
   const tokenPublicId = decodedAccessToken.publicId;
-  const tokenStaffId = decodedAccessToken.StaffId;
+  const tokenStaffId = decodedAccessToken.staffId;
 
   return { tokenExpires, tokenSub, tokenPublicId, tokenStaffId };
 }
