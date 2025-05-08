@@ -1,4 +1,6 @@
+import { APP_ROUTES } from "@/constants/app-routes";
 import { Check } from "lucide-react";
+import Link from "next/link";
 
 export function PricingSection() {
   const plans = [
@@ -101,6 +103,12 @@ export function PricingSection() {
             </div>
           ))}
         </div>
+        <Link
+          href={APP_ROUTES.public.prices}
+          className="mt-10 inline-block underline hover:text-blue-500"
+        >
+          Saber mais
+        </Link>
       </div>
     </section>
   );

@@ -26,7 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="br">
-      <body className={`${geistSans.variable} ${rowdies.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${rowdies.variable} mx-auto w-full max-w-[2000px] antialiased`}
+      >
         <ClientProviders>{children}</ClientProviders>
       </body>
     </html>

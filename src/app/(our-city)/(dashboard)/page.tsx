@@ -15,7 +15,7 @@ import "swiper/css";
 export default function Dashboard() {
   return (
     <main>
-      <div className="absolute top-0 left-0 h-screen w-full">
+      <div className="absolute top-0 mx-auto h-screen w-full max-w-[2000px]">
         <VantaCloudsBackground />
       </div>
 
