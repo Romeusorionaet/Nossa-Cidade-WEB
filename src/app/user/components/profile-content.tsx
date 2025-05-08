@@ -1,16 +1,24 @@
 "use client";
 
 import { UserContext } from "@/contexts/user.context";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import Image from "next/image";
 import { forgotPassword } from "@/actions/auth/forgot-password";
 import { changePassword } from "@/actions/auth/change-password";
 import { useRouter } from "next/navigation";
+import { useCountdown } from "@/hooks/use-count-down";
+import { KEY_LOCAL_STORAGE } from "@/constants/key-local-storage";
 
 export function ProfileContent() {
   const { profile, isLoadingDataUserProfile } = useContext(UserContext);
   const [newPassword, setNewPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
+  const [isLoadingForgotPasswordRequest, setIsLoadingForgotPasswordRequest] =
+    useState(false);
+  const { countdown, startCountdown, formatTime } = useCountdown({
+    storageKey: KEY_LOCAL_STORAGE.FORGOT_PASSWORD_EXPIRY,
+    durationSeconds: 300,
+  });
 
   const router = useRouter();
 
@@ -23,9 +31,12 @@ export function ProfileContent() {
   }
 
   const handleForgotPassword = async () => {
+    setIsLoadingForgotPasswordRequest(true);
     const { message } = await forgotPassword();
 
+    startCountdown();
     alert(message);
+    setIsLoadingForgotPasswordRequest(false);
   };
 
   const handleChangePassword = async () => {
@@ -74,9 +85,13 @@ export function ProfileContent() {
           <button
             type="button"
             onClick={() => handleForgotPassword()}
-            className="w-full rounded-md bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600"
+            disabled={countdown > 0}
+            data-value={isLoadingForgotPasswordRequest}
+            className="w-full rounded-md bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600 disabled:pointer-events-none disabled:opacity-50 data-[value=true]:pointer-events-none data-[value=true]:opacity-50"
           >
-            Recuperar senha
+            {countdown > 0
+              ? `Enviar novamente ${formatTime(countdown)}`
+              : "Recuperar senha"}
           </button>
         </div>
 
