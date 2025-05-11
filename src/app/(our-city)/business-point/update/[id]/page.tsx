@@ -24,16 +24,21 @@ export default async function Update({ params }: ParamsProps) {
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <main className="mx-auto w-full max-w-[1080px] pt-28">
-      <Link href="/user/my-business-points" className="ml-4 hover:underline">
+    <main className="py-28">
+      <Link
+        href="/user/my-business-points"
+        className="hover: mb-10 ml-4 inline-block md:ml-10"
+      >
         Voltar
       </Link>
 
       <HydrationBoundary state={dehydratedState}>
         <StepOneFormUpdateBusinessPoint />
 
-        <h2>Atualizar localização</h2>
-        <StepTwoFormUpdateBusinessPoint />
+        <div className="mx-4 mt-10 md:mx-10">
+          <h2>Atualizar localização</h2>
+          <StepTwoFormUpdateBusinessPoint />
+        </div>
       </HydrationBoundary>
     </main>
   );

@@ -38,7 +38,7 @@ function UserLocationMap() {
     <MapContainer
       center={[businessLocation.lat, businessLocation.lng]}
       zoom={10}
-      className="mx-auto h-[400px] w-full max-w-[1000px] rounded-lg"
+      className="mx-auto h-[400px] w-full rounded-lg"
       maxBounds={bounds}
       maxBoundsViscosity={1.0}
       minZoom={12}

@@ -26,95 +26,131 @@ export function StepOneFormUpdateBusinessPoint() {
     <form
       id="business-point-form"
       onSubmit={handleSubmit(handleUpdateStepOneBusinessPointForm)}
-      className="space-y-6"
+      className="mx-auto max-w-3xl space-y-8 rounded-xl bg-white p-6 shadow-lg"
     >
-      <div className="flex flex-col gap-4 space-y-10">
-        <label className="space-y-2">
-          <span>Nome</span>
-          <input type="text" {...register("name")} />
-          <FormError errors={errors.name?.message} />
+      <div className="flex flex-col gap-2">
+        <label htmlFor="name" className="text-sm font-bold text-zinc-700">
+          Nome
         </label>
-
-        <label className="flex">
-          <span>Descrição</span>
-          <textarea {...register("description")} />
-          <FormError errors={errors.description?.message} />
-        </label>
-
-        <label htmlFor="category" className="flex flex-col">
-          <p
-            data-value={error}
-            className="flex gap-2 data-[value=true]:text-red-500"
-          >
-            Categoria
-          </p>
-          {isLoadingCategories ? (
-            <div className="h-8 w-24 animate-pulse rounded-lg bg-zinc-800" />
-          ) : (
-            <select
-              id="category"
-              {...register("categoryId")}
-              className="w-56 rounded-lg bg-black/80 p-1 text-white"
-            >
-              <option value="">Selecione</option>
-              {categories
-                ?.slice()
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-            </select>
-          )}
-          <FormError errors={errors.categoryId?.message} />
-        </label>
+        <input
+          id="name"
+          type="text"
+          {...register("name")}
+          className="input-field uppercase"
+        />
+        <FormError errors={errors.name?.message} />
       </div>
 
-      <div>
+      <div className="flex flex-col gap-2">
+        <label
+          htmlFor="description"
+          className="text-sm font-bold text-zinc-700"
+        >
+          Descrição
+        </label>
+        <textarea
+          id="description"
+          {...register("description")}
+          className="input-field h-24 resize-none border border-zinc-200 p-1"
+        />
+        <FormError errors={errors.description?.message} />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label
+          htmlFor="category"
+          className={`text-sm font-bold ${
+            error ? "text-red-500" : "text-zinc-700"
+          }`}
+        >
+          Categoria
+        </label>
+        {isLoadingCategories ? (
+          <div className="h-10 w-32 animate-pulse rounded bg-zinc-200" />
+        ) : (
+          <select
+            id="category"
+            {...register("categoryId")}
+            className="input-field w-full max-w-xs rounded-md border border-zinc-200"
+          >
+            <option value="">Selecione</option>
+            {categories
+              ?.slice()
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+          </select>
+        )}
+        <FormError errors={errors.categoryId?.message} />
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-2">
         {DAYS_OF_WEEK_DDD.map((day) => (
-          <fieldset key={day}>
-            <legend>{day.toUpperCase()}</legend>
-            <label>
-              Abertura:
-              <input
-                type="time"
-                {...register(`openingHours.${day}.abertura` as const)}
-              />
-              {errors.openingHours?.[day]?.abertura && (
-                <FormError
-                  errors={errors.openingHours[day]?.abertura?.message}
+          <fieldset key={day} className="rounded-lg border border-zinc-200 p-4">
+            <legend className="mb-2 font-semibold text-zinc-700">
+              {day.toUpperCase()}
+            </legend>
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <label className="flex flex-col text-sm">
+                <span className="mb-1">Abertura</span>
+                <input
+                  type="time"
+                  {...register(`openingHours.${day}.abertura` as const)}
+                  className="input-field"
                 />
-              )}
-            </label>
-            <label>
-              Fechamento:
-              <input
-                type="time"
-                {...register(`openingHours.${day}.fechamento` as const)}
-              />
-              {errors.openingHours?.[day]?.fechamento && (
-                <FormError
-                  errors={errors.openingHours[day]?.fechamento?.message}
+                {errors.openingHours?.[day]?.abertura && (
+                  <FormError
+                    errors={errors.openingHours[day]?.abertura?.message}
+                  />
+                )}
+              </label>
+
+              <label className="flex flex-col text-sm">
+                <span className="mb-1">Fechamento</span>
+                <input
+                  type="time"
+                  {...register(`openingHours.${day}.fechamento` as const)}
+                  className="input-field"
                 />
-              )}
-            </label>
+                {errors.openingHours?.[day]?.fechamento && (
+                  <FormError
+                    errors={errors.openingHours[day]?.fechamento?.message}
+                  />
+                )}
+              </label>
+            </div>
           </fieldset>
         ))}
       </div>
 
-      <label className="space-y-2">
-        <span>
-          Agora escreva uma frase de efeito ou algo de especial que seu ponto
-          comercial oferece de diferente
-        </span>
-        <input type="text" {...register("highlight")} />
+      <div className="flex flex-col gap-2">
+        <label htmlFor="highlight" className="text-sm font-bold text-zinc-700">
+          Frase de destaque
+        </label>
+        <input
+          id="highlight"
+          type="text"
+          {...register("highlight")}
+          className="input-field"
+          placeholder="Ex: Ambiente familiar, atendimento 24h..."
+        />
         <FormError errors={errors.highlight?.message} />
-      </label>
+      </div>
 
       <ManageTags />
 
-      <button type="submit">atualizar</button>
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          disabled={isLoadingForm}
+          className="rounded-lg bg-blue-600 px-6 py-2 font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
+        >
+          {isLoadingForm ? "Atualizando..." : "Atualizar"}
+        </button>
+      </div>
     </form>
   );
 }

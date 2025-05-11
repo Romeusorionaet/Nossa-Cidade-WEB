@@ -3,6 +3,7 @@
 import { MAX_TAGS } from "@/constants/max-tags";
 import { ManageTagsForBusinessPointContext } from "@/contexts/manage-tags-for-business-point.context";
 import { useContext } from "react";
+import "@/assets/styles/utilities/scrollbar.css";
 
 export function ManageTags() {
   const {
@@ -26,12 +27,12 @@ export function ManageTags() {
           value={inputValue}
           onChange={(e) => onChangeSetValueInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Digite sua tag"
+          placeholder="Digite sua tag aqui"
           data-value={String(tags.length === MAX_TAGS)}
-          className="data-[value=true]:cursor-not-allowed"
+          className="border-b p-1 data-[value=true]:cursor-not-allowed"
         />
 
-        <div className="h-44 w-full max-w-sm overflow-auto rounded-md border border-black p-2">
+        <div className="scrollbar h-32 w-full overflow-auto rounded-md border-b border-black p-2">
           <div className="flex flex-wrap gap-2">
             {tags.map((tag, index) => (
               <div

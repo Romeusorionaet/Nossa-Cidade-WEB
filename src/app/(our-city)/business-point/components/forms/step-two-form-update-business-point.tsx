@@ -89,39 +89,43 @@ export function StepTwoFormUpdateBusinessPoint() {
     <form
       id="business-point-form"
       onSubmit={handleSubmit(handleUpdateBusinessPointFormStepTwo)}
-      className="space-y-6"
+      className="space-y-8"
     >
-      <div className="flex flex-col gap-4 space-y-10">
-        <label className="space-y-2">
-          <span>Localização</span>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              placeholder="Latitude"
-              className="p-1"
-              {...register("location.x")}
-              onChange={(e) => setValue("location.x", e.target.value)}
-            />
-            <FormError errors={errors.location?.x?.message} />
+      <div className="space-y-6">
+        <label className="block space-y-2">
+          <span className="font-medium">Localização</span>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder="Latitude"
+                className="rounded-md border border-zinc-700 bg-zinc-900 p-2 text-sm text-white placeholder:text-zinc-400"
+                {...register("location.x")}
+                onChange={(e) => setValue("location.x", e.target.value)}
+              />
+              <FormError errors={errors.location?.x?.message} />
+            </div>
 
-            <input
-              type="text"
-              placeholder="Longitude"
-              className="p-1"
-              {...register("location.y")}
-              onChange={(e) => setValue("location.y", e.target.value)}
-            />
-            <FormError errors={errors.location?.y?.message} />
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder="Longitude"
+                className="rounded-md border border-zinc-700 bg-zinc-900 p-2 text-sm text-white placeholder:text-zinc-400"
+                {...register("location.y")}
+                onChange={(e) => setValue("location.y", e.target.value)}
+              />
+              <FormError errors={errors.location?.y?.message} />
+            </div>
           </div>
         </label>
 
-        <div>
+        <div className="flex flex-wrap gap-4">
           <button
             type="button"
-            onClick={() => handleFillLocation()}
-            className="w-44"
+            onClick={handleFillLocation}
+            className="rounded-md bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
           >
-            Preencher com a minha localização
+            Usar minha localização atual
           </button>
 
           <button
@@ -132,20 +136,33 @@ export function StepTwoFormUpdateBusinessPoint() {
                 lng: Number(getValues("location.y")),
               })
             }
+            className="rounded-md bg-emerald-600 px-4 py-2 text-white transition hover:bg-emerald-700"
           >
-            buscar
+            Buscar no mapa
           </button>
         </div>
-        <span>
-          Atenção, ao preencher com a sua localização, fique atento que a sua
-          localização seja o local extato do seu ponto comercial na qual esta
-          registrando.
-        </span>
 
-        {businessLocation && <UserLocationMap />}
+        <p className="text-sm text-zinc-400">
+          <strong className="text-yellow-400">Atenção:</strong> certifique-se de
+          que a localização fornecida represente com precisão o endereço do seu
+          ponto comercial.
+        </p>
+
+        {businessLocation && (
+          <div className="rounded-md border border-zinc-700">
+            <UserLocationMap />
+          </div>
+        )}
       </div>
 
-      <button type="submit">atualizar</button>
+      <div className="pt-4">
+        <button
+          type="submit"
+          className="w-full max-w-48 rounded-md bg-green-600 py-2 font-semibold text-white transition hover:bg-green-700"
+        >
+          Atualizar
+        </button>
+      </div>
     </form>
   );
 }
