@@ -10,6 +10,7 @@ import { useBusinessPointOverview } from "@/hooks/use-app-queries/use-business-p
 import { checkBusinessStatus } from "@/utils/check-business-status";
 import Image from "next/image";
 import { useState } from "react";
+import { DetailsSection } from "./details-section";
 
 export function ContentBusinessPointDetails({ id }: { id: string }) {
   const [businessPointDetails, setBusinessPointDetails] =
@@ -39,40 +40,59 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
     setShowDetails((prev) => !prev);
   };
 
+  const options = [
+    ["Opções de serviço", businessPointDetails?.serviceOptions],
+    ["Pagamentos", businessPointDetails?.payments],
+    ["Menu", businessPointDetails?.menu],
+    ["Comodidade", businessPointDetails?.amenities],
+    ["Público", businessPointDetails?.audience],
+    ["Acessibilidade", businessPointDetails?.accessibility],
+    ["Planejamento", businessPointDetails?.planning],
+    ["Animais de estimação", businessPointDetails?.pets],
+    ["Categorias", businessPointDetails?.categories],
+  ];
+
   return (
-    <section className="px-4 pt-10 pb-20">
-      <h1 className="text-center">{businessPoint.name}</h1>
+    <section className="mx-auto max-w-screen-lg px-4 pt-10 pb-20">
+      <h1 className="text-center text-2xl font-bold uppercase">
+        {businessPoint.name}
+      </h1>
 
-      <div className="mt-10">
-        <p className="text-center">{businessPoint.highlight}</p>
+      <div className="mt-10 space-y-10">
+        <p className="text-center text-zinc-300">{businessPoint.highlight}</p>
 
-        <p className="mt-10 text-base">
-          {businessPoint.neighborhood} - {businessPoint.street} -
-          {businessPoint.houseNumber} - Canguaretama - RN
-        </p>
+        <div className="space-y-1 text-center text-base text-zinc-400">
+          <p>
+            {businessPoint.neighborhood} - {businessPoint.street} -{" "}
+            {businessPoint.houseNumber}
+          </p>
+          <p>Canguaretama - RN</p>
+        </div>
 
         {image1 && (
-          <div className="h-[600px] w-full">
+          <div className="h-[400px] w-full md:h-[500px]">
             <Image
               src={`${BASE_URLS.img}/${image1}`}
-              alt=""
+              alt="Imagem do estabelecimento"
               width={1000}
               height={1000}
-              className="h-full w-full object-cover"
+              className="h-full w-full rounded-lg object-cover shadow-md"
             />
           </div>
         )}
 
-        <p className="mt-5 text-justify">{businessPoint.description}</p>
+        <p className="text-justify text-zinc-300">
+          {businessPoint.description}
+        </p>
 
-        <div className="mt-10">
-          <h2>Horários</h2>
+        <div className="space-y-4">
+          <h2 className="text-lg font-semibold text-zinc-100">Horários</h2>
 
-          <p className="font-bold">
+          <p className="font-bold text-green-400">
             {checkBusinessStatus(businessPoint.openingHours)}
           </p>
 
-          <div className="w-full md:w-1/3">
+          <div className="w-full md:w-1/2">
             <OpeningHoursList
               openingHours={businessPoint.openingHours}
               orderDays={DAYS_OF_WEEK_DDD}
@@ -82,13 +102,13 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
         </div>
 
         {image2 && (
-          <div className="mt-10 h-[600px] w-full">
+          <div className="h-[400px] w-full md:h-[500px]">
             <Image
               src={`${BASE_URLS.img}/${image2}`}
-              alt=""
+              alt="Imagem adicional"
               width={1000}
               height={1000}
-              className="h-full w-full object-cover"
+              className="h-full w-full rounded-lg object-cover shadow-md"
             />
           </div>
         )}
@@ -97,127 +117,33 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
           type="button"
           onClick={handleGetBusinessPointDetails}
           data-value={showDetails}
-          className="mt-10 data-[value=true]:hidden"
+          className="mx-auto mt-10 block rounded-md bg-blue-600 px-6 py-2 text-white transition hover:bg-blue-700 data-[value=true]:hidden"
         >
           Saber mais
         </button>
 
         <div
           data-value={showDetails}
-          className="mt-10 space-y-6 data-[value=false]:hidden"
+          className="mt-10 space-y-8 data-[value=false]:hidden"
         >
-          <div className="space-y-4">
-            <h4>Destaque</h4>
+          <DetailsSection
+            title="Destaque"
+            items={[
+              "Ingredientes frescos e selecionados",
+              "Atendimento rápido e de qualidade",
+              "Ambiente aconchegante e familiar",
+              "Opções para dietas especiais (vegetariano, sem glúten, etc.)",
+              "Promoções exclusivas toda semana",
+            ]}
+          />
 
-            <ul className="list-inside list-disc">
-              <li>Ingredientes frescos e selecionados</li>
-              <li>Atendimento rápido e de qualidade</li>
-              <li>Ambiente aconchegante e familiar</li>
-              <li>
-                Opções para dietas especiais (vegetariano, sem glúten, etc.)
-              </li>
-              <li>Promoções exclusivas toda semana</li>
-            </ul>
-          </div>
-
-          {businessPointDetails?.serviceOptions?.length ? (
-            <div className="space-y-4">
-              <h4>Opções de serviço</h4>
-              <ul className="list-inside list-disc">
-                {businessPointDetails.serviceOptions.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-
-          {businessPointDetails?.payments?.length ? (
-            <div className="space-y-4">
-              <h4>Pagamentos</h4>
-              <ul className="list-inside list-disc">
-                {businessPointDetails.payments.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-
-          {businessPointDetails?.menu?.length ? (
-            <div className="space-y-4">
-              <h4>Menu</h4>
-              <ul className="list-inside list-disc">
-                {businessPointDetails.menu.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-
-          {businessPointDetails?.amenities?.length ? (
-            <div className="space-y-4">
-              <h4>Comodidade</h4>
-              <ul className="list-inside list-disc">
-                {businessPointDetails.amenities?.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-
-          {businessPointDetails?.audience?.length ? (
-            <div className="space-y-4">
-              <h4>Público</h4>
-              <ul className="list-inside list-disc">
-                {businessPointDetails?.audience?.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-
-          {businessPointDetails?.accessibility?.length ? (
-            <div className="space-y-4">
-              <h4>Acessibilidade</h4>
-              <ul className="list-inside list-disc">
-                {businessPointDetails?.accessibility?.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-
-          {businessPointDetails?.planning?.length ? (
-            <div className="space-y-4">
-              <h4>planejamento</h4>
-              <ul className="list-inside list-disc">
-                {businessPointDetails?.planning?.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-
-          {businessPointDetails?.pets?.length ? (
-            <div className="space-y-4">
-              <h4>Aimais de estimação</h4>
-              <ul className="list-inside list-disc">
-                {businessPointDetails?.pets?.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-
-          {businessPointDetails?.categories?.length ? (
-            <div className="space-y-4">
-              <h4>Categorias</h4>
-              <ul className="list-inside list-disc">
-                {businessPointDetails?.categories?.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
+          {Object.entries(options).map(([title, items]) =>
+            items?.length ? (
+              <div key={title}>
+                <DetailsSection title={title} items={items as string[]} />
+              </div>
+            ) : null,
+          )}
         </div>
       </div>
     </section>
