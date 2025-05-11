@@ -30,54 +30,71 @@ export function BusinessPointsPreview() {
   }
 
   return (
-    <section className="flex flex-col gap-4 border border-black">
+    <section className="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 lg:grid-cols-3">
       {businessPointsPreviewData.map((item) => (
-        <div key={item.id} className="w-96 bg-zinc-400">
-          <div className="mb-6 flex flex-col">
-            <Link href="#" className="cursor-not-allowed opacity-50">
-              Editar (função em desenvolvimento)
+        <div
+          key={item.id}
+          className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-md transition-shadow duration-300 hover:shadow-lg"
+        >
+          <div className="mb-4 flex flex-col gap-2 text-sm text-zinc-700">
+            <Link
+              href={`${APP_ROUTES.public.businessPoint.update}/${item.id}`}
+              className="text-blue-600"
+              title="Função em desenvolvimento"
+            >
+              ✏️ Editar
             </Link>
             <Link
               href={`${APP_ROUTES.public.businessPoint.details}/${item.id}`}
+              className="text-blue-600 hover:underline"
             >
-              Visualizar
+              🔍 Visualizar
             </Link>
             <Link
               href={`${APP_ROUTES.public.businessPoint.saveImage}/${item.id}`}
+              className="text-blue-600 hover:underline"
             >
-              Imagens do ponto comercial
+              🖼️ Imagens do ponto comercial
             </Link>
-            <button type="button">Desativar</button>
+            <button
+              type="button"
+              className="text-left text-red-600 hover:underline"
+            >
+              ❌ Desativar
+            </button>
             <Link
               href={`${APP_ROUTES.public.businessPoint.registerDetails}/${item.id}`}
+              className="text-blue-600 hover:underline"
             >
-              Adicionar detalhes
+              ➕ Adicionar detalhes
             </Link>
           </div>
 
-          <p>{item.name}</p>
-          <p>{item.status}</p>
-          <p>Em análise: {item.awaitingApproval ? "sim" : "não"}</p>
-          <p>
-            Criado:
-            {format(
-              new Date(item.createdAt),
-              "dd 'de' MMMM 'de' yyyy 'às' HH:mm",
-              {
-                locale: ptBR,
-              },
-            )}
-          </p>
-          <p>
-            Atualizado
-            {format(
-              new Date(item.updatedAt),
-              "dd 'de' MMMM 'de' yyyy 'às' HH:mm",
-              {
-                locale: ptBR,
-              },
-            )}
-          </p>
+          <div className="space-y-1 text-sm text-zinc-800">
+            <p className="text-lg font-semibold uppercase">{item.name}</p>
+            <p>Status: {item.status}</p>
+            <p>Em análise: {item.awaitingApproval ? "Sim" : "Não"}</p>
+            <p>
+              Criado em:{" "}
+              {format(
+                new Date(item.createdAt),
+                "dd 'de' MMMM 'de' yyyy 'às' HH:mm",
+                {
+                  locale: ptBR,
+                },
+              )}
+            </p>
+            <p>
+              Atualizado em:{" "}
+              {format(
+                new Date(item.updatedAt),
+                "dd 'de' MMMM 'de' yyyy 'às' HH:mm",
+                {
+                  locale: ptBR,
+                },
+              )}
+            </p>
+          </div>
         </div>
       ))}
     </section>
