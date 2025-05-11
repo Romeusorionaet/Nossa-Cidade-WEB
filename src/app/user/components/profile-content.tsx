@@ -1,7 +1,7 @@
 "use client";
 
 import { UserContext } from "@/contexts/user.context";
-import { useContext, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import Image from "next/image";
 import { forgotPassword } from "@/actions/auth/forgot-password";
 import { changePassword } from "@/actions/auth/change-password";
@@ -21,6 +21,8 @@ export function ProfileContent() {
   });
 
   const router = useRouter();
+
+  const isCountdownActive = countdown > 0;
 
   if (isLoadingDataUserProfile) {
     return <p>Carrregando</p>;
@@ -82,17 +84,30 @@ export function ProfileContent() {
 
         <div className="space-y-4">
           <h3>Esqueceu a senha</h3>
-          <button
-            type="button"
-            onClick={() => handleForgotPassword()}
-            disabled={countdown > 0}
-            data-value={isLoadingForgotPasswordRequest}
-            className="w-full rounded-md bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600 disabled:pointer-events-none disabled:opacity-50 data-[value=true]:pointer-events-none data-[value=true]:opacity-50"
-          >
-            {countdown > 0
-              ? `Enviar novamente ${formatTime(countdown)}`
-              : "Recuperar senha"}
-          </button>
+
+          <div>
+            <button
+              type="button"
+              onClick={() => handleForgotPassword()}
+              disabled={isCountdownActive}
+              data-value={isLoadingForgotPasswordRequest}
+              className="w-full rounded-md bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600 disabled:pointer-events-none disabled:opacity-50 data-[value=true]:pointer-events-none data-[value=true]:opacity-50"
+            >
+              {isCountdownActive
+                ? `Enviar novamente ${formatTime(countdown)}`
+                : "Recuperar senha"}
+            </button>
+
+            <div className="h-5">
+              <p
+                data-value={isCountdownActive}
+                className="opacity-50 data-[value=false]:hidden"
+              >
+                Um email foi enviado, por favor check sua caixa de entrada ou
+                spam.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="space-y-4">
