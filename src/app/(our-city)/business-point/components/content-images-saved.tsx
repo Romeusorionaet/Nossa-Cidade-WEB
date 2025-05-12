@@ -36,11 +36,11 @@ export function ContentImagesSaved({ id }: { id: string }) {
 
   return (
     <section>
-      <ul>
+      <ul className="flex flex-wrap justify-center gap-4">
         {hasImage &&
           imageBusinessPoint.map((item) => (
             <li key={item.id}>
-              <div className="h-96 w-96">
+              <div className="w- h-96 border border-zinc-300">
                 <Image
                   src={`${BASE_URLS.img}/${item.url}`}
                   alt=""
@@ -49,7 +49,12 @@ export function ContentImagesSaved({ id }: { id: string }) {
                   className="h-full w-full object-cover"
                 />
               </div>
-              <button type="button" onClick={() => handleDeleteImage(item.id)}>
+
+              <button
+                type="button"
+                onClick={() => handleDeleteImage(item.id)}
+                className="mt-2 rounded-md bg-red-400 p-1 font-light text-white duration-300 hover:bg-red-500"
+              >
                 Deletar
               </button>
             </li>

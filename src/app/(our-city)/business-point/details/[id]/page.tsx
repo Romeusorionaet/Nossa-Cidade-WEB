@@ -12,10 +12,6 @@ export default async function Details({ params }: PageProps) {
 
   return (
     <main className="mx-auto w-full max-w-[1080px] pt-28">
-      <Link href="/map-city" className="ml-4 hover:underline">
-        Voltar
-      </Link>
-
       <ContentBusinessPointDetails id={id} />
     </main>
   );

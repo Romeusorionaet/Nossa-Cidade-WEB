@@ -47,16 +47,17 @@ export function SaveImageBusinessPoint({ businessPointId }: Props) {
 
   return (
     <section>
-      <p>Escolha até 2 imagens (máx. 500KB cada)</p>
-
-      <input
-        type="file"
-        accept="image/*"
-        multiple
-        onChange={handleFileChange}
-      />
-
-      {error && <p className="text-red-500">{error}</p>}
+      <div className="mt-10">
+        <p>Escolha até 2 imagens (máx. 500KB cada)</p>
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleFileChange}
+          className="rounded-md border border-zinc-500 p-1"
+        />
+        {error && <p className="text-red-500">{error}</p>}
+      </div>
 
       <ul>
         {selectedFiles.map((file, index) => (
@@ -64,7 +65,11 @@ export function SaveImageBusinessPoint({ businessPointId }: Props) {
         ))}
       </ul>
 
-      <button type="button" onClick={handleSaveImage}>
+      <button
+        type="button"
+        onClick={handleSaveImage}
+        className="mt-2 rounded-md bg-green-400 p-1 font-light text-white duration-300 hover:bg-green-500"
+      >
         Salvar
       </button>
     </section>

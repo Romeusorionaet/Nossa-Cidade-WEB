@@ -11,13 +11,16 @@ export default async function RegisterImage({ params }: ParamsProps) {
   const { id } = await params;
 
   return (
-    <main className="pt-32">
+    <main className="mx-4 pt-32 md:mx-10">
       <h1>Registrar imagem</h1>
 
       <SaveImageBusinessPoint businessPointId={id} />
 
-      <h3>images salvas</h3>
-      <ContentImagesSaved id={id} />
+      <h3 className="mt-10">images salvas</h3>
+
+      <div className="my-10">
+        <ContentImagesSaved id={id} />
+      </div>
     </main>
   );
 }
