@@ -57,12 +57,12 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
     <section className="mx-auto max-w-screen-lg px-4 pt-10 pb-20">
       <BackNavigation />
 
-      <h1 className="text-center text-2xl font-bold uppercase">
+      <h1 className="mt-10 text-center text-2xl font-bold uppercase">
         {businessPoint.name}
       </h1>
 
       <div className="mt-10 space-y-10">
-        <p className="text-center text-zinc-300">{businessPoint.highlight}</p>
+        <p className="text-center text-zinc-500">{businessPoint.highlight}</p>
 
         <div className="space-y-1 text-center text-base text-zinc-400">
           <p>
@@ -84,7 +84,7 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
           </div>
         )}
 
-        <p className="text-justify text-zinc-300">
+        <p className="text-justify text-zinc-500">
           {businessPoint.description}
         </p>
 

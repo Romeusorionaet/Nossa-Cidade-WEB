@@ -25,7 +25,7 @@ export default async function Update({ params }: ParamsProps) {
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <main className="py-28">
+    <main className="space-y-10 py-28">
       <BackNavigation />
 
       <HydrationBoundary state={dehydratedState}>

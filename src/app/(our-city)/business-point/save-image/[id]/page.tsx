@@ -1,3 +1,4 @@
+import { BackNavigation } from "@/components/back-navigation";
 import { ContentImagesSaved } from "../../components/content-images-saved";
 import { SaveImageBusinessPoint } from "../../components/save-image-business-point";
 
@@ -12,7 +13,9 @@ export default async function RegisterImage({ params }: ParamsProps) {
 
   return (
     <main className="mx-4 pt-32 md:mx-10">
-      <h1>Registrar imagem</h1>
+      <BackNavigation />
+
+      <h1 className="mt-10">Registrar imagem</h1>
 
       <SaveImageBusinessPoint businessPointId={id} />
 

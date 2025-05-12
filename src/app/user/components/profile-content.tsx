@@ -49,7 +49,7 @@ export function ProfileContent() {
     <section>
       <BackNavigation />
 
-      <div className="mx-auto max-w-xl space-y-6 rounded-2xl bg-white p-6 shadow-md">
+      <div className="mx-auto mt-10 max-w-xl space-y-6 rounded-2xl bg-white p-6 shadow-md">
         <h1 className="text-center">Profile</h1>
 
         <div className="flex flex-col items-center space-y-4">
