@@ -18,6 +18,7 @@ import {
 import { updateBusinessPointOverview } from "@/actions/put/business-point/update-business-point-overview";
 import { useParams, useRouter } from "next/navigation";
 import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
+import { APP_ROUTES } from "@/constants/app-routes";
 
 interface FormUpdateStepOneBusinessPointContextType {
   register: UseFormRegister<UpdateBusinessPointFormDataStepOneType>;
@@ -74,7 +75,7 @@ export function FormUpdateStepOneBusinessPointContextProvider({
 
     if (messageSuccess) {
       alert(messageSuccess);
-      router.push("/user/my-business-points");
+      router.push(APP_ROUTES.public.user.myBusinessPoints);
       return;
     }
 

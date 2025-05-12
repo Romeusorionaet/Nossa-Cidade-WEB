@@ -148,7 +148,7 @@ export async function initializeMap({
       );
 
       const markerElement = getMarkerElement({
-        icon: iconName as keyof typeof MARKERS,
+        icon: iconName?.toLocaleLowerCase() as keyof typeof MARKERS,
         size: "medium",
         name: "",
       });

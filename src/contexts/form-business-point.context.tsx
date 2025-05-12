@@ -17,6 +17,7 @@ import { createContext, useContext, useState } from "react";
 import { ManageTagsForBusinessPointContext } from "./manage-tags-for-business-point.context";
 import { registerBusinessPoint } from "@/actions/post/business-point/register-business-point";
 import { useRouter } from "next/navigation";
+import { APP_ROUTES } from "@/constants/app-routes";
 
 interface FormBusinessPointContextType {
   register: UseFormRegister<BusinessPointFormData>;
@@ -67,7 +68,7 @@ export function FormBusinessPointContextProvider({
 
     if (messageSuccess) {
       alert(messageSuccess);
-      router.push("/");
+      router.push(APP_ROUTES.public.user.myBusinessPoints);
     } else {
       alert(messageError);
     }
