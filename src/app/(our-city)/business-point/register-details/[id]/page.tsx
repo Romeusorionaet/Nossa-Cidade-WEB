@@ -1,3 +1,4 @@
+import { BackNavigation } from "@/components/back-navigation";
 import { PickListDetails } from "../../components/pick-list-details";
 
 interface ParamsProps {
@@ -10,10 +11,16 @@ export default async function RegisterDetails({ params }: ParamsProps) {
   const { id } = await params;
 
   return (
-    <main className="pt-28">
-      <h1>Adicione mais detalhes sobre o ponto comercial.</h1>
+    <main className="space-y-10 py-28">
+      <BackNavigation />
 
-      <PickListDetails businessPointId={id} />
+      <div className="px-4 md:px-10">
+        <h1 className="mb-6">
+          Adicione mais detalhes sobre o ponto comercial.
+        </h1>
+
+        <PickListDetails businessPointId={id} />
+      </div>
     </main>
   );
 }

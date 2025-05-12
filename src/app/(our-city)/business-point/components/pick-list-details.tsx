@@ -127,7 +127,7 @@ export function PickListDetails({ businessPointId }: Props) {
   };
 
   return (
-    <section className="border border-black p-1">
+    <section className="flex flex-col gap-4 rounded-md border border-zinc-400 p-2">
       {ASSOCIATION_LIST.map(({ key, title }) => (
         <CheckboxListAssociateItems
           key={key}
@@ -139,7 +139,11 @@ export function PickListDetails({ businessPointId }: Props) {
         />
       ))}
 
-      <button type="button" onClick={() => handleSaveDetails()}>
+      <button
+        type="button"
+        onClick={() => handleSaveDetails()}
+        className="w-24 rounded-md bg-green-400 p-1 font-light text-white duration-300 hover:bg-green-500"
+      >
         Adicionar
       </button>
     </section>
