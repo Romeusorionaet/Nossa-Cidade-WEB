@@ -58,9 +58,9 @@ export function MobileSideMenu() {
                   <ul className="mt-6 space-y-2 opacity-50">
                     {resource.items.map((item) => (
                       <li key={item.label}>
-                        <span className="flex text-lg">
+                        <Link href={item.href} className="flex text-lg">
                           <CornerDownRight size={18} /> {item.label}
-                        </span>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -80,9 +80,9 @@ export function MobileSideMenu() {
                   <ul className="mt-6 space-y-2 opacity-50">
                     {resource.items.map((item) => (
                       <li key={item.label}>
-                        <span className="flex text-lg">
+                        <Link href={item.href} className="flex text-lg">
                           <CornerDownRight size={18} /> {item.label}
-                        </span>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -102,9 +102,9 @@ export function MobileSideMenu() {
                   <ul className="mt-6 space-y-2 opacity-50">
                     {resource.items.map((item) => (
                       <li key={item.label}>
-                        <span className="flex text-lg">
+                        <Link href={item.href} className="flex text-lg">
                           <CornerDownRight size={18} /> {item.label}
-                        </span>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -124,9 +124,9 @@ export function MobileSideMenu() {
                   <ul className="mt-6 space-y-2 opacity-50">
                     {resource.items.map((item) => (
                       <li key={item.label}>
-                        <span className="flex text-lg">
+                        <Link href={item.href} className="flex text-lg">
                           <CornerDownRight size={18} /> {item.label}
-                        </span>
+                        </Link>
                       </li>
                     ))}
                   </ul>
