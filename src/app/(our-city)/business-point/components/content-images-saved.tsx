@@ -10,6 +10,7 @@ export function ContentImagesSaved({ id }: { id: string }) {
     data: imageBusinessPoint,
     error,
     isLoading,
+    refetch,
   } = useGetImageBusinessPoints(id);
 
   if (isLoading) {
@@ -25,6 +26,7 @@ export function ContentImagesSaved({ id }: { id: string }) {
 
     if (messageSuccess) {
       alert(messageSuccess);
+      await refetch();
 
       return;
     }
@@ -37,7 +39,7 @@ export function ContentImagesSaved({ id }: { id: string }) {
   return (
     <section>
       <ul className="flex flex-wrap justify-center gap-4">
-        {hasImage &&
+        {hasImage ? (
           imageBusinessPoint.map((item) => (
             <li key={item.id}>
               <div className="w- h-96 border border-zinc-300">
@@ -58,7 +60,10 @@ export function ContentImagesSaved({ id }: { id: string }) {
                 Deletar
               </button>
             </li>
-          ))}
+          ))
+        ) : (
+          <p className="opacity-50">Não há imagens</p>
+        )}
       </ul>
     </section>
   );
