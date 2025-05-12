@@ -5,9 +5,9 @@ import { useContext, useState } from "react";
 import Image from "next/image";
 import { forgotPassword } from "@/actions/auth/forgot-password";
 import { changePassword } from "@/actions/auth/change-password";
-import { useRouter } from "next/navigation";
 import { useCountdown } from "@/hooks/use-count-down";
 import { KEY_LOCAL_STORAGE } from "@/constants/key-local-storage";
+import { BackNavigation } from "@/components/back-navigation";
 
 export function ProfileContent() {
   const { profile, isLoadingDataUserProfile } = useContext(UserContext);
@@ -19,8 +19,6 @@ export function ProfileContent() {
     storageKey: KEY_LOCAL_STORAGE.FORGOT_PASSWORD_EXPIRY,
     durationSeconds: 300,
   });
-
-  const router = useRouter();
 
   const isCountdownActive = countdown > 0;
 
@@ -47,21 +45,9 @@ export function ProfileContent() {
     alert(message);
   };
 
-  const handleBackNavigation = () => {
-    router.back();
-  };
-
   return (
     <section>
-      <div className="px-10 py-6">
-        <button
-          type="button"
-          onClick={() => handleBackNavigation()}
-          className="hover:underline"
-        >
-          Voltar
-        </button>
-      </div>
+      <BackNavigation />
 
       <div className="mx-auto max-w-xl space-y-6 rounded-2xl bg-white p-6 shadow-md">
         <h1 className="text-center">Profile</h1>

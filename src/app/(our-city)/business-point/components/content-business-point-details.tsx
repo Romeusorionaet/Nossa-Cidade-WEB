@@ -11,7 +11,7 @@ import { checkBusinessStatus } from "@/utils/check-business-status";
 import Image from "next/image";
 import { useState } from "react";
 import { DetailsSection } from "./details-section";
-import { useRouter } from "next/navigation";
+import { BackNavigation } from "@/components/back-navigation";
 
 export function ContentBusinessPointDetails({ id }: { id: string }) {
   const [businessPointDetails, setBusinessPointDetails] =
@@ -22,8 +22,6 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
     isLoading,
     error,
   } = useBusinessPointOverview(id);
-
-  const router = useRouter();
 
   if (isLoading) {
     return <p>Carregando...</p>;
@@ -43,10 +41,6 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
     setShowDetails((prev) => !prev);
   };
 
-  const handleBackNavigation = () => {
-    router.back();
-  };
-
   const options = [
     ["Opções de serviço", businessPointDetails?.serviceOptions],
     ["Pagamentos", businessPointDetails?.payments],
@@ -61,15 +55,7 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
 
   return (
     <section className="mx-auto max-w-screen-lg px-4 pt-10 pb-20">
-      <div className="px-10 py-6">
-        <button
-          type="button"
-          onClick={() => handleBackNavigation()}
-          className="hover:underline"
-        >
-          Voltar
-        </button>
-      </div>
+      <BackNavigation />
 
       <h1 className="text-center text-2xl font-bold uppercase">
         {businessPoint.name}

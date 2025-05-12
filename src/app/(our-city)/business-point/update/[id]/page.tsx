@@ -5,6 +5,7 @@ import { queryClient } from "@/lib/query-client";
 import { getBusinessPointOverview } from "@/actions/get/business-point/get-business-point-overview";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
+import { BackNavigation } from "@/components/back-navigation";
 
 interface ParamsProps {
   params: Promise<{
@@ -25,12 +26,7 @@ export default async function Update({ params }: ParamsProps) {
 
   return (
     <main className="py-28">
-      <Link
-        href="/user/my-business-points"
-        className="hover: mb-10 ml-4 inline-block md:ml-10"
-      >
-        Voltar
-      </Link>
+      <BackNavigation />
 
       <HydrationBoundary state={dehydratedState}>
         <StepOneFormUpdateBusinessPoint />
