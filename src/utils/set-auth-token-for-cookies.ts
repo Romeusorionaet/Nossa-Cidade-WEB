@@ -9,7 +9,11 @@ interface Props {
 }
 
 export const setAuthTokenForCookies = async ({ token, key }: Props) => {
-  const { tokenExpires } = extractDataFromJwtToken(token);
+  const { tokenExpires, errorMessage } = extractDataFromJwtToken(token);
+
+  if (errorMessage || !tokenExpires) {
+    return;
+  }
 
   const currentUnixTimestamp = Math.floor(Date.now() / 1000);
 

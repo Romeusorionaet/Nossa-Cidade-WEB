@@ -6,7 +6,16 @@ import { extractDataFromJwtToken } from "@/utils/extract-data-from-jwt-token";
 
 export default async function Profile() {
   const accessToken = await getAccessTokenFromCookies();
-  const { tokenStaffId } = extractDataFromJwtToken(accessToken || "");
+  const { tokenStaffId, errorMessage } = extractDataFromJwtToken(accessToken);
+
+  if (errorMessage) {
+    return (
+      <p className="pt-48 text-center underline">
+        <Link href={APP_ROUTES.public.auth.signIn}>{errorMessage}</Link>
+      </p>
+    );
+  }
+
   const isMerchant = Boolean(tokenStaffId);
 
   return (

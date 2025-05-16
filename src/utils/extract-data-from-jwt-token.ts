@@ -9,7 +9,11 @@ interface DecodedAccessToken extends JwtPayload {
   permissions: string[];
 }
 
-export function extractDataFromJwtToken(token: string) {
+export function extractDataFromJwtToken(token?: string) {
+  if (!token) {
+    return { errorMessage: "Faça login" };
+  }
+
   const decodedAccessToken = jwt.decode(token) as DecodedAccessToken;
 
   const tokenExpires = decodedAccessToken.exp;
