@@ -43,14 +43,14 @@ export default function Dashboard() {
 
             <div className="mt-10 flex w-full items-center justify-around gap-4 max-md:flex-col">
               <Link
-                href="/map-city"
+                href={APP_ROUTES.public.mapCity}
                 className="block w-44 rounded-md border border-white/20 p-1 text-white duration-500 hover:bg-zinc-700"
               >
                 Ir para o mapa
               </Link>
 
               <Link
-                href="/shopping"
+                href={APP_ROUTES.public.showcase}
                 className="block w-44 rounded-md border border-white/20 p-1 text-white duration-500 hover:bg-zinc-700"
               >
                 Ver produtos

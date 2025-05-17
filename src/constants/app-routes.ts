@@ -22,5 +22,6 @@ export const APP_ROUTES = {
       myReviews: "/user/my-reviews",
     },
     mapCity: "/map-city",
+    showcase: "/showcase",
   },
 };
