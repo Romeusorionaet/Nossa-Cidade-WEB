@@ -41,7 +41,7 @@ export function MapComponent() {
 
   const myLocation: [number, number] = [-35.13145819818388, -6.378905610634973]; // TODO for while
 
-  const businessPointNotFound = businessPointsFiltered.length > 0;
+  const businessPointNotFound = businessPointsFiltered.length === 0;
 
   const { data: businessPoints } = useGetBusinessPointForMapping();
 
@@ -219,8 +219,8 @@ export function MapComponent() {
   };
 
   const pointsToShow = businessPointNotFound
-    ? businessPointsFiltered
-    : businessPoints;
+    ? businessPoints
+    : businessPointsFiltered;
 
   useEffect(() => {
     const initialize = async () => {
@@ -230,7 +230,6 @@ export function MapComponent() {
         handlePointRoute,
         businessPointsFiltered,
         pointsToShow,
-        businessPointNotFound,
         businessPointCategories,
         markersRef,
       });
@@ -239,7 +238,6 @@ export function MapComponent() {
     initialize();
   }, [
     businessPointsFiltered,
-    businessPointNotFound,
     pointsToShow,
     businessPointCategories,
     mapContainerRef,
@@ -359,7 +357,7 @@ export function MapComponent() {
         </aside>
       )}
 
-      {businessPointNotFound && (
+      {!businessPointNotFound && (
         <button
           type="button"
           onClick={() => handleAsideSearch()}

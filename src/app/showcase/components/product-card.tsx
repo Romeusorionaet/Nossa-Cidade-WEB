@@ -10,6 +10,7 @@ interface Props {
   name: string;
   price: number;
   merchants: string;
+  slug: string;
 }
 
 export function ProductCard({
@@ -18,8 +19,10 @@ export function ProductCard({
   merchants,
   name,
   price,
+  slug,
 }: Props) {
   const [isHovered, setIsHovered] = useState(false);
+
   const imageAction = isHovered && hoverImage ? hoverImage : image;
 
   return (
@@ -48,7 +51,10 @@ export function ProductCard({
             <p className="text-primary font-bold">R$ {price.toFixed(2)}</p>
           </div>
 
-          <Link href={APP_ROUTES.public.mapCity} className="underline">
+          <Link
+            href={`${APP_ROUTES.public.mapCity.slugBusinessPoint}/${slug}`}
+            className="underline"
+          >
             Mapa
           </Link>
         </div>

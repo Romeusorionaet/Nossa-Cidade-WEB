@@ -31,6 +31,7 @@ export default function Showcase() {
             name="Camiseta Estilosa"
             price={59.9}
             merchants="Loja X"
+            slug="teste"
           />
         </div>
       </main>

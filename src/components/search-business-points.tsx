@@ -10,6 +10,7 @@ export function SearchBusinessPoint() {
   const handleSaveQuery = () => {
     accessQuery(query);
   };
+
   return (
     <div className="flex w-full max-w-[620px] items-center rounded-md bg-white max-md:h-16">
       <button

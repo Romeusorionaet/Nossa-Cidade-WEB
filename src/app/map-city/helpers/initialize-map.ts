@@ -13,7 +13,6 @@ interface Props {
   handlePointRoute: ({ lat, lng }: { lat: number; lng: number }) => void;
   businessPointsFiltered: businessPointType[];
   pointsToShow: businessPointType[] | undefined;
-  businessPointNotFound: boolean;
   businessPointCategories:
     | {
         id: string;
@@ -29,7 +28,6 @@ export async function initializeMap({
   handlePointRoute,
   businessPointsFiltered,
   pointsToShow,
-  businessPointNotFound,
   businessPointCategories,
   markersRef,
 }: Props) {
@@ -129,14 +127,6 @@ export async function initializeMap({
 
   pointsToShow?.forEach(
     async ({ id, location, name, categoryId, openingHours }) => {
-      if (
-        businessPointNotFound &&
-        markersRef.current.some(
-          (marker) => marker.getElement().dataset.id === id,
-        )
-      )
-        return;
-
       const category = businessPointCategories?.find(
         (category) => category.id === categoryId,
       );
