@@ -32,8 +32,8 @@ export function ProductCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="overflow-hidden rounded-2xl shadow-lg">
-        <div className="h-48 w-full">
+      <div className="relative flex overflow-hidden rounded-2xl shadow-md md:flex-col md:items-center lg:shadow-lg">
+        <div className="h-48 w-48">
           <Image
             src={imageAction}
             alt={name}
@@ -44,16 +44,14 @@ export function ProductCard({
           />
         </div>
 
-        <div className="flex justify-between p-4">
-          <div>
-            <h3 className="text-lg font-semibold">{name}</h3>
-            <p className="text-muted-foreground text-sm">{merchants}</p>
-            <p className="text-primary font-bold">R$ {price.toFixed(2)}</p>
-          </div>
+        <div className="flex flex-col gap-2 p-4">
+          <h3 className="text-lg font-light">{name}</h3>
+          <p className="text-muted-foreground text-sm">{merchants}</p>
+          <p className="text-primary font-bold">R$ {price.toFixed(2)}</p>
 
           <Link
             href={`${APP_ROUTES.public.mapCity.slugBusinessPoint}/${slug}`}
-            className="underline"
+            className="absolute right-4 bottom-2 underline"
           >
             Mapa
           </Link>

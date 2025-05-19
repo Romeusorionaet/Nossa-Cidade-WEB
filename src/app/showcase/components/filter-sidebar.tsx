@@ -5,7 +5,7 @@ export function FilterSidebar() {
   return (
     <div className="space-y-6">
       <div>
-        <h4 className="mb-2 text-lg">Comerciantes</h4>
+        <h4 className="mb-2 text-lg">Pontos comerciais</h4>
         <div className="space-y-2">
           {merchantExample.map((merchant) => (
             <div key={merchant} className="flex items-center gap-2">

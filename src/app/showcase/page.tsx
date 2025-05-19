@@ -12,11 +12,11 @@ export default function Showcase() {
 
   return (
     <div className="flex flex-col gap-6 p-4 lg:flex-row">
-      <aside className="lg:w-1/4">
+      <aside className="rounded-md p-2 lg:w-1/5 lg:shadow-xl">
         <SearchInput value={search} onChange={setSearch} />
         <FilterSidebar />
       </aside>
-      <main className="lg:w-3/4">
+      <main className="lg:w-4/5">
         <CategoryTabs
           selected={categorySelected}
           onSelect={setCategorySelected}
@@ -24,7 +24,7 @@ export default function Showcase() {
 
         <div className="mt-2 w-full border border-blue-500" />
 
-        <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-4 flex flex-wrap justify-center gap-6">
           <ProductCard
             image="https://www.bing.com/th?id=OPHS.tR%2bZJ%2bpHRRC00w474C474&o=5&pid=21.1&w=148&h=216&qlt=100&dpr=1&bw=6&bc=FFFFFF"
             hoverImage="https://www.bing.com/th?id=OPHS.Mjs7PJud5CCA2A474C474&o=5&pid=21.1&w=148&h=216&qlt=100&dpr=1&bw=6&bc=FFFFFF"

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ContentBusinessPointDetails } from "../../components/content-business-point-details";
 
 interface PageProps {
