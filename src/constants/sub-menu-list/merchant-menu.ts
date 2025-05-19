@@ -17,6 +17,19 @@ export const MERCHANT_MENU = [
     ],
   },
   {
+    title: "Produtos do comercio",
+    items: [
+      {
+        label: "Gerênciamento de produtos",
+        href: "#",
+      },
+      {
+        label: "Registre o seu produto",
+        href: "#",
+      },
+    ],
+  },
+  {
     title: "Ferramentas de gestão",
     items: [
       { label: "Acesse o dashboard comercial", href: "#" },
