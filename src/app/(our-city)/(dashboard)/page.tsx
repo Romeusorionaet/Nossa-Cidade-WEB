@@ -1,4 +1,3 @@
-import { VantaCloudsBackground } from "@/components/backgrounds/vanta-clouds-background";
 import { VantaFogBackground } from "@/components/backgrounds/vanta-fog-background";
 import { AnimatedResultsStatus } from "@/components/animated-results-status";
 import { DummyNewsSection } from "@/components/dummy-news-section";
@@ -11,12 +10,13 @@ import { FAQ_ITEMS } from "@/constants/faq-items";
 import Image from "next/image";
 import Link from "next/link";
 import "swiper/css";
+import { WorldOfTurbulence } from "@/components/backgrounds/world-of-tubulence";
 
 export default function Dashboard() {
   return (
     <main>
       <div className="absolute top-0 mx-auto h-screen w-full max-w-[2000px]">
-        <VantaCloudsBackground />
+        <WorldOfTurbulence />
       </div>
 
       <section className="relative z-20 flex h-screen flex-col justify-evenly px-2 pt-16">
@@ -36,7 +36,10 @@ export default function Dashboard() {
           </h1>
 
           <div className="w-full pt-12 text-center">
-            <p className="font-extralight text-cyan-50 drop-shadow-lg">
+            <p
+              className="rounded-md bg-black/20 p-1 text-cyan-50 drop-shadow-lg"
+              style={{ textShadow: "2px 4px 6px rgba(0,0,0,0.5)" }}
+            >
               Saiba exatamente onde comprar na nossa cidade – veja no mapa e
               aproveite!
             </p>
@@ -44,14 +47,14 @@ export default function Dashboard() {
             <div className="mt-10 flex w-full items-center justify-around gap-4 max-md:flex-col">
               <Link
                 href={APP_ROUTES.public.mapCity.allBusinessPoints}
-                className="block w-44 rounded-md border border-white/20 p-1 text-white duration-500 hover:bg-zinc-700"
+                className="block w-44 rounded-md border border-white/40 bg-black/30 p-1 text-white duration-500 hover:bg-zinc-700"
               >
                 Ir para o mapa
               </Link>
 
               <Link
                 href={APP_ROUTES.public.showcase}
-                className="block w-44 rounded-md border border-white/20 p-1 text-white duration-500 hover:bg-zinc-700"
+                className="block w-44 rounded-md border border-white/40 bg-black/30 p-1 text-white duration-500 hover:bg-zinc-700"
               >
                 Ver produtos
               </Link>
@@ -196,8 +199,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <section className="mx-auto mt-96 mb-16 w-full max-w-[500px] space-y-10 px-4 text-center md:mt-20">
-        <p data-scroll data-scroll-speed={0.1} className="font-light">
+      <section className="mx-auto mt-32 mb-16 w-full max-w-[600px] space-y-10 rounded-md bg-white/60 p-4 px-4 text-center md:mt-20">
+        <p data-scroll data-scroll-speed={0.01} className="font-light">
           A Nossa Cidade é uma plataforma focada no comércio local,
           impulsionando as vendas da sua região e conectando comerciantes aos
           clientes próximos.
@@ -220,7 +223,10 @@ export default function Dashboard() {
       </section>
 
       <section className="mx-auto w-full max-w-[1200px] px-4 py-10">
-        <h3 className="text-[clamp(2rem,2.4vw,3rem)]">
+        <h3
+          className="text-[clamp(2rem,2.4vw,3rem)] text-white drop-shadow-lg"
+          style={{ textShadow: "2px 4px 6px rgba(0,0,0,0.5)" }}
+        >
           Veja como a Nossa Cidade já faz a diferença!
         </h3>
 

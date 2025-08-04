@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, ReactNode } from "react";
+import { useEffect, useRef, useCallback, ReactNode } from "react";
 import * as THREE from "three";
 
 interface VantaFogBackgroundProps {
@@ -13,44 +13,49 @@ export function VantaFogBackground({
   children,
 }: VantaFogBackgroundProps) {
   const vantaRef = useRef<HTMLDivElement>(null);
-  const [vantaEffect, setVantaEffect] = useState<any>(null);
+  const vantaEffectRef = useRef<any>(null);
+  const scriptLoadedRef = useRef(false);
+
+  const initVanta = useCallback(() => {
+    if (!window.VANTA || !vantaRef.current || vantaEffectRef.current) return;
+
+    vantaEffectRef.current = window.VANTA.FOG({
+      el: vantaRef.current,
+      THREE,
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.0,
+      minWidth: 200.0,
+      highlightColor: 0x638d9d,
+      midtoneColor: 0x0877ff,
+      speed: 5.0,
+    });
+  }, []);
 
   useEffect(() => {
-    if (!vantaEffect) {
-      const loadScript = async () => {
-        const script = document.createElement("script");
-        script.src =
-          "https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.fog.min.js";
-        script.async = true;
-        script.onload = () => {
-          // @ts-ignore
-          if (window.VANTA && vantaRef.current) {
-            // @ts-ignore
-            const effect = window.VANTA.FOG({
-              el: vantaRef.current,
-              THREE,
-              mouseControls: true,
-              touchControls: true,
-              gyroControls: false,
-              minHeight: 200.0,
-              minWidth: 200.0,
-              highlightColor: 0x638d9d,
-              midtoneColor: 0x0877ff,
-              speed: 5.0,
-            });
-            setVantaEffect(effect);
-          }
-        };
-        document.body.appendChild(script);
-      };
-
-      loadScript();
+    if (scriptLoadedRef.current) {
+      initVanta();
+      return;
     }
 
-    return () => {
-      if (vantaEffect) vantaEffect.destroy();
+    const script = document.createElement("script");
+    script.src =
+      "https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.fog.min.js";
+    script.async = true;
+    script.onload = () => {
+      scriptLoadedRef.current = true;
+      initVanta();
     };
-  }, [vantaEffect]);
+    document.body.appendChild(script);
+
+    return () => {
+      if (vantaEffectRef.current) {
+        vantaEffectRef.current.destroy();
+        vantaEffectRef.current = null;
+      }
+    };
+  }, [initVanta]);
 
   return (
     <div ref={vantaRef} className={`relative h-full w-full ${className}`}>
