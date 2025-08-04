@@ -4,7 +4,10 @@ export const MAP_MENU = [
   {
     title: "Exploração interativa",
     items: [
-      { label: "Navegue pelo mapa da cidade", href: APP_ROUTES.public.mapCity },
+      {
+        label: "Navegue pelo mapa da cidade",
+        href: APP_ROUTES.public.mapCity.slugBusinessPoint,
+      },
       {
         label: "Encontre estabelecimentos próximos",
         href: "#",

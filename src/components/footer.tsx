@@ -54,7 +54,9 @@ export function Footer() {
                 <Link href={APP_ROUTES.public.dashboard}>Home</Link>
               </li>
               <li>
-                <Link href={APP_ROUTES.public.mapCity}>Mapa</Link>
+                <Link href={APP_ROUTES.public.mapCity.slugBusinessPoint}>
+                  Mapa
+                </Link>
               </li>
               <li>Produtos</li>
               <li>
