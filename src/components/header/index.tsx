@@ -19,7 +19,7 @@ import Image from "next/image";
 export function Header() {
   const { eventIndicator, handleEventMenu, handleMouseLeave, navRef } =
     useHoverBackground();
-  const { profile } = useContext(UserContext);
+  const { profile, isLoadingDataUserProfile } = useContext(UserContext);
 
   const userLogged = profile.publicId;
 
@@ -138,48 +138,54 @@ export function Header() {
               scrolled={scrolled}
             />
           </div>
-
-          <nav className="z-10">
-            {userLogged ? (
-              <Link
-                href={APP_ROUTES.public.user.profile}
-                className="mx-4 inline-block h-9.5 md:h-12 md:w-12"
-              >
-                <Image
-                  src={profile.avatar}
-                  alt="avatar"
-                  width={100}
-                  height={100}
-                  className="h-full w-full rounded-full object-cover"
-                />
-              </Link>
-            ) : (
-              <div data-scroll={scrolled} className="flex items-center gap-2">
+          {isLoadingDataUserProfile ? (
+            <div
+              data-value={isLoadingDataUserProfile}
+              className="mx-4 h-9.5 w-full rounded-full data-[value=true]:animate-pulse data-[value=true]:bg-cyan-500 md:h-12 md:w-12"
+            />
+          ) : (
+            <nav className="z-10">
+              {userLogged ? (
                 <Link
-                  href={APP_ROUTES.public.auth.signIn}
-                  data-value={eventIndicator.visible}
-                  className="bg-rise-fade group px-3 py-2 data-[value=true]:hover:before:bg-blue-500 md:p-[clamp(0.60rem,0.95vw,1.4rem)]"
+                  href={APP_ROUTES.public.user.profile}
+                  className="mx-4 inline-block h-9.5 md:h-12 md:w-12"
                 >
-                  <div className="overflow-hidden">
-                    <span className="bg-rise-fade-content group-hover:animate-rise-from-bottom text-black group-hover:text-white group-hover:duration-300 before:content-['Login']">
-                      login_
-                    </span>
-                  </div>
+                  <Image
+                    src={profile.avatar}
+                    alt="avatar"
+                    width={100}
+                    height={100}
+                    className="h-full w-full rounded-full object-cover"
+                  />
                 </Link>
-                <Link
-                  href={APP_ROUTES.public.auth.signUp}
-                  data-value={eventIndicator.visible}
-                  className="bg-rise-fade group rounded-full px-4 py-2 font-medium text-black data-[value=true]:bg-blue-400 data-[value=true]:text-white md:p-[clamp(0.60rem,0.95vw,1.4rem)] md:px-6"
-                >
-                  <div className="overflow-hidden">
-                    <span className="bg-rise-fade-content group-hover:animate-rise-from-bottom before:content-['Registrar']">
-                      Registrar
-                    </span>
-                  </div>
-                </Link>
-              </div>
-            )}
-          </nav>
+              ) : (
+                <div data-scroll={scrolled} className="flex items-center gap-2">
+                  <Link
+                    href={APP_ROUTES.public.auth.signIn}
+                    data-value={eventIndicator.visible}
+                    className="bg-rise-fade group px-3 py-2 data-[value=true]:hover:before:bg-blue-500 md:p-[clamp(0.60rem,0.95vw,1.4rem)]"
+                  >
+                    <div className="overflow-hidden">
+                      <span className="bg-rise-fade-content group-hover:animate-rise-from-bottom text-black group-hover:text-white group-hover:duration-300 before:content-['Login']">
+                        login_
+                      </span>
+                    </div>
+                  </Link>
+                  <Link
+                    href={APP_ROUTES.public.auth.signUp}
+                    data-value={eventIndicator.visible}
+                    className="bg-rise-fade group rounded-full px-4 py-2 font-medium text-black data-[value=true]:bg-blue-400 data-[value=true]:text-white md:p-[clamp(0.60rem,0.95vw,1.4rem)] md:px-6"
+                  >
+                    <div className="overflow-hidden">
+                      <span className="bg-rise-fade-content group-hover:animate-rise-from-bottom before:content-['Registrar']">
+                        Registrar
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+              )}
+            </nav>
+          )}
         </div>
       </div>
     </header>
