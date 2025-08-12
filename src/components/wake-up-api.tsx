@@ -6,11 +6,13 @@ export default function WakeUpAPI() {
   const [manualClose, setManualClose] = useState(false);
   const { error, isLoading } = useWakeUpApi();
 
+  const isOpen = !manualClose && (isLoading || error);
+
   return (
     <div
-      aria-hidden={manualClose}
-      aria-modal={!manualClose}
-      data-value={manualClose}
+      aria-hidden={!isOpen}
+      aria-modal={!!isOpen}
+      data-value={!isOpen}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm data-[value=true]:hidden"
     >
       <div className="relative w-full max-w-sm rounded-xl bg-white p-6 text-center shadow-lg">
