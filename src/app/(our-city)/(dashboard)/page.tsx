@@ -1,4 +1,5 @@
 import { VantaFogBackground } from "@/components/backgrounds/vanta-fog-background";
+import { WorldOfTurbulence } from "@/components/backgrounds/world-of-tubulence";
 import { AnimatedResultsStatus } from "@/components/animated-results-status";
 import { DummyNewsSection } from "@/components/dummy-news-section";
 import { CarouselPreviews } from "@/components/carousel-previews";
@@ -10,12 +11,12 @@ import { FAQ_ITEMS } from "@/constants/faq-items";
 import Image from "next/image";
 import Link from "next/link";
 import "swiper/css";
-import { WorldOfTurbulence } from "@/components/backgrounds/world-of-tubulence";
 
 export default function Dashboard() {
   return (
     <main>
       <div className="absolute top-0 mx-auto h-screen w-full max-w-[2000px]">
+        <div className="absolute top-0 left-0 h-28 w-full bg-gradient-to-b from-white/70 to-transparent md:h-20" />
         <WorldOfTurbulence />
       </div>
 
