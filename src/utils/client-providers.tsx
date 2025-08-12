@@ -1,17 +1,18 @@
 "use client";
 
 import { FilterBusinessPointsContextProvider } from "@/contexts/filter-business-points.context";
+import "@/assets/styles/utilities/no-spinner-input-number.css";
 import { UserContextProvider } from "@/contexts/user.context";
-import { queryClient } from "@/lib/query-client";
 import { QueryClientProvider } from "@tanstack/react-query";
+import "@/assets/styles/utilities/background-section.css";
+import { useEffect, useRef, type ReactNode } from "react";
+import { SessionProvider } from "next-auth/react";
+import { queryClient } from "@/lib/query-client";
+import WakeUpAPI from "@/components/wake-up-api";
+import "@/assets/styles/base/globals.css";
 import LocomotiveScroll, {
   type ILocomotiveScrollOptions,
 } from "locomotive-scroll";
-import { SessionProvider } from "next-auth/react";
-import { useEffect, useRef, type ReactNode } from "react";
-import "@/assets/styles/base/globals.css";
-import "@/assets/styles/utilities/background-section.css";
-import "@/assets/styles/utilities/no-spinner-input-number.css";
 
 interface CustomLocomotiveScrollOptions extends ILocomotiveScrollOptions {
   el?: HTMLElement | null;
@@ -39,6 +40,7 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
         <SessionProvider>
           <UserContextProvider>
             <FilterBusinessPointsContextProvider>
+              <WakeUpAPI />
               {children}
             </FilterBusinessPointsContextProvider>
           </UserContextProvider>

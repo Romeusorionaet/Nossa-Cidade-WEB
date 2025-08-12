@@ -9,4 +9,5 @@ export const QUERY_KEY_CACHE = {
   ABPFM: "businessPointsForMapping",
   BPF: "businessPointsFiltered",
   PROFILE: "profile",
+  WakeUpApi: "wake-up-api",
 };
