@@ -5,10 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 export function useWakeUpApi() {
   const { isLoading, error } = useQuery({
     queryKey: [QUERY_KEY_CACHE.WakeUpApi],
-    queryFn: () => {
-      getWakeUpApi();
-      return null;
-    },
+    queryFn: () => getWakeUpApi(),
     staleTime: 0,
     retry: false,
   });

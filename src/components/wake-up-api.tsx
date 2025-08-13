@@ -1,6 +1,6 @@
+import { useWakeUpApi } from "@/hooks/use-app-queries/use-wake-up-api";
 import { Database, Snowflake, X } from "lucide-react";
 import { useState } from "react";
-import { useWakeUpApi } from "@/hooks/use-app-queries/use-wake-up-api";
 
 export default function WakeUpAPI() {
   const [manualClose, setManualClose] = useState(false);
