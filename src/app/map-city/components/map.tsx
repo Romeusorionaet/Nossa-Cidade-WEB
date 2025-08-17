@@ -223,26 +223,22 @@ export function MapComponent() {
     : businessPointsFiltered;
 
   useEffect(() => {
-    const initialize = async () => {
-      return initializeMap({
-        mapContainerRef,
-        providerMapContainer,
-        handlePointRoute,
-        businessPointsFiltered,
-        pointsToShow,
-        businessPointCategories,
-        markersRef,
-      });
-    };
+    if (pointsToShow !== undefined) {
+      const initialize = async () => {
+        return await initializeMap({
+          mapContainerRef,
+          providerMapContainer,
+          handlePointRoute,
+          businessPointsFiltered,
+          pointsToShow,
+          businessPointCategories,
+          markersRef,
+        });
+      };
 
-    initialize();
-  }, [
-    businessPointsFiltered,
-    pointsToShow,
-    businessPointCategories,
-    mapContainerRef,
-    providerMapContainer,
-  ]);
+      initialize();
+    }
+  }, [pointsToShow, mapContainerRef, providerMapContainer]);
 
   return (
     <div className="relative h-screen overflow-hidden">

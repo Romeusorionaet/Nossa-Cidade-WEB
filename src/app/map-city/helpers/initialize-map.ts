@@ -2,7 +2,7 @@ import { maplibreglTiles } from "@/actions/services/maplibregl";
 import { checkBusinessStatus } from "@/utils/check-business-status";
 import { getMarkerElement } from "@/utils/get-marker-element";
 import maplibregl from "maplibre-gl";
-import type { RefObject } from "react";
+import { type RefObject } from "react";
 import { popupContent } from "./popup-content";
 import type { businessPointType } from "@/@types/business-point-type";
 import { MARKERS } from "@/constants/markers";
@@ -79,6 +79,8 @@ export async function initializeMap({
         },
         labelLayerId,
       );
+
+      return;
     }
 
     map.easeTo({ pitch: 60, bearing: 0, duration: 2000 });
@@ -153,6 +155,4 @@ export async function initializeMap({
       markersRef.current.push(marker);
     },
   );
-
-  return () => map.remove();
 }
