@@ -6,7 +6,7 @@ export const MAP_MENU = [
     items: [
       {
         label: "Navegue pelo mapa da cidade",
-        href: APP_ROUTES.public.mapCity.slugBusinessPoint,
+        href: APP_ROUTES.public.mapCity.allBusinessPoints,
       },
       {
         label: "Encontre estabelecimentos próximos",

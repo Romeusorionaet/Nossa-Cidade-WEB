@@ -5,13 +5,13 @@ import {
   POLYGON_BOUNDS,
 } from "@/constants/polygon-bounds";
 import maplibregl from "maplibre-gl";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 
 export function useProviderMapContainer() {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
 
-  const providerMapContainer = async () => {
+  const providerMapContainer = useCallback(async () => {
     if (!mapRef.current) {
       const style = await maplibreglStyle();
 
@@ -29,7 +29,7 @@ export function useProviderMapContainer() {
     }
 
     return mapRef.current;
-  };
+  }, []);
 
   return { providerMapContainer, mapContainerRef };
 }
