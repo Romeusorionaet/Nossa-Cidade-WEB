@@ -14,7 +14,7 @@ import { OpeningHoursList } from "@/components/opening-hours-list";
 import { WEEK_DAYS } from "@/constants/week-days-order";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 import { APP_ROUTES } from "@/constants/app-routes";
-import { MapCityContext } from "@/contexts/map-city.context";
+import { useMapCity } from "@/hooks/use-map-city";
 
 interface TravelInfo {
   duration: number;
@@ -27,6 +27,7 @@ export function MapComponent() {
     startPoint,
     accessQuery,
     setEndPoint,
+    isMapLoading,
     setStartPoint,
     mapContainerRef,
     togglePointType,
@@ -34,7 +35,9 @@ export function MapComponent() {
     providerMapContainer,
     businessPointNotFound,
     businessPointsFiltered,
-  } = useContext(MapCityContext);
+    isLoadingBusinessPoint,
+    isLoadingBusinessPointCategory,
+  } = useMapCity();
   const routeMarkersRef = useRef<maplibregl.Marker[]>([]);
   const [travelInfo, setTravelInfo] = useState<TravelInfo | null>(null);
   const [toggleWindowSearch, setToggleWindowSearch] = useState(false);
