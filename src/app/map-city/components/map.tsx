@@ -2,23 +2,19 @@
 
 import { openRouteServiceDriveCar } from "@/actions/services/open-route-services";
 import { getMarkerElement } from "@/utils/get-marker-element";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import "maplibre-gl/dist/maplibre-gl.css";
 import maplibregl from "maplibre-gl";
 import "@/assets/styles/utilities/scrollbar.css";
 import { SearchBusinessPoint } from "@/components/search-business-points";
-import { useProviderMapContainer } from "@/hooks/use-provider-map-container";
 import { checkBusinessStatus } from "@/utils/check-business-status";
 import Link from "next/link";
-import { initializeMap } from "../helpers/initialize-map";
 import { ArrowLeftSquare, ArrowRightSquare } from "lucide-react";
 import { OpeningHoursList } from "@/components/opening-hours-list";
-import { FilterBusinessPointsContext } from "@/contexts/filter-business-points.context";
 import { WEEK_DAYS } from "@/constants/week-days-order";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
-import { useGetBusinessPointCategories } from "@/hooks/use-app-queries/use-get-business-point-categories";
-import { useGetBusinessPointForMapping } from "@/hooks/use-app-queries/use-get-business-point-for-mapping";
 import { APP_ROUTES } from "@/constants/app-routes";
+import { MapCityContext } from "@/contexts/map-city.context";
 
 interface TravelInfo {
   duration: number;
@@ -26,26 +22,25 @@ interface TravelInfo {
 }
 
 export function MapComponent() {
-  const { mapContainerRef, providerMapContainer } = useProviderMapContainer();
-  const markersRef = useRef<maplibregl.Marker[]>([]);
+  const {
+    endPoint,
+    startPoint,
+    accessQuery,
+    setEndPoint,
+    setStartPoint,
+    mapContainerRef,
+    togglePointType,
+    setTogglePointType,
+    providerMapContainer,
+    businessPointNotFound,
+    businessPointsFiltered,
+  } = useContext(MapCityContext);
   const routeMarkersRef = useRef<maplibregl.Marker[]>([]);
   const [travelInfo, setTravelInfo] = useState<TravelInfo | null>(null);
-  const [startPoint, setStartPoint] = useState<[number, number]>([0, 0]);
-  const [endPoint, setEndPoint] = useState<[number, number]>([0, 0]);
-  const [togglePointType, setTogglePointType] = useState(false);
   const [toggleWindowSearch, setToggleWindowSearch] = useState(false);
-  const { businessPointsFiltered, accessQuery } = useContext(
-    FilterBusinessPointsContext,
-  );
   const [isOpenAsideControl, setIsOpenAsideControl] = useState(true);
 
   const myLocation: [number, number] = [-35.13145819818388, -6.378905610634973]; // TODO for while
-
-  const businessPointNotFound = businessPointsFiltered.length === 0;
-
-  const { data: businessPoints } = useGetBusinessPointForMapping();
-
-  const { data: businessPointCategories } = useGetBusinessPointCategories();
 
   const handleAsideRouteControl = () => {
     isOpenAsideControl
@@ -62,17 +57,6 @@ export function MapComponent() {
   const handleCleanSearch = () => {
     setToggleWindowSearch(false);
     accessQuery("");
-  };
-
-  const handlePointRoute = ({ lat, lng }: { lat: number; lng: number }) => {
-    setTogglePointType((prev) => {
-      if (!prev) {
-        setStartPoint([lng, lat]);
-      } else {
-        setEndPoint([lng, lat]);
-      }
-      return prev;
-    });
   };
 
   const handleChangeArea = (value: boolean) => {
@@ -217,28 +201,6 @@ export function MapComponent() {
     setEndPoint([0, 0]);
     setTogglePointType(false);
   };
-
-  const pointsToShow = businessPointNotFound
-    ? businessPoints
-    : businessPointsFiltered;
-
-  useEffect(() => {
-    if (pointsToShow !== undefined) {
-      const initialize = async () => {
-        return await initializeMap({
-          mapContainerRef,
-          providerMapContainer,
-          handlePointRoute,
-          businessPointsFiltered,
-          pointsToShow,
-          businessPointCategories,
-          markersRef,
-        });
-      };
-
-      initialize();
-    }
-  }, [pointsToShow, mapContainerRef, providerMapContainer]);
 
   return (
     <div className="relative h-screen overflow-hidden">

@@ -13,6 +13,7 @@ import "@/assets/styles/base/globals.css";
 import LocomotiveScroll, {
   type ILocomotiveScrollOptions,
 } from "locomotive-scroll";
+import { MapCityContextProvider } from "@/contexts/map-city.context";
 
 interface CustomLocomotiveScrollOptions extends ILocomotiveScrollOptions {
   el?: HTMLElement | null;
@@ -40,8 +41,10 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
         <SessionProvider>
           <UserContextProvider>
             <FilterBusinessPointsContextProvider>
-              <WakeUpAPI />
-              {children}
+              <MapCityContextProvider>
+                <WakeUpAPI />
+                {children}
+              </MapCityContextProvider>
             </FilterBusinessPointsContextProvider>
           </UserContextProvider>
         </SessionProvider>
