@@ -13,6 +13,10 @@ import "@/assets/styles/base/globals.css";
 import LocomotiveScroll, {
   type ILocomotiveScrollOptions,
 } from "locomotive-scroll";
+import {
+  maplibreglStyleCached,
+  maplibreglTilesCached,
+} from "@/actions/services/maplibregl";
 
 interface CustomLocomotiveScrollOptions extends ILocomotiveScrollOptions {
   el?: HTMLElement | null;
@@ -32,6 +36,11 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
     return () => {
       locomotiveScroll.destroy();
     };
+  }, []);
+
+  useEffect(() => {
+    maplibreglStyleCached();
+    maplibreglTilesCached();
   }, []);
 
   return (
