@@ -2,7 +2,7 @@
 
 import { openRouteServiceDriveCar } from "@/actions/services/open-route-services";
 import { getMarkerElement } from "@/utils/get-marker-element";
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "maplibre-gl/dist/maplibre-gl.css";
 import maplibregl from "maplibre-gl";
 import "@/assets/styles/utilities/scrollbar.css";
@@ -214,7 +214,68 @@ export function MapComponent() {
         Sair
       </Link>
 
-      <div ref={mapContainerRef} className="h-screen w-full overflow-hidden" />
+      {isMapLoading && (
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+          <svg
+            className="mb-4 h-12 w-12 animate-spin text-blue-500"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <title>Loading Map</title>
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            />
+          </svg>
+          <p className="text-2xl font-semibold text-gray-700 drop-shadow">
+            Carregando mapa...
+          </p>
+          <p className="mt-2 text-sm text-gray-500">
+            Aguarde, estamos preparando os dados para você
+          </p>
+        </div>
+      )}
+
+      <div ref={mapContainerRef} className="h-full w-full overflow-hidden" />
+
+      {(isLoadingBusinessPoint || isLoadingBusinessPointCategory) && (
+        <div className="absolute top-4 right-4 z-50 flex animate-pulse items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 p-3 shadow-md">
+          <svg
+            className="h-5 w-5 animate-spin text-blue-500"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <title>Loading data</title>
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            />
+          </svg>
+          <p className="text-sm font-medium text-blue-700">
+            Carregando dados do mapa...
+          </p>
+        </div>
+      )}
 
       {travelInfo && (
         <div className="absolute top-12 left-1 rounded-md bg-white p-2 md:top-16">
