@@ -1,4 +1,4 @@
-import { maplibreglTiles } from "@/actions/services/maplibregl";
+import { maplibreglTilesCached as maplibreglTiles } from "@/actions/services/maplibregl";
 import { checkBusinessStatus } from "@/utils/check-business-status";
 import { getMarkerElement } from "@/utils/get-marker-element";
 import maplibregl from "maplibre-gl";
@@ -35,6 +35,8 @@ export async function initializeMap({
 
   const map = await providerMapContainer();
 
+  const tilesUrlPromise = maplibreglTiles();
+
   map.on("load", async () => {
     const style = map.getStyle();
     if (!style.layers) return;
@@ -50,8 +52,9 @@ export async function initializeMap({
     }
 
     if (!map.getSource("openmaptiles")) {
+      const tilesUrl = await tilesUrlPromise;
       map.addSource("openmaptiles", {
-        url: await maplibreglTiles(),
+        url: tilesUrl,
         type: "vector",
       });
     }
@@ -83,7 +86,7 @@ export async function initializeMap({
       return;
     }
 
-    map.easeTo({ pitch: 60, bearing: 0, duration: 2000 });
+    map.jumpTo({ pitch: 60, bearing: 0, center: map.getCenter() });
 
     map.setLight({
       anchor: "viewport",
@@ -92,11 +95,9 @@ export async function initializeMap({
       position: [2, 100, 90],
     });
 
-    map.getStyle().layers?.forEach((layer) => {
-      if (layer.id.includes("poi")) {
-        map.removeLayer(layer.id);
-      }
-    });
+    style.layers
+      .filter((layer) => layer.id.includes("poi"))
+      .forEach((layer) => map.removeLayer(layer.id));
   });
 
   let currentMarker: maplibregl.Marker | null = null;
@@ -127,32 +128,30 @@ export async function initializeMap({
     }
   });
 
-  pointsToShow?.forEach(
-    async ({ id, location, name, categoryId, openingHours }) => {
-      const category = businessPointCategories?.find(
-        (category) => category.id === categoryId,
-      );
-      const iconName = category?.name.replace(/\s+/g, "_");
-      const status = checkBusinessStatus(openingHours);
+  pointsToShow?.forEach(({ id, location, name, categoryId, openingHours }) => {
+    const category = businessPointCategories?.find(
+      (category) => category.id === categoryId,
+    );
+    const iconName = category?.name.replace(/\s+/g, "_");
+    const status = checkBusinessStatus(openingHours);
 
-      const popup = new maplibregl.Popup().setDOMContent(
-        popupContent({ name, status, id }),
-      );
+    const popup = new maplibregl.Popup().setDOMContent(
+      popupContent({ name, status, id }),
+    );
 
-      const markerElement = getMarkerElement({
-        icon: iconName?.toLocaleLowerCase() as keyof typeof MARKERS,
-        size: "medium",
-        name: "",
-      });
+    const markerElement = getMarkerElement({
+      icon: iconName?.toLocaleLowerCase() as keyof typeof MARKERS,
+      size: "medium",
+      name: "",
+    });
 
-      markerElement.dataset.id = id;
+    markerElement.dataset.id = id;
 
-      const marker = new maplibregl.Marker({ element: markerElement })
-        .setLngLat([location.latitude, location.longitude])
-        .setPopup(popup)
-        .addTo(map);
+    const marker = new maplibregl.Marker({ element: markerElement })
+      .setLngLat([location.latitude, location.longitude])
+      .setPopup(popup)
+      .addTo(map);
 
-      markersRef.current.push(marker);
-    },
-  );
+    markersRef.current.push(marker);
+  });
 }

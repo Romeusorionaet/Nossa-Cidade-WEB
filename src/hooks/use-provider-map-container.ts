@@ -1,4 +1,4 @@
-import { maplibreglStyle } from "@/actions/services/maplibregl";
+import { maplibreglStyleCached as maplibreglStyle } from "@/actions/services/maplibregl";
 import {
   CENTER_LAT,
   CENTER_LNG,
