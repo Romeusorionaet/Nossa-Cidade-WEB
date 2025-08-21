@@ -73,5 +73,6 @@ export function useMapCity() {
     isLoadingBusinessPoint,
     isLoadingBusinessPointCategory,
     handlePointRoute,
+    markersMap,
   };
 }

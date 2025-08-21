@@ -9,6 +9,7 @@ import { popupContent } from "./popup-content";
 import { MARKERS } from "@/constants/markers";
 import { type RefObject } from "react";
 import maplibregl from "maplibre-gl";
+import { filterMarkers } from "./marker";
 
 interface Props {
   mapContainerRef: RefObject<HTMLDivElement | null>;
@@ -131,14 +132,6 @@ export async function initializeMap({
     });
   });
 
-  const filteredIds = new Set(businessPointsFiltered.map((p) => p.id));
-
-  markersMap.forEach((marker, id) => {
-    const el = marker.getElement();
-    const shouldBeVisible = filteredIds.has(id);
-    el.style.display = shouldBeVisible ? "block" : "none";
-  });
-
   pointsToShow?.forEach(({ id, location, name, categoryId, openingHours }) => {
     if (!markersMap.has(id)) {
       const category = businessPointCategories?.find(
@@ -168,4 +161,9 @@ export async function initializeMap({
       markersMap.set(id, marker);
     }
   });
+
+  if (businessPointsFiltered.length > 0) {
+    const filteredIds = new Set(businessPointsFiltered.map((p) => p.id));
+    filterMarkers(markersMap, filteredIds);
+  }
 }

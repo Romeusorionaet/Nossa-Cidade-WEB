@@ -15,6 +15,7 @@ import { WEEK_DAYS } from "@/constants/week-days-order";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 import { APP_ROUTES } from "@/constants/app-routes";
 import { useMapCity } from "@/hooks/use-map-city";
+import { resetMarkersVisibility } from "../helpers/marker";
 
 interface TravelInfo {
   duration: number;
@@ -25,6 +26,7 @@ export function MapComponent() {
   const {
     endPoint,
     startPoint,
+    markersMap,
     accessQuery,
     setEndPoint,
     isMapLoading,
@@ -60,6 +62,7 @@ export function MapComponent() {
   const handleCleanSearch = () => {
     setToggleWindowSearch(false);
     accessQuery("");
+    resetMarkersVisibility(markersMap);
   };
 
   const handleChangeArea = (value: boolean) => {
