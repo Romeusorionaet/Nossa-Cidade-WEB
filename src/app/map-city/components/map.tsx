@@ -93,7 +93,8 @@ export function MapComponent() {
     const endMarker = new maplibregl.Marker({
       element: getMarkerElement({
         icon: "dot",
-        size: "small",
+        sizeIcon: "small",
+        sizeName: "small",
         name: "",
       }),
     })
@@ -215,7 +216,7 @@ export function MapComponent() {
       </Link>
 
       {isMapLoading && (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center">
           <svg
             className="mb-4 h-12 w-12 animate-spin text-blue-500"
             xmlns="http://www.w3.org/2000/svg"

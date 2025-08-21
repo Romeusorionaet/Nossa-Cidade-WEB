@@ -1,25 +1,32 @@
 import { MARKERS } from "@/constants/markers";
 
-const sizes = {
-  large: "25px",
-  medium: "20px",
+export const sizesIcon = {
+  large: "18px",
+  medium: "15px",
+  small: "10px",
+};
+
+export const sizesName = {
+  large: "16px",
+  medium: "13px",
   small: "8px",
 };
 
 const createCustomMarker = ({
   icon,
-  size,
+  sizeIcon,
+  sizeName,
   name,
 }: {
   icon: string;
-  size: string;
+  sizeIcon: string;
+  sizeName: string;
   name: string;
 }) => {
   const markerElement = document.createElement("div");
-  markerElement.style.fontSize = size.toString();
+  markerElement.style.fontSize = sizeIcon.toString();
   markerElement.style.cursor = "pointer";
   markerElement.style.textAlign = "center";
-  markerElement.style.lineHeight = "25px";
 
   const iconElement = document.createElement("div");
   iconElement.textContent = icon;
@@ -27,7 +34,10 @@ const createCustomMarker = ({
 
   const nameElement = document.createElement("span");
   nameElement.textContent = name;
-  nameElement.style.color = "#4a4a4a";
+  nameElement.style.color = "black";
+  nameElement.style.fontSize = sizeName.toString();
+  nameElement.style.backgroundColor = "white";
+
   markerElement.appendChild(nameElement);
 
   return markerElement;
@@ -35,12 +45,19 @@ const createCustomMarker = ({
 
 export function getMarkerElement({
   icon,
-  size,
+  sizeIcon,
+  sizeName,
   name,
 }: {
   icon: keyof typeof MARKERS;
-  size: keyof typeof sizes;
+  sizeIcon: keyof typeof sizesIcon;
+  sizeName: keyof typeof sizesName;
   name: string;
 }) {
-  return createCustomMarker({ icon: MARKERS[icon], size: sizes[size], name });
+  return createCustomMarker({
+    icon: MARKERS[icon],
+    sizeIcon: sizesIcon[sizeIcon],
+    sizeName: sizesName[sizeName],
+    name,
+  });
 }
