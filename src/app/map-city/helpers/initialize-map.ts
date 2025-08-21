@@ -1,11 +1,14 @@
-import { maplibreglTilesCached as maplibreglTiles } from "@/actions/services/maplibregl";
-import { checkBusinessStatus } from "@/utils/check-business-status";
-import { getMarkerElement } from "@/utils/get-marker-element";
-import maplibregl from "maplibre-gl";
-import { type RefObject } from "react";
-import { popupContent } from "./popup-content";
 import type { businessPointType } from "@/@types/business-point-type";
+import { checkBusinessStatus } from "@/utils/check-business-status";
+import {
+  getMarkerElement,
+  sizesIcon,
+  sizesName,
+} from "@/utils/get-marker-element";
+import { popupContent } from "./popup-content";
 import { MARKERS } from "@/constants/markers";
+import { type RefObject } from "react";
+import maplibregl from "maplibre-gl";
 
 interface Props {
   mapContainerRef: RefObject<HTMLDivElement | null>;
@@ -19,7 +22,7 @@ interface Props {
         name: string;
       }[]
     | undefined;
-  markersRef: RefObject<maplibregl.Marker[]>;
+  markersMap: Map<string, maplibregl.Marker>;
 }
 
 export async function initializeMap({
@@ -29,64 +32,38 @@ export async function initializeMap({
   businessPointsFiltered,
   pointsToShow,
   businessPointCategories,
-  markersRef,
+  markersMap,
 }: Props) {
   if (!mapContainerRef.current) return;
 
   const map = await providerMapContainer();
 
-  const tilesUrlPromise = maplibreglTiles();
-
   map.on("load", async () => {
     const style = map.getStyle();
-    if (!style.layers) return;
+    style.layers
+      ?.filter((layer) => layer.id.includes("poi"))
+      .forEach((layer) => map.removeLayer(layer.id));
 
-    const layers = style.layers;
-    let labelLayerId: string | undefined = undefined;
-
-    for (const layer of layers) {
-      if (layer.type === "symbol" && layer.layout?.["text-field"]) {
-        labelLayerId = layer.id;
-        break;
-      }
-    }
-
-    if (!map.getSource("openmaptiles")) {
-      const tilesUrl = await tilesUrlPromise;
-      map.addSource("openmaptiles", {
-        url: tilesUrl,
-        type: "vector",
+    if (!map.getLayer("buildings-2d")) {
+      map.addLayer({
+        id: "buildings-2d",
+        source: "openmaptiles",
+        "source-layer": "building",
+        type: "fill",
+        paint: {
+          "fill-color": "#ccc",
+          "fill-outline-color": "#aaa",
+          "fill-opacity": 0.6,
+        },
       });
     }
 
-    if (!map.getLayer("3d-buildings")) {
-      map.addLayer(
-        {
-          id: "3d-buildings",
-          source: "openmaptiles",
-          "source-layer": "building",
-          type: "fill-extrusion",
-          minzoom: 15,
-          filter: ["!=", ["get", "hide_3d"], true],
-          paint: {
-            "fill-extrusion-color": [
-              "interpolate",
-              ["linear"],
-              ["get", "render_height"],
-              0,
-              "#aaa",
-              100,
-              "#666",
-            ],
-          },
-        },
-        labelLayerId,
-      );
-
-      return;
-    }
-
-    map.jumpTo({ pitch: 60, bearing: 0, center: map.getCenter() });
+    map.jumpTo({
+      pitch: 45,
+      bearing: -17.6,
+      center: map.getCenter(),
+      zoom: map.getZoom(),
+    });
 
     map.setLight({
       anchor: "viewport",
@@ -110,48 +87,85 @@ export async function initializeMap({
     }
 
     currentMarker = new maplibregl.Marker({
-      element: getMarkerElement({ icon: "click", size: "small", name: "" }),
+      element: getMarkerElement({
+        icon: "click",
+        sizeIcon: "small",
+        sizeName: "small",
+        name: "",
+      }),
     })
       .setLngLat([lng, lat])
       .addTo(map);
   });
 
-  const filteredIds = new Set(businessPointsFiltered.map((point) => point.id));
+  map.on("zoom", () => {
+    const zoom = map.getZoom();
 
-  markersRef.current.forEach((marker) => {
-    const markerId = marker.getElement().dataset.id;
+    let sizeIcon: keyof typeof sizesIcon;
+    let sizeName: keyof typeof sizesName;
 
-    if (markerId) {
-      marker.getElement().style.display = filteredIds.has(markerId)
-        ? "block"
-        : "none";
+    if (zoom >= 16.5) {
+      sizeIcon = "large";
+      sizeName = "large";
+    } else if (zoom >= 15.5) {
+      sizeIcon = "medium";
+      sizeName = "medium";
+    } else {
+      sizeIcon = "small";
+      sizeName = "small";
     }
+
+    markersMap.forEach((marker) => {
+      const el = marker.getElement();
+      const iconEl = el.querySelector<HTMLElement>("div");
+      const nameEl = el.querySelector<HTMLElement>("span");
+
+      if (iconEl) {
+        iconEl.style.fontSize = sizesIcon[sizeIcon] ?? "16px";
+      }
+
+      if (nameEl) {
+        nameEl.style.fontSize = sizesName[sizeName] ?? "12px";
+        nameEl.style.display = zoom > 15.5 ? "inline" : "none";
+      }
+    });
+  });
+
+  const filteredIds = new Set(businessPointsFiltered.map((p) => p.id));
+
+  markersMap.forEach((marker, id) => {
+    const el = marker.getElement();
+    const shouldBeVisible = filteredIds.has(id);
+    el.style.display = shouldBeVisible ? "block" : "none";
   });
 
   pointsToShow?.forEach(({ id, location, name, categoryId, openingHours }) => {
-    const category = businessPointCategories?.find(
-      (category) => category.id === categoryId,
-    );
-    const iconName = category?.name.replace(/\s+/g, "_");
-    const status = checkBusinessStatus(openingHours);
+    if (!markersMap.has(id)) {
+      const category = businessPointCategories?.find(
+        (category) => category.id === categoryId,
+      );
+      const iconName = category?.name.replace(/\s+/g, "_");
+      const status = checkBusinessStatus(openingHours);
 
-    const popup = new maplibregl.Popup().setDOMContent(
-      popupContent({ name, status, id }),
-    );
+      const popup = new maplibregl.Popup().setDOMContent(
+        popupContent({ name, status, id }),
+      );
 
-    const markerElement = getMarkerElement({
-      icon: iconName?.toLocaleLowerCase() as keyof typeof MARKERS,
-      size: "medium",
-      name: "",
-    });
+      const markerElement = getMarkerElement({
+        icon: iconName?.toLocaleLowerCase() as keyof typeof MARKERS,
+        sizeIcon: "medium",
+        sizeName: "medium",
+        name: name,
+      });
 
-    markerElement.dataset.id = id;
+      markerElement.dataset.id = id;
 
-    const marker = new maplibregl.Marker({ element: markerElement })
-      .setLngLat([location.latitude, location.longitude])
-      .setPopup(popup)
-      .addTo(map);
+      const marker = new maplibregl.Marker({ element: markerElement })
+        .setLngLat([location.latitude, location.longitude])
+        .setPopup(popup)
+        .addTo(map);
 
-    markersRef.current.push(marker);
+      markersMap.set(id, marker);
+    }
   });
 }
