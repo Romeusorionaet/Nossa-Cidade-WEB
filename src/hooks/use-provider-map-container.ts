@@ -9,6 +9,9 @@ import { useCallback, useRef } from "react";
 
 export function useProviderMapContainer() {
   const mapContainerRef = useRef<HTMLDivElement>(null);
+  const markersMapRef = useRef<Map<string, maplibregl.Marker>>(new Map());
+  const markersMap = markersMapRef.current;
+
   const mapRef = useRef<maplibregl.Map | null>(null);
 
   const providerMapContainer = useCallback(async () => {
@@ -31,5 +34,5 @@ export function useProviderMapContainer() {
     return mapRef.current;
   }, []);
 
-  return { providerMapContainer, mapContainerRef };
+  return { providerMapContainer, mapContainerRef, markersMap };
 }

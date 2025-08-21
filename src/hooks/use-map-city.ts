@@ -6,7 +6,8 @@ import { initializeMap } from "@/app/map-city/helpers/initialize-map";
 import { useContext, useEffect, useRef, useState } from "react";
 
 export function useMapCity() {
-  const { mapContainerRef, providerMapContainer } = useProviderMapContainer();
+  const { mapContainerRef, providerMapContainer, markersMap } =
+    useProviderMapContainer();
   const markersRef = useRef<maplibregl.Marker[]>([]);
   const [togglePointType, setTogglePointType] = useState(false);
   const [startPoint, setStartPoint] = useState<[number, number]>([0, 0]);
@@ -49,7 +50,7 @@ export function useMapCity() {
         businessPointsFiltered,
         pointsToShow,
         businessPointCategories,
-        markersRef,
+        markersMap,
       }).then(() => setIsMapLoading(false));
     }
   }, [pointsToShow, mapContainerRef, providerMapContainer, existPointsToShow]);
