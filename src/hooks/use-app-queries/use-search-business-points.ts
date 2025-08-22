@@ -1,3 +1,4 @@
+import { businessPointType } from "@/@types/business-point-type";
 import { searchBusinessPoints } from "@/actions/get/business-point/search-business-points";
 import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 import { useQuery } from "@tanstack/react-query";
@@ -7,7 +8,7 @@ interface Props {
 }
 
 export function useSearchBusinessPoints({ query }: Props) {
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isLoading } = useQuery<businessPointType[]>({
     queryKey: [QUERY_KEY_CACHE.BPF, query],
     queryFn: () => (query ? searchBusinessPoints(query) : Promise.resolve([])),
     staleTime: 1000 * 60 * 60,

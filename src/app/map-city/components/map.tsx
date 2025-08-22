@@ -8,14 +8,13 @@ import maplibregl from "maplibre-gl";
 import "@/assets/styles/utilities/scrollbar.css";
 import { SearchBusinessPoint } from "@/components/search-business-points";
 import { checkBusinessStatus } from "@/utils/check-business-status";
-import Link from "next/link";
 import { ArrowLeftSquare, ArrowRightSquare } from "lucide-react";
 import { OpeningHoursList } from "@/components/opening-hours-list";
 import { WEEK_DAYS } from "@/constants/week-days-order";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
-import { APP_ROUTES } from "@/constants/app-routes";
 import { useMapCity } from "@/hooks/use-map-city";
 import { resetMarkersVisibility } from "../helpers/marker";
+import { useRouter } from "next/navigation";
 
 interface TravelInfo {
   duration: number;
@@ -44,6 +43,8 @@ export function MapComponent() {
   const [travelInfo, setTravelInfo] = useState<TravelInfo | null>(null);
   const [toggleWindowSearch, setToggleWindowSearch] = useState(false);
   const [isOpenAsideControl, setIsOpenAsideControl] = useState(true);
+
+  const router = useRouter();
 
   const myLocation: [number, number] = [-35.13145819818388, -6.378905610634973]; // TODO for while
 
@@ -209,14 +210,19 @@ export function MapComponent() {
     setTogglePointType(false);
   };
 
+  const handleGoBack = () => {
+    router.back();
+  };
+
   return (
     <div className="relative h-screen overflow-hidden">
-      <Link
-        href={APP_ROUTES.public.dashboard}
+      <button
+        type="button"
+        onClick={() => handleGoBack()}
         className="online-block absolute top-0 left-0 z-30 rounded-br-md border bg-white p-2 text-base text-black"
       >
         Sair
-      </Link>
+      </button>
 
       {isMapLoading && (
         <div className="absolute inset-0 z-50 flex flex-col items-center justify-center">
