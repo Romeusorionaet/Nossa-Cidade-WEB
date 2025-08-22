@@ -2,7 +2,7 @@
 
 import type { businessPointType } from "@/@types/business-point-type";
 import { useSearchBusinessPoints } from "@/hooks/use-app-queries/use-search-business-points";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 
 interface FilterBusinessPointsContextType {
@@ -21,9 +21,8 @@ export const FilterBusinessPointsContext = createContext(
 export function FilterBusinessPointsContextProvider({
   children,
 }: FilterBusinessPointsContextProps) {
-  const [query, setQuery] = useState("");
-
-  const { slug } = useParams();
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("q") || "");
 
   const { data: businessPointsFiltered = [] } = useSearchBusinessPoints({
     query,
@@ -36,12 +35,12 @@ export function FilterBusinessPointsContextProvider({
   useEffect(() => {
     if (!query) {
       const fetchQuery = () => {
-        accessQuery(slug as string);
+        accessQuery(query as string);
       };
 
       fetchQuery();
     }
-  }, [slug]);
+  }, [query]);
 
   return (
     <FilterBusinessPointsContext.Provider

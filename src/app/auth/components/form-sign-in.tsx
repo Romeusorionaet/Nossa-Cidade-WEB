@@ -42,7 +42,7 @@ export function FormSignIn() {
     if (response.success && !isSubmitting) {
       await refetchUserProfile();
 
-      router.push(APP_ROUTES.public.mapCity.slugBusinessPoint);
+      router.push(APP_ROUTES.public.mapCity);
     }
   }
 

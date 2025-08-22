@@ -1,5 +1,6 @@
 import "@/assets/styles/components/input-header-container.css";
 import { Search, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface Props {
@@ -10,9 +11,16 @@ interface Props {
 export function InputHeader({ eventIndicatorVisible, scrolled }: Props) {
   const [inputValue, setInputValue] = useState("");
 
+  const router = useRouter();
+
   const handleCleanInput = () => {
     setInputValue("");
   };
+
+  const handleSearchOnMap = () => {
+    router.push(`/map-city?q=${inputValue}`);
+  };
+
   return (
     <div
       data-value={eventIndicatorVisible}
@@ -31,6 +39,11 @@ export function InputHeader({ eventIndicatorVisible, scrolled }: Props) {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onBlur={() => setInputValue("")}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSearchOnMap();
+          }
+        }}
         className="w-full border-none bg-transparent focus:outline-none md:focus:text-white"
       />
       <button

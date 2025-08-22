@@ -50,7 +50,7 @@ export function ProductCard({
           <p className="text-primary font-bold">R$ {price.toFixed(2)}</p>
 
           <Link
-            href={`${APP_ROUTES.public.mapCity.slugBusinessPoint}/${slug}`}
+            href={`${APP_ROUTES.public.mapCity}/${slug}`}
             className="absolute right-4 bottom-2 underline"
           >
             Mapa

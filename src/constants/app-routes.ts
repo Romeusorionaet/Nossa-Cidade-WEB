@@ -21,10 +21,7 @@ export const APP_ROUTES = {
       profile: "/user/profile",
       myReviews: "/user/my-reviews",
     },
-    mapCity: {
-      allBusinessPoints: "/map-city/all-business-points",
-      slugBusinessPoint: "/map-city",
-    },
+    mapCity: "/map-city?q=",
     showcase: "/showcase",
   },
 };
