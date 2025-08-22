@@ -3,9 +3,12 @@
 import { FilterBusinessPointsContext } from "@/contexts/filter-business-points.context";
 import { useContext, useState } from "react";
 
-export function SearchBusinessPoint() {
+interface Props {
+  accessQuery: (value: string) => void;
+}
+
+export function SearchBusinessPoint({ accessQuery }: Props) {
   const [query, setQuery] = useState("");
-  const { accessQuery } = useContext(FilterBusinessPointsContext);
 
   const handleSaveQuery = () => {
     accessQuery(query);

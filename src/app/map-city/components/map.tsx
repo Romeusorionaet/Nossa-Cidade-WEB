@@ -459,7 +459,7 @@ export function MapComponent() {
       </aside>
 
       <div className="absolute right-0 bottom-1 z-10 flex w-full justify-end px-1 md:bottom-1 md:w-2/3">
-        <SearchBusinessPoint />
+        <SearchBusinessPoint accessQuery={accessQuery} />
       </div>
     </div>
   );

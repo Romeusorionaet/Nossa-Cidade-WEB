@@ -1,11 +1,22 @@
 import { useGetBusinessPointForMapping } from "./use-app-queries/use-get-business-point-for-mapping";
 import { useGetBusinessPointCategories } from "./use-app-queries/use-get-business-point-categories";
-import { FilterBusinessPointsContext } from "@/contexts/filter-business-points.context";
 import { useProviderMapContainer } from "./use-provider-map-container";
 import { initializeMap } from "@/app/map-city/helpers/initialize-map";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useSearchBusinessPoints } from "./use-app-queries/use-search-business-points";
 
 export function useMapCity() {
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("q") || "");
+  const { data: businessPointsFiltered = [] } = useSearchBusinessPoints({
+    query,
+  });
+
+  const accessQuery = (value: string) => {
+    setQuery(value);
+  };
+
   const { mapContainerRef, providerMapContainer, markersMap } =
     useProviderMapContainer();
   const markersRef = useRef<maplibregl.Marker[]>([]);
@@ -14,9 +25,6 @@ export function useMapCity() {
   const [endPoint, setEndPoint] = useState<[number, number]>([0, 0]);
   const [isMapLoading, setIsMapLoading] = useState(true);
 
-  const { businessPointsFiltered, accessQuery } = useContext(
-    FilterBusinessPointsContext,
-  );
   const businessPointNotFound = businessPointsFiltered.length === 0;
 
   const { data: businessPoints, isLoading: isLoadingBusinessPoint } =
@@ -38,11 +46,11 @@ export function useMapCity() {
     });
   };
 
-  const existPointsToShow =
+  const isLoadingPointsToShow =
     !isLoadingBusinessPoint && !isLoadingBusinessPointCategory;
 
   useEffect(() => {
-    if (existPointsToShow) {
+    if (isLoadingPointsToShow) {
       initializeMap({
         mapContainerRef,
         providerMapContainer,
@@ -53,7 +61,12 @@ export function useMapCity() {
         markersMap,
       }).then(() => setIsMapLoading(false));
     }
-  }, [pointsToShow, mapContainerRef, providerMapContainer, existPointsToShow]);
+  }, [
+    pointsToShow,
+    mapContainerRef,
+    providerMapContainer,
+    isLoadingPointsToShow,
+  ]);
 
   return {
     mapContainerRef,

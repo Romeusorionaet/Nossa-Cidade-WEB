@@ -1,6 +1,5 @@
 "use client";
 
-import { FilterBusinessPointsContextProvider } from "@/contexts/filter-business-points.context";
 import "@/assets/styles/utilities/no-spinner-input-number.css";
 import { UserContextProvider } from "@/contexts/user.context";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -48,10 +47,8 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <SessionProvider>
           <UserContextProvider>
-            <FilterBusinessPointsContextProvider>
-              <WakeUpAPI />
-              {children}
-            </FilterBusinessPointsContextProvider>
+            <WakeUpAPI />
+            {children}
           </UserContextProvider>
         </SessionProvider>
       </QueryClientProvider>
