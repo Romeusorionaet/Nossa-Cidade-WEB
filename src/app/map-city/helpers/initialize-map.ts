@@ -133,33 +133,31 @@ export async function initializeMap({
   });
 
   pointsToShow?.forEach(({ id, location, name, categoryId, openingHours }) => {
-    if (!markersMap.has(id)) {
-      const category = businessPointCategories?.find(
-        (category) => category.id === categoryId,
-      );
-      const iconName = category?.name.replace(/\s+/g, "_");
-      const status = checkBusinessStatus(openingHours);
+    const category = businessPointCategories?.find(
+      (category) => category.id === categoryId,
+    );
+    const iconName = category?.name.replace(/\s+/g, "_");
+    const status = checkBusinessStatus(openingHours);
 
-      const popup = new maplibregl.Popup().setDOMContent(
-        popupContent({ name, status, id }),
-      );
+    const popup = new maplibregl.Popup().setDOMContent(
+      popupContent({ name, status, id }),
+    );
 
-      const markerElement = getMarkerElement({
-        icon: iconName?.toLocaleLowerCase() as keyof typeof MARKERS,
-        sizeIcon: "medium",
-        sizeName: "medium",
-        name: name,
-      });
+    const markerElement = getMarkerElement({
+      icon: iconName?.toLocaleLowerCase() as keyof typeof MARKERS,
+      sizeIcon: "medium",
+      sizeName: "medium",
+      name: name,
+    });
 
-      markerElement.dataset.id = id;
+    markerElement.dataset.id = id;
 
-      const marker = new maplibregl.Marker({ element: markerElement })
-        .setLngLat([location.latitude, location.longitude])
-        .setPopup(popup)
-        .addTo(map);
+    const marker = new maplibregl.Marker({ element: markerElement })
+      .setLngLat([location.latitude, location.longitude])
+      .setPopup(popup)
+      .addTo(map);
 
-      markersMap.set(id, marker);
-    }
+    markersMap.set(id, marker);
   });
 
   if (businessPointsFiltered.length > 0) {
