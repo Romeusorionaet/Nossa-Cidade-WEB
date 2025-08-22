@@ -26,7 +26,7 @@ export function MapComponent() {
     endPoint,
     startPoint,
     markersMap,
-    accessQuery,
+    filterBusinessPoints,
     setEndPoint,
     isMapLoading,
     setStartPoint,
@@ -62,7 +62,7 @@ export function MapComponent() {
 
   const handleCleanSearch = () => {
     setToggleWindowSearch(false);
-    accessQuery("");
+    filterBusinessPoints("");
     resetMarkersVisibility(markersMap);
   };
 
@@ -465,7 +465,7 @@ export function MapComponent() {
       </aside>
 
       <div className="absolute right-0 bottom-1 z-10 flex w-full justify-end px-1 md:bottom-1 md:w-2/3">
-        <SearchBusinessPoint accessQuery={accessQuery} />
+        <SearchBusinessPoint filterBusinessPoints={filterBusinessPoints} />
       </div>
     </div>
   );

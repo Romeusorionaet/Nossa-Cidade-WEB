@@ -5,6 +5,7 @@ import { initializeMap } from "@/app/map-city/helpers/initialize-map";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useSearchBusinessPoints } from "./use-app-queries/use-search-business-points";
+import { filterMarkers } from "@/app/map-city/helpers/marker";
 
 export function useMapCity() {
   const searchParams = useSearchParams();
@@ -13,8 +14,11 @@ export function useMapCity() {
     query,
   });
 
-  const accessQuery = (value: string) => {
+  const filterBusinessPoints = (value: string) => {
     setQuery(value);
+
+    const filteredIds = new Set(businessPointsFiltered.map((p) => p.id));
+    filterMarkers(markersMap, filteredIds);
   };
 
   const { mapContainerRef, providerMapContainer, markersMap } =
@@ -55,7 +59,6 @@ export function useMapCity() {
         mapContainerRef,
         providerMapContainer,
         handlePointRoute,
-        businessPointsFiltered,
         pointsToShow,
         businessPointCategories,
         markersMap,
@@ -78,7 +81,7 @@ export function useMapCity() {
     setStartPoint,
     endPoint,
     setEndPoint,
-    accessQuery,
+    filterBusinessPoints,
     businessPointsFiltered,
     businessPointNotFound,
     pointsToShow,

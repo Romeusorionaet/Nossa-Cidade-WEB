@@ -9,13 +9,11 @@ import { popupContent } from "./popup-content";
 import { MARKERS } from "@/constants/markers";
 import { type RefObject } from "react";
 import maplibregl from "maplibre-gl";
-import { filterMarkers } from "./marker";
 
 interface Props {
   mapContainerRef: RefObject<HTMLDivElement | null>;
   providerMapContainer: () => Promise<maplibregl.Map>;
   handlePointRoute: ({ lat, lng }: { lat: number; lng: number }) => void;
-  businessPointsFiltered: businessPointType[];
   pointsToShow: businessPointType[] | undefined;
   businessPointCategories:
     | {
@@ -30,7 +28,6 @@ export async function initializeMap({
   mapContainerRef,
   providerMapContainer,
   handlePointRoute,
-  businessPointsFiltered,
   pointsToShow,
   businessPointCategories,
   markersMap,
@@ -159,9 +156,4 @@ export async function initializeMap({
 
     markersMap.set(id, marker);
   });
-
-  if (businessPointsFiltered.length > 0) {
-    const filteredIds = new Set(businessPointsFiltered.map((p) => p.id));
-    filterMarkers(markersMap, filteredIds);
-  }
 }
