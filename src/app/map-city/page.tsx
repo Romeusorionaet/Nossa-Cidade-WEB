@@ -1,9 +1,12 @@
+import { Suspense } from "react";
 import { MapComponent } from "./components/map";
 
 export default function MapCity() {
   return (
     <main>
-      <MapComponent />
+      <Suspense fallback={null}>
+        <MapComponent />
+      </Suspense>
     </main>
   );
 }
