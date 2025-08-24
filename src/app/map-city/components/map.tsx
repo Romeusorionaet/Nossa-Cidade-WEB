@@ -15,6 +15,7 @@ import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 import { useMapCity } from "@/hooks/use-map-city";
 import { resetMarkersVisibility } from "../helpers/marker";
 import { useRouter } from "next/navigation";
+import { routeControlUI } from "../helpers/route-control-ui";
 
 interface TravelInfo {
   duration: number;
@@ -23,22 +24,28 @@ interface TravelInfo {
 
 export function MapComponent() {
   const {
-    endPoint,
-    startPoint,
     markersMap,
+    pointRoute,
     filterBusinessPoints,
-    setEndPoint,
     isMapLoading,
-    setStartPoint,
     mapContainerRef,
-    togglePointType,
-    setTogglePointType,
     providerMapContainer,
     businessPointNotFound,
     businessPointsFiltered,
     isLoadingBusinessPoint,
     isLoadingBusinessPointCategory,
   } = useMapCity();
+
+  const {
+    togglePointType,
+    setTogglePointType,
+    startPoint,
+    setStartPoint,
+    endPoint,
+    setEndPoint,
+    handleChangeArea,
+  } = routeControlUI(pointRoute);
+
   const routeMarkersRef = useRef<maplibregl.Marker[]>([]);
   const [travelInfo, setTravelInfo] = useState<TravelInfo | null>(null);
   const [toggleWindowSearch, setToggleWindowSearch] = useState(false);
@@ -64,14 +71,6 @@ export function MapComponent() {
     setToggleWindowSearch(false);
     filterBusinessPoints("");
     resetMarkersVisibility(markersMap);
-  };
-
-  const handleChangeArea = (value: boolean) => {
-    if (!value) {
-      setTogglePointType(false);
-    } else {
-      setTogglePointType(true);
-    }
   };
 
   const handlePlotRoute = async (
@@ -165,12 +164,12 @@ export function MapComponent() {
       }
     });
 
-    setTogglePointType(false);
+    setTogglePointType("");
   };
 
   const handleSetLocation = () => {
     setStartPoint(myLocation);
-    setTogglePointType(true);
+    setTogglePointType("start");
   };
 
   const handleSelectedPlotRoute = async ({
@@ -207,7 +206,7 @@ export function MapComponent() {
     setTravelInfo(null);
     setStartPoint([0, 0]);
     setEndPoint([0, 0]);
-    setTogglePointType(false);
+    setTogglePointType("start");
   };
 
   const handleGoBack = () => {
@@ -331,9 +330,9 @@ export function MapComponent() {
               </div>
               <button
                 type="button"
-                onClick={() => handleChangeArea(false)}
-                data-value={togglePointType}
-                className="h-14 w-full rounded-md border p-1 data-[value=false]:border-black"
+                onClick={() => handleChangeArea("start")}
+                data-value={togglePointType === "start"}
+                className="h-14 w-full rounded-md border p-1 data-[value=true]:border-red-500"
               >
                 <p className="text-xs opacity-60">
                   lat: {startPoint[0].toFixed(6)}
@@ -349,9 +348,9 @@ export function MapComponent() {
 
               <button
                 type="button"
-                onClick={() => handleChangeArea(true)}
-                data-value={togglePointType}
-                className="h-14 w-full rounded-md border text-xs data-[value=true]:border-black"
+                onClick={() => handleChangeArea("end")}
+                data-value={togglePointType === "end"}
+                className="h-14 w-full rounded-md border text-xs data-[value=true]:border-red-500"
               >
                 {endPoint[1] && (
                   <div>

@@ -24,9 +24,7 @@ export function useMapCity() {
   const { mapContainerRef, providerMapContainer, markersMap } =
     useProviderMapContainer();
   const markersRef = useRef<maplibregl.Marker[]>([]);
-  const [togglePointType, setTogglePointType] = useState(false);
-  const [startPoint, setStartPoint] = useState<[number, number]>([0, 0]);
-  const [endPoint, setEndPoint] = useState<[number, number]>([0, 0]);
+  const [pointRoute, setPointRoute] = useState([0, 0]);
   const [isMapLoading, setIsMapLoading] = useState(true);
 
   const businessPointNotFound = businessPointsFiltered.length === 0;
@@ -43,11 +41,7 @@ export function useMapCity() {
     : businessPointsFiltered;
 
   const handlePointRoute = ({ lat, lng }: { lat: number; lng: number }) => {
-    setTogglePointType((prev) => {
-      if (!prev) setStartPoint([lng, lat]);
-      else setEndPoint([lng, lat]);
-      return !prev;
-    });
+    setPointRoute([lng, lat]);
   };
 
   const isLoadingPointsToShow =
@@ -75,12 +69,7 @@ export function useMapCity() {
     mapContainerRef,
     providerMapContainer,
     markersRef,
-    togglePointType,
-    setTogglePointType,
-    startPoint,
-    setStartPoint,
-    endPoint,
-    setEndPoint,
+    pointRoute,
     filterBusinessPoints,
     businessPointsFiltered,
     businessPointNotFound,
