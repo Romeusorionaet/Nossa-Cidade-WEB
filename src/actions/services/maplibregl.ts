@@ -43,7 +43,7 @@ export async function maplibreglTilesCached(): Promise<string> {
     return cachedTilesUrl;
   }
 
-  const maptilerTilesUrl = `https://api.maptiler.com/tiles/v2/tiles.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`;
+  const maptilerTilesUrl = `https://api.maptiler.com/tiles/v3-openmaptiles/tiles.json?key=${process.env.NEXT_PUBLIC_MAPTILER_KEY}`;
   const stadiaTilesUrl = "https://tiles.stadiamaps.com/data/openmaptiles.json";
 
   try {
