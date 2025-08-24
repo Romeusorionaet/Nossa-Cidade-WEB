@@ -10,7 +10,7 @@ export function SearchInput({
       placeholder="Buscar produto..."
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="mb-4 rounded-md p-1"
+      className="mb-4 rounded-md border p-1"
     />
   );
 }
