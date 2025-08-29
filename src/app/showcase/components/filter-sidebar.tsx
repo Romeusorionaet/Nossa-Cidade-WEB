@@ -1,3 +1,5 @@
+"use client";
+
 import { useGetBusinessPointCategories } from "@/hooks/use-app-queries/use-get-business-point-categories";
 
 const merchantExample = ["Loja X", "Loja Y", "Loja Z"];

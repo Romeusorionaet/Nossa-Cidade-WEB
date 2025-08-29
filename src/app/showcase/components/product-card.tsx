@@ -1,29 +1,27 @@
+"use client";
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { APP_ROUTES } from "@/constants/app-routes";
 import Link from "next/link";
+import { ProductImageType } from "@/@types/product-image-type";
+import { BASE_URLS } from "@/constants/base-urls";
+import { slugify } from "@/utils/slugfy";
 
 interface Props {
-  image: string;
-  hoverImage?: string;
-  name: string;
+  imageUrls: ProductImageType[];
+  title: string;
   price: number;
   merchants: string;
-  slug: string;
 }
 
-export function ProductCard({
-  image,
-  hoverImage,
-  merchants,
-  name,
-  price,
-  slug,
-}: Props) {
+export function ProductCard({ imageUrls, merchants, title, price }: Props) {
   const [isHovered, setIsHovered] = useState(false);
 
-  const imageAction = isHovered && hoverImage ? hoverImage : image;
+  const mainImage = imageUrls[0]?.url;
+  const hoverImage = imageUrls[1]?.url;
+  const activeImage = isHovered && hoverImage ? hoverImage : mainImage;
 
   return (
     <motion.div
@@ -31,13 +29,14 @@ export function ProductCard({
       transition={{ duration: 0.3 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="max-md:w-40 md:w-56"
+      className="h-80 max-md:w-40 md:h-40 md:w-80"
     >
-      <div className="relative flex overflow-hidden rounded-2xl shadow-md max-md:flex-col md:items-center lg:shadow-lg">
-        <div className="mx-auto w-full max-md:h-40 md:max-w-44">
+      <div className="relative flex h-full overflow-hidden rounded-2xl shadow-md max-md:flex-col md:items-center lg:shadow-lg">
+        <div className="mx-auto h-1/2 md:h-full md:w-1/2">
           <Image
-            src={imageAction}
-            alt={name}
+            key={activeImage}
+            src={`${BASE_URLS.img}/${activeImage}`}
+            alt={title}
             width={1000}
             height={1000}
             data-value={isHovered}
@@ -45,17 +44,32 @@ export function ProductCard({
           />
         </div>
 
-        <div className="flex flex-col gap-2 p-4">
-          <h3 className="font-light md:text-lg">{name}</h3>
-          <p className="text-muted-foreground text-sm">{merchants}</p>
-          <p className="text-primary mb-2 font-bold">R$ {price.toFixed(2)}</p>
+        <div className="flex h-1/2 flex-col gap-1 p-0.5 text-xs md:h-full md:w-1/2 md:text-sm">
+          <h3 className="inline-block h-[45%] font-light tracking-wide md:leading-3.5">
+            {title}
+          </h3>
+          <div className="h-[45%]">
+            <span className="rounded-xs bg-green-400 px-0.5 text-xs">
+              Vendido por:
+            </span>
+            <p className="text-muted-foreground tracking-wide md:leading-3.5">
+              {merchants}
+            </p>
+          </div>
 
-          <Link
-            href={`${APP_ROUTES.public.mapCity}${slug}`}
-            className="absolute right-4 bottom-2 underline"
-          >
-            Mapa
-          </Link>
+          <div className="flex h-[10%] items-center justify-between p-2 text-lg">
+            <p className="text-primary inline-block">
+              <span className="font-bold text-green-500">R$</span>{" "}
+              {price.toFixed(2)}
+            </p>
+
+            <Link
+              href={`${APP_ROUTES.public.mapCity}${slugify(title)}`}
+              className="inline-block hover:underline"
+            >
+              Mapa
+            </Link>
+          </div>
         </div>
       </div>
     </motion.div>

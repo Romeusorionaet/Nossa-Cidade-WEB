@@ -31,7 +31,6 @@
     font-weight: 300;
   }
   p, button, span, a {
-    font-size: clamp(0.90rem, 1vw, 1.1rem);
     font-family: var(--font-geist-sans);
   }
   button {
