@@ -27,6 +27,8 @@ export function Header() {
 
   const { handleSideMenu } = useContext(MobileSideMenuFormContext);
 
+  const avatar = profile?.avatar ? profile.avatar : "/imgs/others/bg-user.png";
+
   return (
     <header
       onMouseLeave={handleMouseLeave}
@@ -151,7 +153,7 @@ export function Header() {
                   className="mx-4 inline-block h-9.5 md:h-12 md:w-12"
                 >
                   <Image
-                    src={profile.avatar}
+                    src={avatar}
                     alt="avatar"
                     width={100}
                     height={100}
