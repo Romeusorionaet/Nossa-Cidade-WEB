@@ -129,6 +129,9 @@ export async function initializeMap({
     });
   });
 
+  markersMap.forEach((marker) => marker.remove());
+  markersMap.clear();
+
   pointsToShow?.forEach(({ id, location, name, categoryId, openingHours }) => {
     const category = businessPointCategories?.find(
       (category) => category.id === categoryId,

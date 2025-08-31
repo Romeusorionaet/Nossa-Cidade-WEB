@@ -36,19 +36,18 @@ export function useMapCity() {
     isLoading: isLoadingBusinessPointCategory,
   } = useGetBusinessPointCategories();
 
-  const pointsToShow = businessPointNotFound
-    ? businessPoints
-    : businessPointsFiltered;
-
   const handlePointRoute = ({ lat, lng }: { lat: number; lng: number }) => {
     setPointRoute([lng, lat]);
   };
 
-  const isLoadingPointsToShow =
-    !isLoadingBusinessPoint && !isLoadingBusinessPointCategory;
+  const pointsToShow = businessPointNotFound
+    ? [...(businessPoints ?? [])]
+    : [...(businessPointsFiltered ?? [])];
+
+  const isReady = !isLoadingBusinessPoint && !isLoadingBusinessPointCategory;
 
   useEffect(() => {
-    if (isLoadingPointsToShow) {
+    if (isReady) {
       initializeMap({
         mapContainerRef,
         providerMapContainer,
@@ -58,12 +57,7 @@ export function useMapCity() {
         markersMap,
       }).then(() => setIsMapLoading(false));
     }
-  }, [
-    pointsToShow,
-    mapContainerRef,
-    providerMapContainer,
-    isLoadingPointsToShow,
-  ]);
+  }, [pointsToShow, mapContainerRef, providerMapContainer, isReady]);
 
   return {
     mapContainerRef,
@@ -73,7 +67,6 @@ export function useMapCity() {
     filterBusinessPoints,
     businessPointsFiltered,
     businessPointNotFound,
-    pointsToShow,
     isMapLoading,
     isLoadingBusinessPoint,
     isLoadingBusinessPointCategory,
