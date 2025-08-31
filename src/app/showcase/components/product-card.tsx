@@ -13,10 +13,10 @@ interface Props {
   imageUrls: ProductImageType[];
   title: string;
   price: number;
-  merchants: string;
+  merchant: string;
 }
 
-export function ProductCard({ imageUrls, merchants, title, price }: Props) {
+export function ProductCard({ imageUrls, merchant, title, price }: Props) {
   const [isHovered, setIsHovered] = useState(false);
 
   const mainImage = imageUrls[0]?.url;
@@ -53,7 +53,7 @@ export function ProductCard({ imageUrls, merchants, title, price }: Props) {
               Vendido por:
             </span>
             <p className="text-muted-foreground tracking-wide md:leading-3.5">
-              {merchants}
+              {merchant}
             </p>
           </div>
 
@@ -64,7 +64,7 @@ export function ProductCard({ imageUrls, merchants, title, price }: Props) {
             </p>
 
             <Link
-              href={`${APP_ROUTES.public.mapCity}${slugify(title)}`}
+              href={`${APP_ROUTES.public.mapCity}${slugify(merchant)}`}
               className="inline-block hover:underline"
             >
               Mapa

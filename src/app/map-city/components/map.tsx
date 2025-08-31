@@ -53,7 +53,7 @@ export function MapComponent() {
 
   const router = useRouter();
 
-  const myLocation: [number, number] = [-35.13145819818388, -6.378905610634973]; // TODO for while
+  const myLocation: [number, number] = [-35.134496, -6.375401]; // TODO for while
 
   const handleAsideRouteControl = () => {
     isOpenAsideControl

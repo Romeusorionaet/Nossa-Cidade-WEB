@@ -18,7 +18,7 @@ export function SectionProducts() {
           imageUrls={p.imageUrls}
           title={p.title}
           price={p.price}
-          merchants={p.businessPointName}
+          merchant={p.businessPointName}
         />
       ))}
     </section>
