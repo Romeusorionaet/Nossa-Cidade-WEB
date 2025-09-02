@@ -7,13 +7,12 @@ import maplibregl from "maplibre-gl";
 import "@/assets/styles/utilities/scrollbar.css";
 import { SearchBusinessPoint } from "@/components/search-business-points";
 import { checkBusinessStatus } from "@/utils/check-business-status";
-import { ArrowLeftSquare, ArrowRightSquare } from "lucide-react";
 import { OpeningHoursList } from "@/components/opening-hours-list";
 import { WEEK_DAYS } from "@/constants/week-days-order";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 import { useMapCity } from "@/hooks/use-map-city";
 import { useRouter } from "next/navigation";
-import { routeControlUI } from "../helpers/route-control-ui";
+import { LogOut, Slash } from "lucide-react";
 
 interface TravelInfo {
   duration: number;
@@ -22,41 +21,27 @@ interface TravelInfo {
 
 export function MapComponent() {
   const {
-    pointRoute,
-    filterBusinessPoints,
-    isMapLoading,
     mapContainerRef,
     providerMapContainer,
-    businessPointNotFound,
+    pointRoute,
+    filterBusinessPoints,
     businessPointsFiltered,
+    businessPointNotFound,
+    isMapLoading,
     isLoadingBusinessPoint,
     isLoadingBusinessPointCategory,
+    handlePointRoute,
   } = useMapCity();
-
-  const {
-    togglePointType,
-    setTogglePointType,
-    startPoint,
-    setStartPoint,
-    endPoint,
-    setEndPoint,
-    handleChangeArea,
-  } = routeControlUI(pointRoute);
 
   const routeMarkersRef = useRef<maplibregl.Marker[]>([]);
   const [travelInfo, setTravelInfo] = useState<TravelInfo | null>(null);
   const [toggleWindowSearch, setToggleWindowSearch] = useState(false);
-  const [isOpenAsideControl, setIsOpenAsideControl] = useState(true);
+  const [isOpenAsideRouteControl, setIsOpenAsideRouteControl] = useState(false);
 
   const router = useRouter();
 
   const myLocation: [number, number] = [-35.134496, -6.375401]; // TODO for while
-
-  const handleAsideRouteControl = () => {
-    isOpenAsideControl
-      ? setIsOpenAsideControl(false)
-      : setIsOpenAsideControl(true);
-  };
+  const hasPointRoute = Boolean(pointRoute[0]);
 
   const handleAsideSearch = () => {
     toggleWindowSearch
@@ -69,32 +54,23 @@ export function MapComponent() {
     filterBusinessPoints("");
   };
 
-  const handlePlotRoute = async (
-    start: [number, number],
-    end: [number, number],
-  ) => {
+  const handlePlotRoute = async () => {
+    setToggleWindowSearch(false);
+
     const map = await providerMapContainer();
-
-    if (!start[0] || !end[1]) {
-      alert("Selecione os pontos de início e fim antes de traçar a rota.");
-      return;
-    }
-
-    setStartPoint(start);
-    setEndPoint(end);
 
     routeMarkersRef.current.forEach((marker) => marker.remove());
     routeMarkersRef.current = [];
 
     const startMarker = new maplibregl.Marker({ color: "red" })
-      .setLngLat(start)
+      .setLngLat(myLocation)
       .addTo(map);
 
     routeMarkersRef.current.push(startMarker);
 
     await openRouteServiceDriveCar({
-      startPoint: start,
-      endPoint: end,
+      startPoint: myLocation,
+      endPoint: [pointRoute[0], pointRoute[1]],
     }).then((data) => {
       if (!data.features || data.features.length === 0) {
         alert("Não foi possível encontrar uma rota.");
@@ -149,31 +125,12 @@ export function MapComponent() {
         });
       }
     });
-
-    setTogglePointType("");
-  };
-
-  const handleSetLocation = () => {
-    setStartPoint(myLocation);
-    setTogglePointType("start");
-  };
-
-  const handleSelectedPlotRoute = async ({
-    lat,
-    lng,
-  }: {
-    lat: number;
-    lng: number;
-  }) => {
-    const newStart = myLocation;
-    const newEnd = [lat, lng] as [number, number];
-
-    await handlePlotRoute(newStart, newEnd);
-
-    setToggleWindowSearch(false);
   };
 
   const handleCleanRoute = async () => {
+    setIsOpenAsideRouteControl(false);
+    handlePointRoute({ lat: 0, lng: 0 });
+
     const map = await providerMapContainer();
 
     if (!map) return;
@@ -190,9 +147,6 @@ export function MapComponent() {
     }
 
     setTravelInfo(null);
-    setStartPoint([0, 0]);
-    setEndPoint([0, 0]);
-    setTogglePointType("start");
   };
 
   const handleGoBack = () => {
@@ -203,10 +157,11 @@ export function MapComponent() {
     <div className="relative h-screen overflow-hidden">
       <button
         type="button"
+        title="sair"
         onClick={() => handleGoBack()}
-        className="online-block absolute top-0 left-0 z-30 rounded-br-md border bg-white p-2 text-base text-black"
+        className="online-block absolute top-0 left-0 z-30 rounded-br-md p-2 text-base text-black hover:bg-white/50"
       >
-        Sair
+        <LogOut />
       </button>
 
       {isMapLoading && (
@@ -272,107 +227,42 @@ export function MapComponent() {
         </div>
       )}
 
-      {travelInfo && (
-        <div className="absolute top-12 left-1 rounded-md bg-white p-2 md:top-16">
-          <span>🚗</span>
-          <p className="text-sm text-black">
-            {travelInfo.duration.toFixed(2)} min
+      <aside
+        data-value={!!travelInfo}
+        className="absolute top-12 left-1 rounded-md bg-white/50 p-2 data-[value=false]:hidden md:top-16"
+      >
+        <div className="flex items-center gap-0.5">
+          <span className="inline-block">🚗</span>
+          <p className="inline-block text-black max-md:text-xs">
+            {travelInfo?.duration.toFixed(1)} min
           </p>
-          <p className="text-sm text-black">
-            {travelInfo.distanceKm.toFixed(2)} km
+          <Slash width={10} />
+          <p className="inline-block text-black max-md:text-xs">
+            {travelInfo?.distanceKm.toFixed(1)} km
           </p>
         </div>
-      )}
+      </aside>
 
-      {startPoint[0] && (
-        <aside className="absolute top-1 right-1 rounded-md bg-white p-2 text-black">
-          <div>
-            {isOpenAsideControl ? (
-              <button type="button" onClick={() => handleAsideRouteControl()}>
-                <ArrowRightSquare />
-              </button>
-            ) : (
-              <button type="button" onClick={() => handleAsideRouteControl()}>
-                <ArrowLeftSquare />
-              </button>
-            )}
-          </div>
+      <aside
+        data-value={isOpenAsideRouteControl || hasPointRoute}
+        className="absolute top-1 right-1 flex flex-col gap-2 rounded-md bg-white/30 p-1 text-black data-[value=false]:hidden"
+      >
+        <button
+          type="button"
+          onClick={() => handlePlotRoute()}
+          className="w-full rounded-xs border bg-slate-700 p-1 text-sm text-white hover:bg-slate-950"
+        >
+          traçar rota
+        </button>
 
-          <div
-            data-value={isOpenAsideControl}
-            className="space-y-3 data-[value=false]:hidden"
-          >
-            <div>
-              <div className="space-y-2">
-                <button
-                  type="button"
-                  onClick={() => handleSetLocation()}
-                  className="w-full rounded-xs border p-1 text-sm"
-                >
-                  Inserir minha 📍
-                </button>
-
-                <p className="text-sm">Início:</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => handleChangeArea("start")}
-                data-value={togglePointType === "start"}
-                className="h-14 w-full rounded-md border p-1 data-[value=true]:border-red-500"
-              >
-                <p className="text-xs opacity-60">
-                  lat: {startPoint[0].toFixed(6)}
-                </p>
-                <p className="text-xs opacity-60">
-                  lng: {startPoint[1].toFixed(6)}
-                </p>
-              </button>
-            </div>
-
-            <div>
-              <p className="text-sm">Fim:</p>
-
-              <button
-                type="button"
-                onClick={() => handleChangeArea("end")}
-                data-value={togglePointType === "end"}
-                className="h-14 w-full rounded-md border text-xs data-[value=true]:border-red-500"
-              >
-                {endPoint[1] && (
-                  <div>
-                    <div>
-                      <p className="text-xs opacity-60">
-                        lat: {endPoint[0].toFixed(6)}
-                      </p>
-                      <p className="text-xs opacity-60">
-                        lng: {endPoint[1].toFixed(6)}
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </button>
-            </div>
-
-            <div className="flex flex-col space-y-2">
-              <button
-                type="button"
-                onClick={() => handlePlotRoute(startPoint, endPoint)}
-                className="w-full rounded-xs border p-1 text-sm"
-              >
-                traçar rota
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleCleanRoute()}
-                className="rounded-xs border p-1 text-sm"
-              >
-                Limpar rota
-              </button>
-            </div>
-          </div>
-        </aside>
-      )}
+        <button
+          type="button"
+          onClick={() => handleCleanRoute()}
+          className="rounded-xs border bg-red-900 p-1 text-sm text-white hover:bg-red-950"
+        >
+          Limpar rota
+        </button>
+      </aside>
 
       {!businessPointNotFound && (
         <button
@@ -425,12 +315,7 @@ export function MapComponent() {
               <div className="mt-2 flex w-full justify-end">
                 <button
                   type="button"
-                  onClick={() =>
-                    handleSelectedPlotRoute({
-                      lat: item.location.latitude,
-                      lng: item.location.longitude,
-                    })
-                  }
+                  onClick={() => handlePlotRoute()}
                   className="cursor-pointer border p-1 text-xs"
                 >
                   traçar rota

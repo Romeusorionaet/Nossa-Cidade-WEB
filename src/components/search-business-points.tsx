@@ -14,11 +14,11 @@ export function SearchBusinessPoint({ filterBusinessPoints }: Props) {
   };
 
   return (
-    <div className="flex w-full max-w-[620px] items-center rounded-md bg-white max-md:h-16">
+    <div className="flex h-10 w-full max-w-[620px] items-center rounded-md bg-white">
       <button
         type="button"
         onClick={() => handleSearch()}
-        className="h-full rounded-l-md bg-black p-1 text-sm text-white"
+        className="h-full rounded-l-md bg-zinc-500 p-1 text-sm text-white hover:bg-zinc-600"
       >
         Buscar
       </button>
