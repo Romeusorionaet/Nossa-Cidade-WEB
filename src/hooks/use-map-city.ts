@@ -2,7 +2,7 @@ import { useGetBusinessPointForMapping } from "./use-app-queries/use-get-busines
 import { useGetBusinessPointCategories } from "./use-app-queries/use-get-business-point-categories";
 import { useProviderMapContainer } from "./use-provider-map-container";
 import { initializeMap } from "@/app/map-city/helpers/initialize-map";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useSearchBusinessPoints } from "./use-app-queries/use-search-business-points";
 
@@ -18,7 +18,6 @@ export function useMapCity() {
   };
 
   const { mapContainerRef, providerMapContainer } = useProviderMapContainer();
-  const markersRef = useRef<maplibregl.Marker[]>([]);
   const [pointRoute, setPointRoute] = useState([0, 0]);
   const [isMapLoading, setIsMapLoading] = useState(true);
 
@@ -56,7 +55,6 @@ export function useMapCity() {
   return {
     mapContainerRef,
     providerMapContainer,
-    markersRef,
     pointRoute,
     filterBusinessPoints,
     businessPointsFiltered,

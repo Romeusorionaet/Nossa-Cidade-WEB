@@ -1,12 +1,6 @@
 import type { businessPointType } from "@/@types/business-point-type";
 import { checkBusinessStatus } from "@/utils/check-business-status";
-import {
-  getMarkerElement,
-  sizesIcon,
-  sizesName,
-} from "@/utils/get-marker-element";
 import { popupContent } from "./popup-content";
-import { MARKERS } from "@/constants/markers";
 import { type RefObject } from "react";
 import maplibregl from "maplibre-gl";
 
@@ -21,7 +15,6 @@ interface Props {
         name: string;
       }[]
     | undefined;
-  markersMap: Map<string, maplibregl.Marker>;
 }
 
 export async function initializeMap({
@@ -30,11 +23,36 @@ export async function initializeMap({
   handlePointRoute,
   pointsToShow,
   businessPointCategories,
-  markersMap,
 }: Props) {
   if (!mapContainerRef.current) return;
 
   const map = await providerMapContainer();
+
+  const createGeoJSON = () => ({
+    type: "FeatureCollection" as const,
+    features:
+      pointsToShow?.map((point) => {
+        const category = businessPointCategories?.find(
+          (c) => c.id === point.categoryId,
+        );
+        const iconName =
+          category?.name.replace(/\s+/g, "_").toLowerCase() ?? "default";
+
+        return {
+          type: "Feature" as const,
+          properties: {
+            id: point.id,
+            name: point.name,
+            icon: iconName,
+            status: checkBusinessStatus(point.openingHours),
+          },
+          geometry: {
+            type: "Point" as const,
+            coordinates: [point.location.latitude, point.location.longitude], // TODO: inverter depois
+          },
+        };
+      }) ?? [],
+  });
 
   map.on("load", async () => {
     const style = map.getStyle();
@@ -70,93 +88,78 @@ export async function initializeMap({
       position: [2, 100, 90],
     });
 
-    style.layers
-      .filter((layer) => layer.id.includes("poi"))
-      .forEach((layer) => map.removeLayer(layer.id));
-  });
-
-  let currentMarker: maplibregl.Marker | null = null;
-  map.on("click", (e) => {
-    const { lng, lat } = e.lngLat;
-    handlePointRoute({ lat, lng });
-
-    if (currentMarker) {
-      currentMarker.remove();
-    }
-
-    currentMarker = new maplibregl.Marker({
-      element: getMarkerElement({
-        icon: "click",
-        sizeIcon: "small",
-        sizeName: "small",
-        name: "",
+    //TODO for while
+    const icons = ["default", "super_mercado", "padaria"];
+    await Promise.all(
+      icons.map(async (name) => {
+        const response = await map.loadImage(`/icons/${name}.png`);
+        const image = response.data;
+        if (image && !map.hasImage(name)) map.addImage(name, image);
       }),
-    })
-      .setLngLat([lng, lat])
-      .addTo(map);
-  });
+    );
 
-  map.on("zoom", () => {
-    const zoom = map.getZoom();
+    // Cria a source se não existir
+    if (!map.getSource("points")) {
+      map.addSource("points", {
+        type: "geojson",
+        data: createGeoJSON(),
+        cluster: true,
+        clusterMaxZoom: 16,
+        clusterRadius: 50,
+      });
 
-    let sizeIcon: keyof typeof sizesIcon;
-    let sizeName: keyof typeof sizesName;
-
-    if (zoom >= 16.5) {
-      sizeIcon = "large";
-      sizeName = "large";
-    } else if (zoom >= 15.5) {
-      sizeIcon = "medium";
-      sizeName = "medium";
-    } else {
-      sizeIcon = "small";
-      sizeName = "small";
+      map.addLayer({
+        id: "points-layer",
+        type: "symbol",
+        source: "points",
+        layout: {
+          "icon-image": ["get", "icon"],
+          "icon-size": 1,
+          "icon-allow-overlap": true,
+          "icon-ignore-placement": true,
+        },
+      });
     }
 
-    markersMap.forEach((marker) => {
-      const el = marker.getElement();
-      const iconEl = el.querySelector<HTMLElement>("div");
-      const nameEl = el.querySelector<HTMLElement>("span");
+    map.on("click", "points-layer", (e) => {
+      const feature = e.features?.[0];
+      if (!feature) return;
 
-      if (iconEl) {
-        iconEl.style.fontSize = sizesIcon[sizeIcon] ?? "16px";
-      }
+      const coordinates =
+        feature.geometry.type === "Point"
+          ? feature.geometry.coordinates
+          : [0, 0];
+      const { name, status, id } = feature.properties as any;
 
-      if (nameEl) {
-        nameEl.style.fontSize = sizesName[sizeName] ?? "12px";
-        nameEl.style.display = zoom > 15.5 ? "inline" : "none";
-      }
-    });
-  });
+      new maplibregl.Popup()
+        .setLngLat(coordinates as [number, number])
+        .setDOMContent(popupContent({ name, status, id }))
+        .addTo(map);
 
-  markersMap.forEach((marker) => marker.remove());
-  markersMap.clear();
-
-  pointsToShow?.forEach(({ id, location, name, categoryId, openingHours }) => {
-    const category = businessPointCategories?.find(
-      (category) => category.id === categoryId,
-    );
-    const iconName = category?.name.replace(/\s+/g, "_");
-    const status = checkBusinessStatus(openingHours);
-
-    const popup = new maplibregl.Popup().setDOMContent(
-      popupContent({ name, status, id }),
-    );
-
-    const markerElement = getMarkerElement({
-      icon: iconName?.toLocaleLowerCase() as keyof typeof MARKERS,
-      sizeIcon: "medium",
-      sizeName: "medium",
-      name: name,
+      handlePointRoute({ lat: coordinates[1], lng: coordinates[0] });
     });
 
-    markerElement.dataset.id = id;
-
-    const marker = new maplibregl.Marker({ element: markerElement })
-      .setLngLat([location.latitude, location.longitude])
-      .setPopup(popup)
-      .addTo(map);
-
-    markersMap.set(id, marker);
+    map.on(
+      "mouseenter",
+      "points-layer",
+      // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+      () => (map.getCanvas().style.cursor = "pointer"),
+    );
+    map.on(
+      "mouseleave",
+      "points-layer",
+      // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+      () => (map.getCanvas().style.cursor = ""),
+    );
   });
+
+  const updatePoints = () => {
+    const source = map.getSource("points") as maplibregl.GeoJSONSource;
+    if (!source) return;
+    source.setData(createGeoJSON());
+  };
+
+  updatePoints();
+
+  return;
 }
