@@ -5,7 +5,6 @@ import { initializeMap } from "@/app/map-city/helpers/initialize-map";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useSearchBusinessPoints } from "./use-app-queries/use-search-business-points";
-import { filterMarkers } from "@/app/map-city/helpers/marker";
 
 export function useMapCity() {
   const searchParams = useSearchParams();
@@ -16,13 +15,9 @@ export function useMapCity() {
 
   const filterBusinessPoints = (value: string) => {
     setQuery(value);
-
-    const filteredIds = new Set(businessPointsFiltered.map((p) => p.id));
-    filterMarkers(markersMap, filteredIds);
   };
 
-  const { mapContainerRef, providerMapContainer, markersMap } =
-    useProviderMapContainer();
+  const { mapContainerRef, providerMapContainer } = useProviderMapContainer();
   const markersRef = useRef<maplibregl.Marker[]>([]);
   const [pointRoute, setPointRoute] = useState([0, 0]);
   const [isMapLoading, setIsMapLoading] = useState(true);
@@ -54,7 +49,6 @@ export function useMapCity() {
         handlePointRoute,
         pointsToShow,
         businessPointCategories,
-        markersMap,
       }).then(() => setIsMapLoading(false));
     }
   }, [pointsToShow, mapContainerRef, providerMapContainer, isReady]);
@@ -71,6 +65,5 @@ export function useMapCity() {
     isLoadingBusinessPoint,
     isLoadingBusinessPointCategory,
     handlePointRoute,
-    markersMap,
   };
 }

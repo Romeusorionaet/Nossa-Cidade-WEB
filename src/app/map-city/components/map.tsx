@@ -1,7 +1,6 @@
 "use client";
 
 import { openRouteServiceDriveCar } from "@/actions/services/open-route-services";
-import { getMarkerElement } from "@/utils/get-marker-element";
 import { useRef, useState } from "react";
 import "maplibre-gl/dist/maplibre-gl.css";
 import maplibregl from "maplibre-gl";
@@ -13,7 +12,6 @@ import { OpeningHoursList } from "@/components/opening-hours-list";
 import { WEEK_DAYS } from "@/constants/week-days-order";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 import { useMapCity } from "@/hooks/use-map-city";
-import { resetMarkersVisibility } from "../helpers/marker";
 import { useRouter } from "next/navigation";
 import { routeControlUI } from "../helpers/route-control-ui";
 
@@ -24,7 +22,6 @@ interface TravelInfo {
 
 export function MapComponent() {
   const {
-    markersMap,
     pointRoute,
     filterBusinessPoints,
     isMapLoading,
@@ -70,7 +67,6 @@ export function MapComponent() {
   const handleCleanSearch = () => {
     setToggleWindowSearch(false);
     filterBusinessPoints("");
-    resetMarkersVisibility(markersMap);
   };
 
   const handlePlotRoute = async (
@@ -93,18 +89,8 @@ export function MapComponent() {
     const startMarker = new maplibregl.Marker({ color: "red" })
       .setLngLat(start)
       .addTo(map);
-    const endMarker = new maplibregl.Marker({
-      element: getMarkerElement({
-        icon: "dot",
-        sizeIcon: "small",
-        sizeName: "small",
-        name: "",
-      }),
-    })
-      .setLngLat(end)
-      .addTo(map);
 
-    routeMarkersRef.current.push(startMarker, endMarker);
+    routeMarkersRef.current.push(startMarker);
 
     await openRouteServiceDriveCar({
       startPoint: start,
