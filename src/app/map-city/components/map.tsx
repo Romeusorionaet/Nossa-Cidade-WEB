@@ -1,6 +1,5 @@
 "use client";
 
-import { openRouteServiceDriveCar } from "@/actions/services/open-route-services";
 import { useRef, useState } from "react";
 import "maplibre-gl/dist/maplibre-gl.css";
 import maplibregl from "maplibre-gl";
@@ -12,11 +11,17 @@ import { WEEK_DAYS } from "@/constants/week-days-order";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 import { useMapCity } from "@/hooks/use-map-city";
 import { useRouter } from "next/navigation";
-import { LogOut, Slash } from "lucide-react";
+import { Bike, Car, Footprints, LogOut, Route } from "lucide-react";
+import { openRouteServiceRoutes } from "@/actions/services/open-route-service-routes";
+import { drawRouteLayer } from "../helpers/draw-route-layer";
+import { AVG_SPEEDS } from "@/constants/avg-speeds";
+import Link from "next/link";
+import { APP_ROUTES } from "@/constants/app-routes";
 
 interface TravelInfo {
-  duration: number;
-  distanceKm: number;
+  car?: { durationMinutes: number; distanceKm: number };
+  motorcycle?: { durationMinutes: number; distanceKm: number };
+  walking?: { durationMinutes: number; distanceKm: number };
 }
 
 export function MapComponent() {
@@ -59,72 +64,39 @@ export function MapComponent() {
 
     const map = await providerMapContainer();
 
-    routeMarkersRef.current.forEach((marker) => marker.remove());
-    routeMarkersRef.current = [];
-
     const startMarker = new maplibregl.Marker({ color: "red" })
       .setLngLat(myLocation)
       .addTo(map);
 
     routeMarkersRef.current.push(startMarker);
 
-    await openRouteServiceDriveCar({
+    const baseRoute = await openRouteServiceRoutes({
       startPoint: myLocation,
       endPoint: [pointRoute[0], pointRoute[1]],
-    }).then((data) => {
-      if (!data.features || data.features.length === 0) {
-        alert("Não foi possível encontrar uma rota.");
-        return;
-      }
-
-      const route = data.features[0].geometry.coordinates;
-      const duration = data.features[0]?.properties?.segments[0]?.duration;
-      const distanceKm = data.features[0]?.properties?.summary?.distance / 1000;
-
-      setTravelInfo({
-        duration: duration / 60,
-        distanceKm,
-      });
-
-      if (!route) {
-        alert("A rota não contém geometria.");
-        return;
-      }
-
-      const routeGeoJSON: GeoJSON.Feature<GeoJSON.LineString> = {
-        type: "Feature",
-        properties: {},
-        geometry: {
-          type: "LineString",
-          coordinates: route,
-        },
-      };
-
-      if (map.getSource("route")) {
-        (map.getSource("route") as maplibregl.GeoJSONSource).setData(
-          routeGeoJSON,
-        );
-      } else {
-        map.addSource("route", {
-          type: "geojson",
-          data: routeGeoJSON,
-        });
-
-        map.addLayer({
-          id: "route",
-          type: "line",
-          source: "route",
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": "#007cbf",
-            "line-width": 5,
-          },
-        });
-      }
+      mode: "driving-car", // base route
     });
+
+    if (!baseRoute) {
+      alert("Não foi possível encontrar a rota.");
+      return;
+    }
+
+    setTravelInfo({
+      car: {
+        distanceKm: baseRoute.distanceKm,
+        durationMinutes: (baseRoute.distanceKm / AVG_SPEEDS.car) * 60,
+      },
+      motorcycle: {
+        distanceKm: baseRoute.distanceKm,
+        durationMinutes: (baseRoute.distanceKm / AVG_SPEEDS.motorcycle) * 60,
+      },
+      walking: {
+        distanceKm: baseRoute.distanceKm,
+        durationMinutes: (baseRoute.distanceKm / AVG_SPEEDS.walking) * 60,
+      },
+    });
+
+    drawRouteLayer(map, baseRoute.routeGeoJSON, "route-base");
   };
 
   const handleCleanRoute = async () => {
@@ -149,20 +121,15 @@ export function MapComponent() {
     setTravelInfo(null);
   };
 
-  const handleGoBack = () => {
-    router.back();
-  };
-
   return (
     <div className="relative h-screen overflow-hidden">
-      <button
-        type="button"
+      <Link
         title="sair"
-        onClick={() => handleGoBack()}
+        href={APP_ROUTES.public.showcase}
         className="online-block absolute top-0 left-0 z-30 rounded-br-md p-2 text-base text-black hover:bg-white/50"
       >
         <LogOut />
-      </button>
+      </Link>
 
       {isMapLoading && (
         <div className="absolute inset-0 z-50 flex flex-col items-center justify-center">
@@ -231,16 +198,40 @@ export function MapComponent() {
         data-value={!!travelInfo}
         className="absolute top-12 left-1 rounded-md bg-white/50 p-2 data-[value=false]:hidden md:top-16"
       >
-        <div className="flex items-center gap-0.5">
-          <span className="inline-block">🚗</span>
-          <p className="inline-block text-black max-md:text-xs">
-            {travelInfo?.duration.toFixed(1)} min
-          </p>
-          <Slash width={10} />
-          <p className="inline-block text-black max-md:text-xs">
-            {travelInfo?.distanceKm.toFixed(1)} km
-          </p>
-        </div>
+        {travelInfo?.car && (
+          <div className="flex items-center gap-2 border-b border-blue-500 text-black max-md:text-xs">
+            <Route width={16} />
+            <span className="inline-block">
+              {travelInfo.car.distanceKm.toFixed(1)} km
+            </span>
+          </div>
+        )}
+
+        {travelInfo?.car && (
+          <div className="flex items-center gap-2">
+            <Car width={16} />
+
+            <p className="inline-block text-black max-md:text-xs">
+              {travelInfo.car.durationMinutes.toFixed(1)} min
+            </p>
+          </div>
+        )}
+        {travelInfo?.motorcycle && (
+          <div className="flex items-center gap-2">
+            <Bike width={16} />
+            <p className="inline-block text-black max-md:text-xs">
+              {travelInfo.motorcycle.durationMinutes.toFixed(1)} min
+            </p>
+          </div>
+        )}
+        {travelInfo?.walking && (
+          <div className="flex items-center gap-2">
+            <Footprints width={16} />
+            <p className="inline-block text-black max-md:text-xs">
+              {travelInfo.walking.durationMinutes.toFixed(1)} min
+            </p>
+          </div>
+        )}
       </aside>
 
       <aside
