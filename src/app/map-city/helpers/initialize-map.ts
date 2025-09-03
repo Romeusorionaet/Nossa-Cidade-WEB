@@ -3,6 +3,7 @@ import { checkBusinessStatus } from "@/utils/check-business-status";
 import { popupContent } from "./popup-content";
 import { type RefObject } from "react";
 import maplibregl from "maplibre-gl";
+import { loadMapIcons } from "./load-map-icons";
 
 interface Props {
   mapContainerRef: RefObject<HTMLDivElement | null>;
@@ -88,23 +89,17 @@ export async function initializeMap({
       position: [2, 100, 90],
     });
 
-    //TODO for while
-    const icons = ["default", "super_mercado", "padaria"];
-    await Promise.all(
-      icons.map(async (name) => {
-        const response = await map.loadImage(`/icons/${name}.png`);
-        const image = response.data;
-        if (image && !map.hasImage(name)) map.addImage(name, image);
-      }),
-    );
+    const icons = businessPointCategories?.map((c) =>
+      c.name.replace(/\s+/g, "_").toLowerCase(),
+    ) ?? ["default"];
 
-    // Cria a source se não existir
+    await loadMapIcons(map, icons);
+
     if (!map.getSource("points")) {
       map.addSource("points", {
         type: "geojson",
         data: createGeoJSON(),
-        cluster: true,
-        clusterMaxZoom: 16,
+        cluster: false,
         clusterRadius: 50,
       });
 
@@ -114,9 +109,19 @@ export async function initializeMap({
         source: "points",
         layout: {
           "icon-image": ["get", "icon"],
-          "icon-size": 1,
           "icon-allow-overlap": true,
           "icon-ignore-placement": true,
+          "icon-size": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            12,
+            0.1,
+            15,
+            0.5,
+            18,
+            1,
+          ],
         },
       });
     }
