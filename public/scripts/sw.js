@@ -1,19 +1,19 @@
-self.addEventListener("install", () => {
-  self.skipWaiting();
-});
-
 self.addEventListener("fetch", (event) => {
   const { request } = event;
+  const url = request.url;
 
-  if (
-    request.url.includes("style.json") ||
-    request.url.includes("tiles.json")
-  ) {
+  if (url.includes("style.json") || url.includes("tiles.json")) {
+    console.log("[SW] Interceptando:", url);
+
     event.respondWith(
       caches.open("maplibre-cache").then(async (cache) => {
         const cached = await cache.match(request);
-        if (cached) return cached;
+        if (cached) {
+          console.log("[SW] Servindo do cache:", url);
+          return cached;
+        }
 
+        console.log("[SW] Buscando da rede e salvando:", url);
         const response = await fetch(request);
         cache.put(request, response.clone());
         return response;

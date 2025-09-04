@@ -9,38 +9,17 @@ import { SessionProvider } from "next-auth/react";
 import { queryClient } from "@/lib/query-client";
 import WakeUpAPI from "@/components/wake-up-api";
 import "@/assets/styles/base/globals.css";
-import LocomotiveScroll, {
-  type ILocomotiveScrollOptions,
-} from "locomotive-scroll";
-import {
-  maplibreglStyleCached,
-  maplibreglTilesCached,
-} from "@/actions/services/maplibregl";
-
-interface CustomLocomotiveScrollOptions extends ILocomotiveScrollOptions {
-  el?: HTMLElement | null;
-}
+import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
+import { registerSW } from "./register-service-worker";
 
 export default function ClientProviders({ children }: { children: ReactNode }) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!scrollContainerRef.current) return;
-
-    const locomotiveScroll = new LocomotiveScroll({
-      el: scrollContainerRef.current,
-      smooth: true,
-    } as CustomLocomotiveScrollOptions);
-
-    return () => {
-      locomotiveScroll.destroy();
-    };
+    registerSW();
   }, []);
 
-  useEffect(() => {
-    maplibreglStyleCached();
-    maplibreglTilesCached();
-  }, []);
+  useSmoothScroll(scrollContainerRef);
 
   return (
     <div ref={scrollContainerRef}>
