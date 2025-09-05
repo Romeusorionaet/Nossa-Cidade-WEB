@@ -10,7 +10,6 @@ import { OpeningHoursList } from "@/components/opening-hours-list";
 import { WEEK_DAYS } from "@/constants/week-days-order";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 import { useMapCity } from "@/hooks/use-map-city";
-import { useRouter } from "next/navigation";
 import { Bike, Car, Footprints, LogOut, Route } from "lucide-react";
 import { openRouteServiceRoutes } from "@/actions/services/open-route-service-routes";
 import { drawRouteLayer } from "../helpers/draw-route-layer";
@@ -43,8 +42,6 @@ export function MapComponent() {
   const [toggleWindowSearch, setToggleWindowSearch] = useState(false);
   const [isOpenAsideRouteControl, setIsOpenAsideRouteControl] = useState(false);
 
-  const router = useRouter();
-
   const myLocation: [number, number] = [-35.134496, -6.375401]; // TODO for while
   const hasPointRoute = Boolean(pointRoute[0]);
 
@@ -62,11 +59,11 @@ export function MapComponent() {
   const handlePlotRoute = async () => {
     setToggleWindowSearch(false);
 
-    const map = await providerMapContainer();
+    const { mapRef } = await providerMapContainer();
 
     const startMarker = new maplibregl.Marker({ color: "red" })
       .setLngLat(myLocation)
-      .addTo(map);
+      .addTo(mapRef);
 
     routeMarkersRef.current.push(startMarker);
 
@@ -96,26 +93,26 @@ export function MapComponent() {
       },
     });
 
-    drawRouteLayer(map, baseRoute.routeGeoJSON, "route-base");
+    drawRouteLayer(mapRef, baseRoute.routeGeoJSON, "route-base");
   };
 
   const handleCleanRoute = async () => {
     setIsOpenAsideRouteControl(false);
     handlePointRoute({ lat: 0, lng: 0 });
 
-    const map = await providerMapContainer();
+    const { mapRef } = await providerMapContainer();
 
-    if (!map) return;
+    if (!mapRef) return;
 
     routeMarkersRef.current.forEach((marker) => marker.remove());
     routeMarkersRef.current = [];
 
-    if (map.getLayer("route")) {
-      map.removeLayer("route");
+    if (mapRef.getLayer("route")) {
+      mapRef.removeLayer("route");
     }
 
-    if (map.getSource("route")) {
-      map.removeSource("route");
+    if (mapRef.getSource("route")) {
+      mapRef.removeSource("route");
     }
 
     setTravelInfo(null);
