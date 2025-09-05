@@ -123,7 +123,7 @@ export function MapComponent() {
       <Link
         title="sair"
         href={APP_ROUTES.public.showcase}
-        className="online-block absolute top-0 left-0 z-30 rounded-br-md p-2 text-base text-black hover:bg-white/50"
+        className="online-block fixed top-0 left-0 z-30 rounded-br-md bg-white/80 p-2 text-base text-black hover:bg-white/50"
       >
         <LogOut />
       </Link>
@@ -322,7 +322,7 @@ export function MapComponent() {
         </button>
       </aside>
 
-      <div className="absolute right-0 bottom-1 z-10 flex w-full justify-end px-1 md:bottom-1 md:w-2/3">
+      <div className="fixed right-0 bottom-1 z-10 flex w-full justify-end px-2 md:bottom-1 md:w-2/3">
         <SearchBusinessPoint filterBusinessPoints={filterBusinessPoints} />
       </div>
     </div>
