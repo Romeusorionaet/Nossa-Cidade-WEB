@@ -1,21 +1,16 @@
 "use client";
 
 import { FormError } from "@/components/form/form-error";
-import { useContext, useEffect } from "react";
-import { ControlLocationForBusinessPointContext } from "@/contexts/control-location-for-business-point.context";
+import { useContext, useState } from "react";
 import { FormBusinessPointContext } from "@/contexts/form-business-point.context";
 import { ManageTags } from "./manage-tags";
-import dynamic from "next/dynamic";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 import "@/assets/styles/utilities/form-items.css";
 import { useGetBusinessPointCategories } from "@/hooks/use-app-queries/use-get-business-point-categories";
-const UserLocationMap = dynamic(() => import("./user-location-map"), {
-  ssr: false,
-});
+import { CircleCheck } from "lucide-react";
 
 export function FormRegisterBusinessPoint() {
-  const { handleGetUserLocation, businessLocation, handleSearchLocation } =
-    useContext(ControlLocationForBusinessPointContext);
+  const [locationFound, setLocationFound] = useState(false);
   const {
     errors,
     handleBusinessPointForm,
@@ -23,10 +18,30 @@ export function FormRegisterBusinessPoint() {
     isLoadingForm,
     register,
     setValue,
-    getValues,
     handleSelect,
     selectedCategories,
   } = useContext(FormBusinessPointContext);
+
+  const myLocation: [number, number] = [-35.13145819818388, -6.378905610634973]; // TODO for while
+
+  const handleGetBusinessPointLocation = () => {
+    if (!navigator.geolocation) {
+      console.error("Geolocalização não é suportada pelo seu navegador.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setValue("location.longitude", myLocation[0].toString());
+        setValue("location.latitude", myLocation[1].toString());
+        setLocationFound(true);
+      },
+      (error) => {
+        console.error("Erro ao obter localização:", error.message);
+      },
+    );
+  };
 
   const {
     data: categories,
@@ -34,22 +49,13 @@ export function FormRegisterBusinessPoint() {
     error,
   } = useGetBusinessPointCategories();
 
-  useEffect(() => {
-    setValue("location.latitude", businessLocation.lat.toString());
-    setValue("location.longitude", businessLocation.lng.toString());
-  }, [businessLocation]);
-
-  const handleFillLocation = async () => {
-    await handleGetUserLocation();
-  };
-
   return (
     <form
       id="business-point-form"
       onSubmit={handleSubmit(handleBusinessPointForm)}
-      className="mx-auto max-w-4xl space-y-8 rounded-xl bg-white p-8 shadow-md"
+      className="mx-auto max-w-4xl space-y-8 rounded-xl bg-white p-2 shadow-md"
     >
-      <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <label className="flex flex-col space-y-1">
           <span className="text-sm font-medium">Nome</span>
           <input type="text" {...register("name")} className="input-style" />
@@ -122,60 +128,32 @@ export function FormRegisterBusinessPoint() {
       </section>
 
       <section className="space-y-4">
-        <label className="flex flex-col space-y-2">
-          <span className="text-sm font-medium">
-            Localização (Latitude e Longitude)
-          </span>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              placeholder="Latitude"
-              {...register("location.latitude")}
-              onChange={(e) => setValue("location.latitude", e.target.value)}
-              className="input-style w-full"
-            />
-            <input
-              type="text"
-              placeholder="Longitude"
-              {...register("location.longitude")}
-              onChange={(e) => setValue("location.longitude", e.target.value)}
-              className="input-style w-full"
-            />
-          </div>
-          <div className="flex gap-2 text-xs text-red-500">
-            <FormError errors={errors.location?.latitude?.message} />
-            <FormError errors={errors.location?.longitude?.message} />
-          </div>
-        </label>
-
-        <div className="flex gap-4">
-          <button
-            type="button"
-            onClick={handleFillLocation}
-            className="btn-secondary"
-          >
-            Usar minha localização
-          </button>
-          <button
-            type="button"
-            onClick={() =>
-              handleSearchLocation({
-                lat: Number(getValues("location.latitude")),
-                lng: Number(getValues("location.longitude")),
-              })
-            }
-            className="btn-secondary"
-          >
-            Buscar no mapa
-          </button>
-        </div>
+        <h3>
+          Para registrar a localização do seu ponto comercial, dirija-se ao
+          local exato do seu negócio e clique no botão abaixo:{" "}
+          <strong className="underline">Buscar localização</strong>.
+        </h3>
 
         <p className="text-xs text-gray-500">
           Atenção: Certifique-se de que a localização está correta e representa
           seu ponto comercial.
         </p>
 
-        {businessLocation && <UserLocationMap />}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => handleGetBusinessPointLocation()}
+            disabled={locationFound}
+            className="btn-secondary disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Buscar localização
+          </button>
+
+          <CircleCheck
+            data-value={locationFound}
+            className="text-green-500 data-[value=false]:hidden"
+          />
+        </div>
       </section>
 
       <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -260,7 +238,11 @@ export function FormRegisterBusinessPoint() {
       <ManageTags />
 
       <div className="flex justify-end">
-        <button type="submit" className="btn-primary">
+        <button
+          type="submit"
+          disabled={isLoadingForm}
+          className="btn-primary disabled:cursor-not-allowed disabled:opacity-50"
+        >
           Enviar
         </button>
       </div>

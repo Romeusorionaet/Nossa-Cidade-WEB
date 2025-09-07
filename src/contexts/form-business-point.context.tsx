@@ -8,7 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FieldErrors,
   useForm,
-  UseFormGetValues,
   UseFormHandleSubmit,
   UseFormRegister,
   UseFormSetValue,
@@ -26,7 +25,6 @@ interface FormBusinessPointContextType {
     businessPointData: BusinessPointFormData,
   ) => Promise<void>;
   setValue: UseFormSetValue<BusinessPointFormData>;
-  getValues: UseFormGetValues<BusinessPointFormData>;
   handleSelect: (categoryId: string) => void;
   errors: FieldErrors<BusinessPointFormData>;
   isLoadingForm: boolean;
@@ -48,7 +46,6 @@ export function FormBusinessPointContextProvider({
     register,
     handleSubmit,
     setValue,
-    getValues,
     formState: { errors, isLoading: isLoadingForm },
   } = useForm<BusinessPointFormData>({
     resolver: zodResolver(businessPointSchema),
@@ -89,7 +86,6 @@ export function FormBusinessPointContextProvider({
         handleSubmit,
         handleBusinessPointForm,
         setValue,
-        getValues,
         handleSelect,
         errors,
         isLoadingForm,
