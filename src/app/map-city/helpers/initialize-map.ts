@@ -54,7 +54,7 @@ export async function initializeMap({
           },
           geometry: {
             type: "Point" as const,
-            coordinates: [point.location.latitude, point.location.longitude], // TODO: inverter depois
+            coordinates: [point.location.longitude, point.location.latitude],
           },
         };
       }) ?? [],
@@ -66,11 +66,13 @@ export async function initializeMap({
       .layers?.filter((layer) => layer.id.includes("poi"))
       .forEach((layer) => mapRef.removeLayer(layer.id));
 
-    const icons = businessPointCategories?.map((c) =>
-      c.name.replace(/\s+/g, "_").toLowerCase(),
-    ) ?? ["default"];
+    // const icons = businessPointCategories?.map((c) =>
+    //   c.name.replace(/\s+/g, "_").toLowerCase(),
+    // ) ?? ["default"];
 
-    await loadMapIcons(mapRef, icons);
+    const defaultIcon = ["default"];
+
+    await loadMapIcons(mapRef, defaultIcon);
 
     if (!mapRef.getSource("points")) {
       mapRef.addSource("points", {
@@ -107,7 +109,7 @@ export async function initializeMap({
         type: "symbol",
         source: "points",
         layout: {
-          "icon-image": ["get", "icon"],
+          "icon-image": "default",
           "icon-allow-overlap": true,
           "icon-ignore-placement": true,
           "icon-size": [

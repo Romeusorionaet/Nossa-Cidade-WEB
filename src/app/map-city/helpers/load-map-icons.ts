@@ -9,7 +9,7 @@ export async function loadMapIcons(
   for (const name of icons) {
     if (loadedIcons.has(name)) continue;
 
-    const response = await map.loadImage(`/icons/${name}.png`);
+    const response = await map.loadImage(`/imgs/map/${name}.png`);
     const image = response.data;
     if (image && !map.hasImage(name)) {
       map.addImage(name, image);
