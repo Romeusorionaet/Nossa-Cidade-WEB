@@ -1,5 +1,5 @@
 import { BackNavigation } from "@/components/back-navigation";
-import { FormRegisterBusinessPoint } from "../components/form-register-business-point";
+import { FormRegisterBusinessPoint } from "../components/forms/form-register-business-point";
 
 export default function RegisterBusinessPoint() {
   return (

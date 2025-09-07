@@ -18,7 +18,7 @@ import { registerBusinessPoint } from "@/actions/post/business-point/register-bu
 import { useRouter } from "next/navigation";
 import { APP_ROUTES } from "@/constants/app-routes";
 
-interface FormBusinessPointContextType {
+interface FormRegisterBusinessPointContextType {
   register: UseFormRegister<BusinessPointFormData>;
   handleSubmit: UseFormHandleSubmit<BusinessPointFormData>;
   handleBusinessPointForm: (
@@ -31,17 +31,17 @@ interface FormBusinessPointContextType {
   selectedCategories: string[];
 }
 
-interface FormBusinessPointContextProps {
+interface FormRegisterBusinessPointContextProps {
   children: React.ReactNode;
 }
 
-export const FormBusinessPointContext = createContext(
-  {} as FormBusinessPointContextType,
+export const FormRegisterBusinessPointContext = createContext(
+  {} as FormRegisterBusinessPointContextType,
 );
 
-export function FormBusinessPointContextProvider({
+export function FormRegisterBusinessPointContextProvider({
   children,
-}: FormBusinessPointContextProps) {
+}: FormRegisterBusinessPointContextProps) {
   const {
     register,
     handleSubmit,
@@ -80,7 +80,7 @@ export function FormBusinessPointContextProvider({
   };
 
   return (
-    <FormBusinessPointContext.Provider
+    <FormRegisterBusinessPointContext.Provider
       value={{
         register,
         handleSubmit,
@@ -93,6 +93,6 @@ export function FormBusinessPointContextProvider({
       }}
     >
       {children}
-    </FormBusinessPointContext.Provider>
+    </FormRegisterBusinessPointContext.Provider>
   );
 }

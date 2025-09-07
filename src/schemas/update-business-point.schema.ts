@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { openingHoursSchema } from "./business-point.schema";
 
-export const updateBusinessPointStepOneSchema = z.object({
+export const updateBusinessPointSchema = z.object({
   name: z.string().min(6, { message: "Nome muito curto." }).max(100).optional(),
   description: z
     .string()
@@ -18,21 +18,11 @@ export const updateBusinessPointStepOneSchema = z.object({
     .max(100, { message: "Muito longo. (max = 100 caracteres)" })
     .optional(),
   openingHours: openingHoursSchema.optional(),
-});
-export type UpdateBusinessPointFormDataStepOneType = z.infer<
-  typeof updateBusinessPointStepOneSchema
->;
-
-export const updateBusinessPointStepTwoSchema = z.object({
   location: z.object({
     x: z.string().min(6, { message: "Preencha corretamente" }).optional(),
     y: z.string().min(6, { message: "Preencha corretamente" }).optional(),
   }),
 });
-export type UpdateBusinessPointFormDataStepTwoType = z.infer<
-  typeof updateBusinessPointStepTwoSchema
+export type UpdateBusinessPointFormDataType = z.infer<
+  typeof updateBusinessPointSchema
 >;
-
-export type UpdateBusinessPointFormDataMerged =
-  UpdateBusinessPointFormDataStepOneType &
-    UpdateBusinessPointFormDataStepTwoType;

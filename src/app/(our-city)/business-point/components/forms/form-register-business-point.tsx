@@ -2,12 +2,12 @@
 
 import { FormError } from "@/components/form/form-error";
 import { useContext, useState } from "react";
-import { FormBusinessPointContext } from "@/contexts/form-business-point.context";
-import { ManageTags } from "./manage-tags";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 import "@/assets/styles/utilities/form-items.css";
 import { useGetBusinessPointCategories } from "@/hooks/use-app-queries/use-get-business-point-categories";
 import { CircleCheck } from "lucide-react";
+import { FormRegisterBusinessPointContext } from "@/contexts/form-register-business-point.context";
+import { ManageTags } from "../manage-tags";
 
 export function FormRegisterBusinessPoint() {
   const [locationFound, setLocationFound] = useState(false);
@@ -20,7 +20,7 @@ export function FormRegisterBusinessPoint() {
     setValue,
     handleSelect,
     selectedCategories,
-  } = useContext(FormBusinessPointContext);
+  } = useContext(FormRegisterBusinessPointContext);
 
   const myLocation: [number, number] = [-35.13145819818388, -6.378905610634973]; // TODO for while
 

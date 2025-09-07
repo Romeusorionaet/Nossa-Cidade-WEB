@@ -1,11 +1,9 @@
-import Link from "next/link";
-import { StepOneFormUpdateBusinessPoint } from "../../components/forms/step-one-form-update-business-point";
-import { StepTwoFormUpdateBusinessPoint } from "../../components/forms/step-two-form-update-business-point";
 import { queryClient } from "@/lib/query-client";
 import { getBusinessPointOverview } from "@/actions/get/business-point/get-business-point-overview";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 import { BackNavigation } from "@/components/back-navigation";
+import { FormUpdateBusinessPoint } from "../../components/forms/form-update-business-point";
 
 interface ParamsProps {
   params: Promise<{
@@ -29,12 +27,7 @@ export default async function Update({ params }: ParamsProps) {
       <BackNavigation />
 
       <HydrationBoundary state={dehydratedState}>
-        <StepOneFormUpdateBusinessPoint />
-
-        <div className="mx-4 mt-10 md:mx-10">
-          <h2>Atualizar localização</h2>
-          <StepTwoFormUpdateBusinessPoint />
-        </div>
+        <FormUpdateBusinessPoint />
       </HydrationBoundary>
     </main>
   );

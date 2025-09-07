@@ -1,20 +1,25 @@
 "use client";
 
 import { FormError } from "@/components/form/form-error";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ManageTags } from "../manage-tags";
-import { FormUpdateStepOneBusinessPointContext } from "@/contexts/form-update-step-one-business-point.context";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 import { useGetBusinessPointCategories } from "@/hooks/use-app-queries/use-get-business-point-categories";
+import { CircleCheck } from "lucide-react";
+import "@/assets/styles/utilities/form-items.css";
+import { FormUpdateBusinessPointContext } from "@/contexts/form-update-business-point.context";
 
-export function StepOneFormUpdateBusinessPoint() {
+export function FormUpdateBusinessPoint() {
+  const [locationFound, setLocationFound] = useState(false);
+
   const {
     errors,
-    handleUpdateStepOneBusinessPointForm,
+    handleUpdateBusinessPointForm,
     handleSubmit,
     isLoadingForm,
     register,
-  } = useContext(FormUpdateStepOneBusinessPointContext);
+    setValue,
+  } = useContext(FormUpdateBusinessPointContext);
 
   const {
     data: categories,
@@ -22,10 +27,31 @@ export function StepOneFormUpdateBusinessPoint() {
     isLoading: isLoadingCategories,
   } = useGetBusinessPointCategories();
 
+  const myLocation: [number, number] = [-35.13145819818388, -6.378905610634973]; // TODO for while
+
+  const handleGetBusinessPointLocation = () => {
+    if (!navigator.geolocation) {
+      console.error("Geolocalização não é suportada pelo seu navegador.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setValue("location.x", myLocation[0].toString());
+        setValue("location.y", myLocation[1].toString());
+        setLocationFound(true);
+      },
+      (error) => {
+        console.error("Erro ao obter localização:", error.message);
+      },
+    );
+  };
+
   return (
     <form
       id="business-point-form"
-      onSubmit={handleSubmit(handleUpdateStepOneBusinessPointForm)}
+      onSubmit={handleSubmit(handleUpdateBusinessPointForm)}
       className="mx-auto max-w-3xl space-y-8 rounded-xl bg-white p-6 shadow-lg"
     >
       <div className="flex flex-col gap-2">
@@ -87,6 +113,30 @@ export function StepOneFormUpdateBusinessPoint() {
         <FormError errors={errors.categoryId?.message} />
       </div>
 
+      <div className="space-y-6">
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => handleGetBusinessPointLocation()}
+            disabled={locationFound}
+            className="btn-secondary disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Buscar localização
+          </button>
+
+          <CircleCheck
+            data-value={locationFound}
+            className="text-green-500 data-[value=false]:hidden"
+          />
+        </div>
+
+        <p className="text-sm text-zinc-400">
+          <strong className="text-yellow-400">Atenção:</strong> certifique-se de
+          que a localização fornecida represente com precisão o endereço do seu
+          ponto comercial.
+        </p>
+      </div>
+
       <div className="flex flex-wrap justify-center gap-2">
         {DAYS_OF_WEEK_DDD.map((day) => (
           <fieldset key={day} className="rounded-lg border border-zinc-200 p-4">
@@ -146,9 +196,9 @@ export function StepOneFormUpdateBusinessPoint() {
         <button
           type="submit"
           disabled={isLoadingForm}
-          className="rounded-lg bg-blue-600 px-6 py-2 font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
+          className="rounded-lg bg-blue-600 px-6 py-2 font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {isLoadingForm ? "Atualizando..." : "Atualizar"}
+          Atualizar
         </button>
       </div>
     </form>

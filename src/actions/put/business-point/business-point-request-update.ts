@@ -1,13 +1,13 @@
 import { getAccessTokenFromCookies } from "@/utils/get-access-token-from-cookies";
 import { api } from "@/lib/api";
-import { UpdateBusinessPointFormDataMerged } from "@/schemas/update-business-point.schema";
+import { UpdateBusinessPointFormDataType } from "@/schemas/update-business-point.schema";
 
 interface BusinessPointRegisterProps {
-  businessPoint: Partial<UpdateBusinessPointFormDataMerged>;
+  businessPoint: Partial<UpdateBusinessPointFormDataType>;
   businessPointId: string;
 }
 
-export async function updateBusinessPointOverview({
+export async function businessPointRequestUpdate({
   businessPoint,
   businessPointId,
 }: BusinessPointRegisterProps) {
@@ -22,7 +22,7 @@ export async function updateBusinessPointOverview({
 
   try {
     const response = await api.put(
-      `/business-point/update/${businessPointId}`,
+      `/business-point/request-update/${businessPointId}`,
       businessPoint,
       {
         headers: {

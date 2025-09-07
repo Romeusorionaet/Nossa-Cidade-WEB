@@ -1,6 +1,6 @@
 "use client";
 
-import { FormUpdateStepOneBusinessPointContextProvider } from "@/contexts/form-update-step-one-business-point.context";
+import { FormUpdateBusinessPointContextProvider } from "@/contexts/form-update-business-point.context";
 
 export default function UpdateBusinessPointLayout({
   children,
@@ -8,8 +8,8 @@ export default function UpdateBusinessPointLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <FormUpdateStepOneBusinessPointContextProvider>
+    <FormUpdateBusinessPointContextProvider>
       {children}
-    </FormUpdateStepOneBusinessPointContextProvider>
+    </FormUpdateBusinessPointContextProvider>
   );
 }

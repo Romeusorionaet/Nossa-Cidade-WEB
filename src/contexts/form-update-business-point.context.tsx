@@ -12,37 +12,37 @@ import {
 import { createContext, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  UpdateBusinessPointFormDataStepOneType,
-  updateBusinessPointStepOneSchema,
+  UpdateBusinessPointFormDataType,
+  updateBusinessPointSchema,
 } from "@/schemas/update-business-point.schema";
-import { updateBusinessPointOverview } from "@/actions/put/business-point/update-business-point-overview";
 import { useParams, useRouter } from "next/navigation";
 import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 import { APP_ROUTES } from "@/constants/app-routes";
+import { businessPointRequestUpdate } from "@/actions/put/business-point/business-point-request-update";
 
-interface FormUpdateStepOneBusinessPointContextType {
-  register: UseFormRegister<UpdateBusinessPointFormDataStepOneType>;
-  handleSubmit: UseFormHandleSubmit<UpdateBusinessPointFormDataStepOneType>;
-  handleUpdateStepOneBusinessPointForm: (
-    businessPointData: UpdateBusinessPointFormDataStepOneType,
+interface FormUpdateBusinessPointContextType {
+  register: UseFormRegister<UpdateBusinessPointFormDataType>;
+  handleSubmit: UseFormHandleSubmit<UpdateBusinessPointFormDataType>;
+  handleUpdateBusinessPointForm: (
+    businessPointData: UpdateBusinessPointFormDataType,
   ) => Promise<void>;
-  errors: FieldErrors<UpdateBusinessPointFormDataStepOneType>;
+  errors: FieldErrors<UpdateBusinessPointFormDataType>;
   isLoadingForm: boolean;
-  setValue: UseFormSetValue<UpdateBusinessPointFormDataStepOneType>;
-  getValues: UseFormGetValues<UpdateBusinessPointFormDataStepOneType>;
+  setValue: UseFormSetValue<UpdateBusinessPointFormDataType>;
+  getValues: UseFormGetValues<UpdateBusinessPointFormDataType>;
 }
 
-interface FormUpdateStepOneBusinessPointContextProps {
+interface FormUpdateBusinessPointContextProps {
   children: React.ReactNode;
 }
 
-export const FormUpdateStepOneBusinessPointContext = createContext(
-  {} as FormUpdateStepOneBusinessPointContextType,
+export const FormUpdateBusinessPointContext = createContext(
+  {} as FormUpdateBusinessPointContextType,
 );
 
-export function FormUpdateStepOneBusinessPointContextProvider({
+export function FormUpdateBusinessPointContextProvider({
   children,
-}: FormUpdateStepOneBusinessPointContextProps) {
+}: FormUpdateBusinessPointContextProps) {
   const { id } = useParams();
   const businessPointId = id as string;
 
@@ -50,7 +50,7 @@ export function FormUpdateStepOneBusinessPointContextProvider({
 
   const queryClient = useQueryClient();
   const businessPointData =
-    queryClient.getQueryData<UpdateBusinessPointFormDataStepOneType>([
+    queryClient.getQueryData<UpdateBusinessPointFormDataType>([
       QUERY_KEY_CACHE.BPD,
     ]);
 
@@ -61,14 +61,14 @@ export function FormUpdateStepOneBusinessPointContextProvider({
     setValue,
     getValues,
     formState: { errors, isLoading: isLoadingForm },
-  } = useForm<UpdateBusinessPointFormDataStepOneType>({
-    resolver: zodResolver(updateBusinessPointStepOneSchema),
+  } = useForm<UpdateBusinessPointFormDataType>({
+    resolver: zodResolver(updateBusinessPointSchema),
   });
 
-  const handleUpdateStepOneBusinessPointForm = async (
-    baseData: UpdateBusinessPointFormDataStepOneType,
+  const handleUpdateBusinessPointForm = async (
+    baseData: UpdateBusinessPointFormDataType,
   ) => {
-    const { messageError, messageSuccess } = await updateBusinessPointOverview({
+    const { messageError, messageSuccess } = await businessPointRequestUpdate({
       businessPoint: baseData,
       businessPointId,
     });
@@ -90,11 +90,11 @@ export function FormUpdateStepOneBusinessPointContextProvider({
   }, [businessPointData]);
 
   return (
-    <FormUpdateStepOneBusinessPointContext.Provider
+    <FormUpdateBusinessPointContext.Provider
       value={{
         register,
         handleSubmit,
-        handleUpdateStepOneBusinessPointForm,
+        handleUpdateBusinessPointForm,
         errors,
         isLoadingForm,
         setValue,
@@ -102,6 +102,6 @@ export function FormUpdateStepOneBusinessPointContextProvider({
       }}
     >
       {children}
-    </FormUpdateStepOneBusinessPointContext.Provider>
+    </FormUpdateBusinessPointContext.Provider>
   );
 }

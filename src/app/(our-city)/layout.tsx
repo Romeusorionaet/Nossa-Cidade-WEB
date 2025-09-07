@@ -2,7 +2,7 @@
 
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header/index";
-import { FormBusinessPointContextProvider } from "@/contexts/form-business-point.context";
+import { FormRegisterBusinessPointContextProvider } from "@/contexts/form-register-business-point.context";
 import { ManageTagsForBusinessPointContextProvider } from "@/contexts/manage-tags-for-business-point.context";
 import { MobileSideMenuFormContextProvider } from "@/contexts/mobile-side-menu-provider";
 
@@ -13,13 +13,13 @@ export default function BusinessPointLayout({
 }>) {
   return (
     <ManageTagsForBusinessPointContextProvider>
-      <FormBusinessPointContextProvider>
+      <FormRegisterBusinessPointContextProvider>
         <MobileSideMenuFormContextProvider>
           <Header />
           {children}
           <Footer />
         </MobileSideMenuFormContextProvider>
-      </FormBusinessPointContextProvider>
+      </FormRegisterBusinessPointContextProvider>
     </ManageTagsForBusinessPointContextProvider>
   );
 }
