@@ -45,6 +45,8 @@ export function ProfileContent() {
     alert(message);
   };
 
+  const avatar = profile?.avatar ? profile.avatar : "/imgs/others/bg-user.png";
+
   return (
     <section>
       <BackNavigation />
@@ -53,17 +55,16 @@ export function ProfileContent() {
         <h1 className="text-center">Profile</h1>
 
         <div className="flex flex-col items-center space-y-4">
-          {profile.avatar && (
-            <div className="h-28 w-28">
-              <Image
-                src={profile.avatar}
-                alt="avatar"
-                width={500}
-                height={500}
-                className="h-full w-full rounded-full object-cover shadow"
-              />
-            </div>
-          )}
+          <div className="h-28 w-28">
+            {/* TODO Upload image here */}
+            <Image
+              src={avatar}
+              alt="avatar"
+              width={500}
+              height={500}
+              className="h-full w-full rounded-full object-cover shadow"
+            />
+          </div>
           <h2 className="font- text-2xl uppercase">{profile.username}</h2>
           <p className="text-gray-400">{profile.email}</p>
         </div>

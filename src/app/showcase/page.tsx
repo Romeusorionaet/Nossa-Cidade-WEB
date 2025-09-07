@@ -1,13 +1,21 @@
 import { SearchInput } from "./components/search-input";
 import { FilterSidebar } from "./components/filter-sidebar";
 import { SectionProducts } from "./components/section-products";
+import Link from "next/link";
+import { OurCityLogo } from "@/components/our-city-logo";
+import { APP_ROUTES } from "@/constants/app-routes";
 
 export default function Showcase() {
   return (
     <div className="flex flex-col p-4 lg:flex-row">
       <aside className="flex flex-col justify-between gap-4 rounded-md border border-blue-500 p-2 lg:w-1/5">
         <div>
-          <SearchInput />
+          <div className="flex items-center justify-between">
+            <SearchInput />
+            <Link href={APP_ROUTES.public.dashboard}>
+              <OurCityLogo />
+            </Link>
+          </div>
           <FilterSidebar />
         </div>
 

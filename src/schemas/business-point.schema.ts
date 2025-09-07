@@ -29,11 +29,11 @@ export const businessPointSchema = z.object({
   name: z
     .string()
     .min(6, { message: "Nome muito curto." })
-    .max(100, { message: "Nome muito longo." }),
+    .max(45, { message: "Nome muito longo." }),
   description: z
     .string()
     .min(10, { message: "Descrição insuficiente." })
-    .max(400, { message: "Descrição muito longo." }),
+    .max(500, { message: "Descrição muito longo." }),
   highlight: z
     .string()
     .min(10, { message: "Muito curto.." })
