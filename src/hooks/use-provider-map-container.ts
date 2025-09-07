@@ -1,8 +1,7 @@
+import { getGeojsonAndBounds } from "@/actions/get/map/get-geojson-and-bounds";
 import { maplibreglStyleCached as maplibreglStyle } from "@/actions/services/maplibregl";
 import maplibregl from "maplibre-gl";
 import { useCallback, useRef } from "react";
-import bbox from "@turf/bbox";
-import type { FeatureCollection, Geometry, GeoJsonProperties } from "geojson";
 
 export function useProviderMapContainer() {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -10,25 +9,7 @@ export function useProviderMapContainer() {
   const mapRef = useRef<maplibregl.Map | null>(null);
 
   const providerMapContainer = useCallback(async () => {
-    const response = await fetch("/data/geojson/canguaretama-rn.geojson");
-    const geojson: FeatureCollection<Geometry, GeoJsonProperties> =
-      await response.json();
-
-    const polygonFeatures: FeatureCollection<Geometry, GeoJsonProperties> = {
-      type: "FeatureCollection",
-      features: geojson.features.filter(
-        (f) =>
-          f.geometry.type === "Polygon" || f.geometry.type === "MultiPolygon",
-      ),
-    };
-
-    const fullBounds = bbox(polygonFeatures);
-    const bounds: [number, number, number, number] = [
-      fullBounds[0],
-      fullBounds[1],
-      fullBounds[2],
-      fullBounds[3],
-    ];
+    const { geojson, bounds } = await getGeojsonAndBounds();
 
     if (!mapRef.current) {
       const style = await maplibreglStyle();
