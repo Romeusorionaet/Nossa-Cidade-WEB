@@ -1,6 +1,7 @@
 "use client";
 
 import { saveImageBusinessPoint } from "@/actions/post/business-point/save-image-business-point";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface Props {
@@ -10,6 +11,8 @@ interface Props {
 export function SaveImageBusinessPoint({ businessPointId }: Props) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setError(null);
@@ -39,6 +42,8 @@ export function SaveImageBusinessPoint({ businessPointId }: Props) {
     if (messageSuccess) {
       alert(messageSuccess);
       setSelectedFiles([]);
+      router.back();
+
       return;
     }
 
