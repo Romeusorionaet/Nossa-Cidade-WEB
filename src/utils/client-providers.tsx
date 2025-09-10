@@ -4,20 +4,15 @@ import "@/assets/styles/utilities/no-spinner-input-number.css";
 import { UserContextProvider } from "@/contexts/user.context";
 import { QueryClientProvider } from "@tanstack/react-query";
 import "@/assets/styles/utilities/background-section.css";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import { SessionProvider } from "next-auth/react";
 import { queryClient } from "@/lib/query-client";
 import WakeUpAPI from "@/components/wake-up-api";
 import "@/assets/styles/base/globals.css";
 import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
-import { registerSW } from "./register-service-worker";
 
 export default function ClientProviders({ children }: { children: ReactNode }) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    registerSW();
-  }, []);
 
   useSmoothScroll(scrollContainerRef);
 
