@@ -10,8 +10,15 @@ export default function Showcase() {
     <div className="flex flex-col p-4 lg:flex-row">
       <aside className="flex flex-col justify-between gap-4 rounded-md border border-blue-500 p-2 lg:w-1/5">
         <div>
-          <div className="flex items-center justify-between">
+          <div className="flex justify-between">
             <SearchInput />
+            <Link
+              title="sair"
+              href={APP_ROUTES.public.mapCity}
+              className="underline"
+            >
+              Mapa
+            </Link>
             <Link href={APP_ROUTES.public.dashboard}>
               <OurCityLogo />
             </Link>
