@@ -9,6 +9,7 @@ import { updateBusinessPointDetails } from "@/actions/put/business-point/update-
 import { ASSOCIATION_LIST } from "@/constants/association-list";
 import { useGetListItemsForBusinessPointDetails } from "@/hooks/use-app-queries/use-get-list-items-for-business-point-details";
 import { useGetSharedItemsAssociatedBusinessPoint } from "@/hooks/use-app-queries/use-get-shared-items-associated-business-point";
+import { APP_ROUTES } from "@/constants/app-routes";
 
 interface Props {
   businessPointId: string;
@@ -104,7 +105,7 @@ export function PickListDetails({ businessPointId }: Props) {
       Object.keys(filteredRemovedItems).length === 0
     ) {
       alert("Nada a ser alterado.");
-      router.replace("/my-business-points");
+      router.replace(APP_ROUTES.public.user.myBusinessPoints);
       return;
     }
 
@@ -117,12 +118,12 @@ export function PickListDetails({ businessPointId }: Props) {
     if (messageSuccess) {
       alert(messageSuccess);
       refetchAssociatedData();
-      router.push("/my-business-points");
+      router.push(APP_ROUTES.public.user.myBusinessPoints);
     }
 
     if (messageError) {
       alert(messageError);
-      router.replace("/my-business-points");
+      router.replace(APP_ROUTES.public.user.myBusinessPoints);
     }
   };
 

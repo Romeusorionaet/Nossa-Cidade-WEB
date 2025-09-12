@@ -1,4 +1,10 @@
-import { CheckboxListAssociateType } from "@/@types/check-box-list-associate-items-type";
+interface CheckboxListAssociateProps {
+  title: string;
+  items: { id: string; name: string }[];
+  selectedItems: { id: string }[];
+  category: string;
+  onSelect: (category: string, id: string, checked: boolean) => void;
+}
 
 export function CheckboxListAssociateItems({
   title,
@@ -6,7 +12,7 @@ export function CheckboxListAssociateItems({
   selectedItems,
   category,
   onSelect,
-}: CheckboxListAssociateType) {
+}: CheckboxListAssociateProps) {
   return (
     <div>
       <h3>{title}</h3>
