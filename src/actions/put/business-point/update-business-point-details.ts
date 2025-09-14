@@ -22,7 +22,7 @@ export async function updateBusinessPointDetails({
   }
 
   try {
-    const response = await api.put(
+    const response = await api.patch(
       "/shared-items/associated/update-details",
       { businessPointId, newListItems, removedListItems },
       {

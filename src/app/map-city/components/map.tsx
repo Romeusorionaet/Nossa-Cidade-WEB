@@ -16,12 +16,7 @@ import { drawRouteLayer } from "../helpers/draw-route-layer";
 import { AVG_SPEEDS } from "@/constants/avg-speeds";
 import Link from "next/link";
 import { APP_ROUTES } from "@/constants/app-routes";
-
-interface TravelInfo {
-  car?: { durationMinutes: number; distanceKm: number };
-  motorcycle?: { durationMinutes: number; distanceKm: number };
-  walking?: { durationMinutes: number; distanceKm: number };
-}
+import { TravelInfoType } from "@/@types/travel-info-type";
 
 export function MapComponent() {
   const {
@@ -38,7 +33,7 @@ export function MapComponent() {
   } = useMapCity();
 
   const routeMarkersRef = useRef<maplibregl.Marker[]>([]);
-  const [travelInfo, setTravelInfo] = useState<TravelInfo | null>(null);
+  const [travelInfo, setTravelInfo] = useState<TravelInfoType | null>(null);
   const [toggleWindowSearch, setToggleWindowSearch] = useState(false);
   const [isOpenAsideRouteControl, setIsOpenAsideRouteControl] = useState(false);
 
@@ -107,12 +102,12 @@ export function MapComponent() {
     routeMarkersRef.current.forEach((marker) => marker.remove());
     routeMarkersRef.current = [];
 
-    if (mapRef.getLayer("route")) {
-      mapRef.removeLayer("route");
+    if (mapRef.getLayer("route-base")) {
+      mapRef.removeLayer("route-base");
     }
 
-    if (mapRef.getSource("route")) {
-      mapRef.removeSource("route");
+    if (mapRef.getSource("route-base")) {
+      mapRef.removeSource("route-base");
     }
 
     setTravelInfo(null);
