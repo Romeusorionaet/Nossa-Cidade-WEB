@@ -10,7 +10,6 @@ import { useBusinessPointOverview } from "@/hooks/use-app-queries/use-business-p
 import { checkBusinessStatus } from "@/utils/check-business-status";
 import Image from "next/image";
 import { useState } from "react";
-import { DetailsSection } from "./details-section";
 import { BackNavigation } from "@/components/back-navigation";
 
 export function ContentBusinessPointDetails({ id }: { id: string }) {
@@ -41,7 +40,7 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
     setShowDetails((prev) => !prev);
   };
 
-  const options = [
+  const options: [string, OptionItem[] | undefined][] = [
     ["Opções de serviço", businessPointDetails?.serviceOptions],
     ["Pagamentos", businessPointDetails?.payments],
     ["Menu", businessPointDetails?.menu],
@@ -129,21 +128,17 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
           data-value={showDetails}
           className="mt-10 space-y-8 data-[value=false]:hidden"
         >
-          <DetailsSection
-            title="Destaque"
-            items={[
-              "Ingredientes frescos e selecionados",
-              "Atendimento rápido e de qualidade",
-              "Ambiente aconchegante e familiar",
-              "Opções para dietas especiais (vegetariano, sem glúten, etc.)",
-              "Promoções exclusivas toda semana",
-            ]}
-          />
-
-          {Object.entries(options).map(([title, items]) =>
+          {options.map(([title, items]) =>
             items?.length ? (
-              <div key={title}>
-                <DetailsSection title={title} items={items as string[]} />
+              <div key={title} className="space-y-2">
+                <h4 className="text-lg font-semibold">{title}</h4>
+                <ul className="list-inside list-disc space-y-1 text-zinc-500">
+                  {items.map((item, index) => (
+                    <li key={typeof item === "object" ? item.id : index}>
+                      {typeof item === "object" ? item.name : item}
+                    </li>
+                  ))}
+                </ul>
               </div>
             ) : null,
           )}
