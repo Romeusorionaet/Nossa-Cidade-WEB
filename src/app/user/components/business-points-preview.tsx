@@ -17,6 +17,7 @@ export function BusinessPointsPreview() {
     data: businessPointsPreviewData,
     isLoading,
     error,
+    refetch,
   } = useGetBusinessPointPreviewUser({ profileId: profile.publicId });
 
   const handleToggleActiveBusinessPoint = async (id: string) => {
@@ -25,7 +26,9 @@ export function BusinessPointsPreview() {
     });
 
     if (messageSuccess) {
+      refetch();
       alert(messageSuccess);
+
       return;
     }
 

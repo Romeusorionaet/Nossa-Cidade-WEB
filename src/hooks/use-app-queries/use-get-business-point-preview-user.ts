@@ -8,12 +8,14 @@ interface Props {
 }
 
 export function useGetBusinessPointPreviewUser({ profileId }: Props) {
-  const { data, isLoading, error } = useQuery<BusinessPointPreviewType[]>({
+  const { data, isLoading, error, refetch } = useQuery<
+    BusinessPointPreviewType[]
+  >({
     queryKey: [QUERY_KEY_CACHE.BPPD],
     queryFn: () => getBusinessPointsPreviewUser(),
     staleTime: 1000 * 60 * 60,
     enabled: Boolean(profileId),
   });
 
-  return { data, isLoading, error };
+  return { data, isLoading, error, refetch };
 }

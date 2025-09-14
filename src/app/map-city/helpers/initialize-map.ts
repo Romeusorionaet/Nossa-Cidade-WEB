@@ -18,7 +18,7 @@ interface Props {
   businessPointCategories:
     | {
         id: string;
-        name: string;
+        searchName: string;
       }[]
     | undefined;
 }
@@ -42,7 +42,7 @@ export async function initializeMap({
           (c) => c.id === point.categoryId,
         );
         const iconName =
-          category?.name.replace(/\s+/g, "_").toLowerCase() ?? "default";
+          category?.searchName.replace(/\s+/g, "_").toLowerCase() ?? "default";
 
         return {
           type: "Feature" as const,
@@ -66,13 +66,11 @@ export async function initializeMap({
       .layers?.filter((layer) => layer.id.includes("poi"))
       .forEach((layer) => mapRef.removeLayer(layer.id));
 
-    // const icons = businessPointCategories?.map((c) =>
-    //   c.name.replace(/\s+/g, "_").toLowerCase(),
-    // ) ?? ["default"];
+    const icons = businessPointCategories?.map((c) => c.searchName) ?? [
+      "default",
+    ];
 
-    const defaultIcon = ["default"];
-
-    await loadMapIcons(mapRef, defaultIcon);
+    await loadMapIcons(mapRef, icons);
 
     if (!mapRef.getSource("points")) {
       mapRef.addSource("points", {
@@ -109,7 +107,7 @@ export async function initializeMap({
         type: "symbol",
         source: "points",
         layout: {
-          "icon-image": "default",
+          "icon-image": ["get", "icon"],
           "icon-allow-overlap": true,
           "icon-ignore-placement": true,
           "icon-size": [
