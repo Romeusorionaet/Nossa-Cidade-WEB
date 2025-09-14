@@ -1,5 +1,3 @@
-import { EventIndicatorType } from "@/@types/event-indicator-type";
-
 export function HoverBackgroundIndicator({
   eventIndicator,
 }: {

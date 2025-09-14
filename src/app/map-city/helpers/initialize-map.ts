@@ -1,4 +1,3 @@
-import type { businessPointType } from "@/@types/business-point-type";
 import { checkBusinessStatus } from "@/utils/check-business-status";
 import { popupContent } from "./popup-content";
 import { type RefObject } from "react";

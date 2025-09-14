@@ -1,4 +1,3 @@
-import { businessPointType } from "@/@types/business-point-type";
 import { searchBusinessPoints } from "@/actions/get/business-point/search-business-points";
 import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 import { useQuery } from "@tanstack/react-query";

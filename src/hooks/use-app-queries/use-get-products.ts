@@ -1,4 +1,3 @@
-import { ProductType } from "@/@types/product-type";
 import { getProducts } from "@/actions/get/product/get-products";
 import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 import { useQuery } from "@tanstack/react-query";

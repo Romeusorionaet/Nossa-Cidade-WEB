@@ -1,4 +1,4 @@
-export type EventIndicatorType = {
+type EventIndicatorType = {
   width: number;
   height: number;
   left: number;

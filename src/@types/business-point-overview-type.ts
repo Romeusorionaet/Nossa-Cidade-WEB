@@ -1,6 +1,6 @@
-export type ImageBusinessPointType = { id: string; url: string };
+type ImageBusinessPointType = { id: string; url: string };
 
-export type BusinessPointOverviewType = {
+type BusinessPointOverviewType = {
   id: string;
   categoryId: string;
   name: string;

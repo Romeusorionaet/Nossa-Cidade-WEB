@@ -3,7 +3,7 @@ type ItemType = {
   name: string;
 };
 
-export type ListItemsForBusinessPointDetailsType = {
+type ListItemsForBusinessPointDetailsType = {
   pets: ItemType[];
   planning: ItemType[];
   accessibility: ItemType[];

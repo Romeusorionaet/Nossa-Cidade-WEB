@@ -16,7 +16,6 @@ import { drawRouteLayer } from "../helpers/draw-route-layer";
 import { AVG_SPEEDS } from "@/constants/avg-speeds";
 import Link from "next/link";
 import { APP_ROUTES } from "@/constants/app-routes";
-import { TravelInfoType } from "@/@types/travel-info-type";
 
 export function MapComponent() {
   const {

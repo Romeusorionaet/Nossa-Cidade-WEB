@@ -1,4 +1,4 @@
-export type userProfileType = {
+type userProfileType = {
   publicId: string;
   avatar: string;
   email: string;

@@ -1,4 +1,3 @@
-import { ListItemsForBusinessPointDetailsType } from "@/@types/list-items-for-business-point-details-type";
 import { getListItemsForBusinessPointDetails } from "@/actions/get/business-point/get-list-items-for-business-point-details";
 import { QUERY_KEY_CACHE } from "@/constants/query-key-cache";
 import { useQuery } from "@tanstack/react-query";

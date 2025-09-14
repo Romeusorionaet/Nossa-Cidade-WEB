@@ -1,5 +1,3 @@
-import { ListItemsForBusinessPointDetailsType } from "@/@types/list-items-for-business-point-details-type";
-
 export const filterAssociateItems = (
   items: Record<string, string[]>,
   listItemsAssociated: ListItemsForBusinessPointDetailsType,

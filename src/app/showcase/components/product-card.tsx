@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { APP_ROUTES } from "@/constants/app-routes";
 import Link from "next/link";
-import { ProductImageType } from "@/@types/product-image-type";
 import { BASE_URLS } from "@/constants/base-urls";
 import { slugify } from "@/utils/slugfy";
 

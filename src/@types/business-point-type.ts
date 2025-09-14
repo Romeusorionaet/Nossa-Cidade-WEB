@@ -1,4 +1,4 @@
-export type businessPointType = {
+type businessPointType = {
   id: string;
   categoryId: string;
   name: string;

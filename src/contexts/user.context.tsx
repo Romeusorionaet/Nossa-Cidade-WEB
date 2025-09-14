@@ -1,6 +1,5 @@
 "use client";
 
-import type { userProfileType } from "@/@types/user-profile-type";
 import { getDataRefreshToken } from "@/actions/auth/refresh-token/get-data-refresh-token";
 import { KEY_LOCAL_STORAGE } from "@/constants/key-local-storage";
 import { useGetDataUser } from "@/hooks/use-app-queries/use-get-data-user";

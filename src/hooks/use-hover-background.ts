@@ -1,4 +1,3 @@
-import { EventIndicatorType } from "@/@types/event-indicator-type";
 import { useState, useRef } from "react";
 
 export function useHoverBackground() {

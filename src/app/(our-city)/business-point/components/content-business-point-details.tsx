@@ -1,6 +1,5 @@
 "use client";
 
-import { BusinessPointDetailsType } from "@/@types/business-point-details-type";
 import { getSharedItemsAssociatedBusinessPoint } from "@/actions/get/business-point/get-shared-items-associated-business-point";
 import { OpeningHoursList } from "@/components/opening-hours-list";
 import { BASE_URLS } from "@/constants/base-urls";
