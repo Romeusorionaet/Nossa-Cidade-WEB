@@ -11,7 +11,7 @@ export default async function RegisterDetails({ params }: ParamsProps) {
   const { id } = await params;
 
   return (
-    <main className="space-y-10 py-28">
+    <main className="space-y-10 pt-28 lg:pt-36">
       <BackNavigation />
 
       <div className="px-4 md:px-10">

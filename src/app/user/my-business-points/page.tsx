@@ -3,7 +3,7 @@ import { BusinessPointsPreview } from "../components/business-points-preview";
 
 export default function MyBusinessPoints() {
   return (
-    <main className="space-y-10 pt-28">
+    <main className="space-y-10 pt-28 lg:pt-36">
       <BackNavigation />
 
       <div className="px-2 md:px-10">

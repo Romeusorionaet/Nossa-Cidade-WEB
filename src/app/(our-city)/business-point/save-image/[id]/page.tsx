@@ -12,7 +12,7 @@ export default async function RegisterImage({ params }: ParamsProps) {
   const { id } = await params;
 
   return (
-    <main className="mx-4 pt-32 md:mx-10">
+    <main className="mx-4 pt-28 md:mx-10 lg:pt-36">
       <BackNavigation />
 
       <h1 className="mt-10">Registrar imagem</h1>
