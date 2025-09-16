@@ -19,8 +19,14 @@ export const updateBusinessPointSchema = z.object({
     .optional(),
   openingHours: openingHoursSchema.optional(),
   location: z.object({
-    x: z.string().min(6, { message: "Preencha corretamente" }).optional(),
-    y: z.string().min(6, { message: "Preencha corretamente" }).optional(),
+    longitude: z
+      .string()
+      .min(6, { message: "Preencha corretamente" })
+      .optional(),
+    latitude: z
+      .string()
+      .min(6, { message: "Preencha corretamente" })
+      .optional(),
   }),
 });
 export type UpdateBusinessPointFormDataType = z.infer<

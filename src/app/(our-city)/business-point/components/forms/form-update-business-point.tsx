@@ -27,7 +27,9 @@ export function FormUpdateBusinessPoint() {
     isLoading: isLoadingCategories,
   } = useGetBusinessPointCategories();
 
-  const myLocation: [number, number] = [-35.13145819818388, -6.378905610634973]; // TODO for while
+  const myLocation: [number, number] = [
+    -35.128284187741805, -6.380205757376511,
+  ]; // TODO for while
 
   const handleGetBusinessPointLocation = () => {
     if (!navigator.geolocation) {
@@ -38,8 +40,8 @@ export function FormUpdateBusinessPoint() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        setValue("location.x", myLocation[0].toString());
-        setValue("location.y", myLocation[1].toString());
+        setValue("location.longitude", myLocation[0].toString());
+        setValue("location.latitude", myLocation[1].toString());
         setLocationFound(true);
       },
       (error) => {

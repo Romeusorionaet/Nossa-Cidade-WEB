@@ -67,7 +67,6 @@ export function ContentBusinessPointDetails({ id }: { id: string }) {
             {businessPoint.neighborhood} - {businessPoint.street} -{" "}
             {businessPoint.houseNumber}
           </p>
-          <p>Canguaretama - RN</p>
         </div>
 
         {image1 && (
