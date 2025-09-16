@@ -15,6 +15,8 @@ export function OpeningHoursList({
         .sort(([a], [b]) => orderDays.indexOf(a) - orderDays.indexOf(b))
         .map(([day, hours]) => {
           const { abertura, fechamento } = hours;
+          const isClosed = abertura === "00:00" && fechamento === "00:00"; // 👈
+
           return (
             <li
               key={day}
@@ -23,12 +25,12 @@ export function OpeningHoursList({
               <span className="text-sm font-medium">
                 {weekDays[day] || day}:
               </span>
-              {abertura ? (
+              {isClosed ? (
+                <span className="text-sm">Fechado</span>
+              ) : (
                 <span className="text-sm">
                   {abertura} - {fechamento}
                 </span>
-              ) : (
-                <span className="text-sm">Fechado</span>
               )}
             </li>
           );
