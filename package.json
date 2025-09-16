@@ -1,5 +1,5 @@
 {
-  "name": "nossacaidewe",
+  "name": "nossacidade",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -26,7 +26,7 @@
     "maplibre-gl": "^5.1.0",
     "next": "15.1.6",
     "next-auth": "^4.24.11",
-    "nossacaidewe": "file:",
+    "nossacidade": "file:",
     "openai": "^4.87.3",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
