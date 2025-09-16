@@ -40,8 +40,7 @@ export async function initializeMap({
         const category = businessPointCategories?.find(
           (c) => c.id === point.categoryId,
         );
-        const iconName =
-          category?.searchName.replace(/\s+/g, "_").toLowerCase() ?? "default";
+        const iconName = category?.searchName;
 
         return {
           type: "Feature" as const,
@@ -102,13 +101,48 @@ export async function initializeMap({
       });
 
       mapRef.addLayer({
-        id: "points-layer",
+        id: "clusters",
+        type: "circle",
+        source: "points",
+        filter: ["has", "point_count"],
+        paint: {
+          "circle-color": "#FFFDF5",
+          "circle-stroke-color": "#4D4D4D",
+          "circle-stroke-width": 1,
+          "circle-radius": [
+            "step",
+            ["get", "point_count"],
+            12,
+            100,
+            18,
+            750,
+            24,
+          ],
+        },
+      });
+
+      mapRef.addLayer({
+        id: "cluster-count",
         type: "symbol",
         source: "points",
+        filter: ["has", "point_count"],
+        layout: {
+          "text-field": "{point_count_abbreviated}",
+          "text-font": ["Open Sans"],
+          "text-size": 12,
+        },
+        paint: { "text-color": "#000" },
+      });
+
+      mapRef.addLayer({
+        id: "unclustered-point",
+        type: "symbol",
+        source: "points",
+        filter: ["!", ["has", "point_count"]],
         layout: {
           "icon-image": ["get", "icon"],
-          "icon-allow-overlap": true,
-          "icon-ignore-placement": true,
+          "icon-allow-overlap": false,
+          "icon-ignore-placement": false,
           "icon-size": [
             "interpolate",
             ["linear"],
@@ -116,28 +150,28 @@ export async function initializeMap({
             12,
             0.3,
             14,
-            0.6,
+            0.5,
             16,
-            1,
+            0.8,
           ],
         },
       });
 
       mapRef.on(
         "mouseenter",
-        "points-layer",
+        "unclustered-point",
         // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
         () => (mapRef.getCanvas().style.cursor = "pointer"),
       );
       mapRef.on(
         "mouseleave",
-        "points-layer",
+        "unclustered-point",
         // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
         () => (mapRef.getCanvas().style.cursor = ""),
       );
     }
 
-    mapRef.on("click", "points-layer", (e) => {
+    mapRef.on("click", "unclustered-point", (e) => {
       const feature = e.features?.[0];
       if (!feature) return;
 
@@ -147,7 +181,11 @@ export async function initializeMap({
           : [0, 0];
       const { name, status, id } = feature.properties as any;
 
-      new maplibregl.Popup()
+      new maplibregl.Popup({
+        closeButton: false,
+        closeOnMove: true,
+        focusAfterOpen: true,
+      })
         .setLngLat(coordinates as [number, number])
         .setDOMContent(popupContent({ name, status, id }))
         .addTo(mapRef);
