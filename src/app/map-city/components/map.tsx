@@ -50,7 +50,13 @@ export function MapComponent() {
     filterBusinessPoints("");
   };
 
-  const handlePlotRoute = async () => {
+  const handlePlotRoute = async ({
+    lng,
+    lat,
+  }: {
+    lng: number;
+    lat: number;
+  }) => {
     setToggleWindowSearch(false);
 
     const { mapRef } = await providerMapContainer();
@@ -63,7 +69,7 @@ export function MapComponent() {
 
     const baseRoute = await openRouteServiceRoutes({
       startPoint: myLocation,
-      endPoint: [pointRoute[0], pointRoute[1]],
+      endPoint: [lng, lat],
       mode: "driving-car", // base route
     });
 
@@ -231,7 +237,9 @@ export function MapComponent() {
       >
         <button
           type="button"
-          onClick={() => handlePlotRoute()}
+          onClick={() =>
+            handlePlotRoute({ lng: pointRoute[0], lat: pointRoute[1] })
+          }
           className="w-full rounded-xs border bg-slate-700 p-1 text-sm text-white hover:bg-slate-950"
         >
           traçar rota
@@ -297,7 +305,12 @@ export function MapComponent() {
               <div className="mt-2 flex w-full justify-end">
                 <button
                   type="button"
-                  onClick={() => handlePlotRoute()}
+                  onClick={() =>
+                    handlePlotRoute({
+                      lng: item.location.longitude,
+                      lat: item.location.latitude,
+                    })
+                  }
                   className="cursor-pointer border p-1 text-xs"
                 >
                   traçar rota
