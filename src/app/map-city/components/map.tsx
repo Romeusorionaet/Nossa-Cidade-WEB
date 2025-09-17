@@ -135,7 +135,7 @@ export function MapComponent() {
 
     await drawRoute([longitude, latitude], [lng, lat]);
 
-    watchUserLocation({ routeMarkersRef, userMarker });
+    watchUserLocation({ routeMarkersRef, userMarker, mapRef });
   };
 
   const handleCleanRoute = async () => {
