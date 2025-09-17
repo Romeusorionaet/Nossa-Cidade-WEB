@@ -4,13 +4,18 @@ import { useState } from "react";
 
 interface Props {
   filterBusinessPoints: (value: string) => void;
+  handleCleanRoute: () => Promise<void>;
 }
 
-export function SearchBusinessPoint({ filterBusinessPoints }: Props) {
+export function SearchBusinessPoint({
+  filterBusinessPoints,
+  handleCleanRoute,
+}: Props) {
   const [query, setQuery] = useState("");
 
   const handleSearch = () => {
     filterBusinessPoints(query);
+    handleCleanRoute();
   };
 
   return (

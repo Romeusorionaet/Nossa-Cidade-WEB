@@ -16,6 +16,8 @@ import { drawRouteLayer } from "../helpers/draw-route-layer";
 import { AVG_SPEEDS } from "@/constants/avg-speeds";
 import Link from "next/link";
 import { APP_ROUTES } from "@/constants/app-routes";
+import { getUserCurrentLocation } from "@/utils/get-user-current-location";
+import { watchUserLocation } from "@/utils/watch-user-location";
 
 export function MapComponent() {
   const {
@@ -35,8 +37,8 @@ export function MapComponent() {
   const [travelInfo, setTravelInfo] = useState<TravelInfoType | null>(null);
   const [toggleWindowSearch, setToggleWindowSearch] = useState(false);
   const [isOpenAsideRouteControl, setIsOpenAsideRouteControl] = useState(false);
+  const [isLoadingPlotRoute, setIsLoadingPlotRoute] = useState(false);
 
-  const myLocation: [number, number] = [-35.134496, -6.375401]; // TODO for while
   const hasPointRoute = Boolean(pointRoute[0]);
 
   const handleAsideSearch = () => {
@@ -48,6 +50,18 @@ export function MapComponent() {
   const handleCleanSearch = () => {
     setToggleWindowSearch(false);
     filterBusinessPoints("");
+    handleCleanRoute();
+  };
+
+  const cleanOldRoute = () => {
+    routeMarkersRef.current.forEach((marker: any) => {
+      if (marker.stop) {
+        marker.stop();
+      } else if (marker.remove) {
+        marker.remove();
+      }
+    });
+    routeMarkersRef.current = [];
   };
 
   const handlePlotRoute = async ({
@@ -57,48 +71,77 @@ export function MapComponent() {
     lng: number;
     lat: number;
   }) => {
+    setIsLoadingPlotRoute(true);
+    cleanOldRoute();
+
+    const { latitude, longitude, error } = await getUserCurrentLocation();
+
+    if (error) {
+      setIsLoadingPlotRoute(false);
+      console.error(error);
+
+      return;
+    }
+
     setToggleWindowSearch(false);
 
     const { mapRef } = await providerMapContainer();
 
-    const startMarker = new maplibregl.Marker({ color: "red" })
-      .setLngLat(myLocation)
+    const userMarker = new maplibregl.Marker({ color: "red" })
+      .setLngLat([longitude, latitude])
       .addTo(mapRef);
+    routeMarkersRef.current.push(userMarker);
 
-    routeMarkersRef.current.push(startMarker);
+    const drawRoute = async (
+      start: [number, number],
+      end: [number, number],
+    ) => {
+      const baseRoute = await openRouteServiceRoutes({
+        startPoint: start,
+        endPoint: end,
+        mode: "driving-car",
+      });
 
-    const baseRoute = await openRouteServiceRoutes({
-      startPoint: myLocation,
-      endPoint: [lng, lat],
-      mode: "driving-car", // base route
-    });
+      setIsLoadingPlotRoute(false);
 
-    if (!baseRoute) {
-      alert("Não foi possível encontrar a rota.");
-      return;
-    }
+      if (!baseRoute) {
+        alert("Não foi possível encontrar a rota.");
+        return;
+      }
 
-    setTravelInfo({
-      car: {
-        distanceKm: baseRoute.distanceKm,
-        durationMinutes: (baseRoute.distanceKm / AVG_SPEEDS.car) * 60,
-      },
-      motorcycle: {
-        distanceKm: baseRoute.distanceKm,
-        durationMinutes: (baseRoute.distanceKm / AVG_SPEEDS.motorcycle) * 60,
-      },
-      walking: {
-        distanceKm: baseRoute.distanceKm,
-        durationMinutes: (baseRoute.distanceKm / AVG_SPEEDS.walking) * 60,
-      },
-    });
+      drawRouteLayer(mapRef, baseRoute.routeGeoJSON, "route-base");
 
-    drawRouteLayer(mapRef, baseRoute.routeGeoJSON, "route-base");
+      setTravelInfo({
+        car: {
+          distanceKm: baseRoute.distanceKm,
+          durationMinutes: (baseRoute.distanceKm / AVG_SPEEDS.car) * 60,
+        },
+        motorcycle: {
+          distanceKm: baseRoute.distanceKm,
+          durationMinutes: (baseRoute.distanceKm / AVG_SPEEDS.motorcycle) * 60,
+        },
+        walking: {
+          distanceKm: baseRoute.distanceKm,
+          durationMinutes: (baseRoute.distanceKm / AVG_SPEEDS.walking) * 60,
+        },
+      });
+
+      // simulateRouteAlongPath({
+      //   userMarker,
+      //   coordinates: currentRouteCoordinates,
+      //   interval: 200,
+      // });
+    };
+
+    await drawRoute([longitude, latitude], [lng, lat]);
+
+    watchUserLocation({ routeMarkersRef, userMarker });
   };
 
   const handleCleanRoute = async () => {
     setIsOpenAsideRouteControl(false);
     handlePointRoute({ lat: 0, lng: 0 });
+    cleanOldRoute();
 
     const { mapRef } = await providerMapContainer();
 
@@ -115,7 +158,9 @@ export function MapComponent() {
       mapRef.removeSource("route-base");
     }
 
+    // stopUserTracking?.();
     setTravelInfo(null);
+    // stopUserTracking = null;
   };
 
   return (
@@ -240,7 +285,9 @@ export function MapComponent() {
           onClick={() =>
             handlePlotRoute({ lng: pointRoute[0], lat: pointRoute[1] })
           }
-          className="w-full rounded-xs border bg-slate-700 p-1 text-sm text-white hover:bg-slate-950"
+          disabled={isLoadingPlotRoute}
+          data-value={isLoadingPlotRoute}
+          className="w-full rounded-xs border bg-slate-700 p-1 text-sm text-white hover:bg-slate-950 data-[value=true]:cursor-not-allowed data-[value=true]:opacity-50"
         >
           traçar rota
         </button>
@@ -248,7 +295,9 @@ export function MapComponent() {
         <button
           type="button"
           onClick={() => handleCleanRoute()}
-          className="rounded-xs border bg-red-900 p-1 text-sm text-white hover:bg-red-950"
+          disabled={isLoadingPlotRoute}
+          data-value={isLoadingPlotRoute}
+          className="rounded-xs border bg-red-900 p-1 text-sm text-white hover:bg-red-950 data-[value=true]:cursor-not-allowed data-[value=true]:opacity-50"
         >
           Limpar rota
         </button>
@@ -311,7 +360,9 @@ export function MapComponent() {
                       lat: item.location.latitude,
                     })
                   }
-                  className="cursor-pointer border p-1 text-xs"
+                  disabled={isLoadingPlotRoute}
+                  data-value={isLoadingPlotRoute}
+                  className="cursor-pointer border p-1 text-xs data-[value=true]:cursor-not-allowed data-[value=true]:opacity-50"
                 >
                   traçar rota
                 </button>
@@ -323,14 +374,19 @@ export function MapComponent() {
         <button
           type="button"
           onClick={() => handleCleanSearch()}
-          className="mt-5 cursor-pointer rounded-md border p-1 text-sm"
+          disabled={isLoadingPlotRoute}
+          data-value={isLoadingPlotRoute}
+          className="mt-5 cursor-pointer rounded-md border p-1 text-sm data-[value=true]:cursor-not-allowed data-[value=true]:opacity-50"
         >
           Limpar busca
         </button>
       </aside>
 
       <div className="fixed right-0 bottom-1 z-10 flex w-full justify-end px-2 md:bottom-1 md:w-2/3">
-        <SearchBusinessPoint filterBusinessPoints={filterBusinessPoints} />
+        <SearchBusinessPoint
+          filterBusinessPoints={filterBusinessPoints}
+          handleCleanRoute={handleCleanRoute}
+        />
       </div>
     </div>
   );

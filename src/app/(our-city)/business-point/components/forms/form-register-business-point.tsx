@@ -8,6 +8,7 @@ import { useGetBusinessPointCategories } from "@/hooks/use-app-queries/use-get-b
 import { CircleCheck } from "lucide-react";
 import { FormRegisterBusinessPointContext } from "@/contexts/form-register-business-point.context";
 import { ManageTags } from "../manage-tags";
+import { getUserCurrentLocation } from "@/utils/get-user-current-location";
 
 export function FormRegisterBusinessPoint() {
   const [locationFound, setLocationFound] = useState(false);
@@ -22,25 +23,17 @@ export function FormRegisterBusinessPoint() {
     selectedCategories,
   } = useContext(FormRegisterBusinessPointContext);
 
-  const myLocation: [number, number] = [-35.13145819818388, -6.378905610634973]; // TODO for while
+  const handleGetBusinessPointLocation = async () => {
+    const { latitude, longitude, error } = await getUserCurrentLocation();
 
-  const handleGetBusinessPointLocation = () => {
-    if (!navigator.geolocation) {
-      console.error("Geolocalização não é suportada pelo seu navegador.");
+    if (error) {
+      console.error(error);
       return;
     }
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setValue("location.longitude", myLocation[0].toString());
-        setValue("location.latitude", myLocation[1].toString());
-        setLocationFound(true);
-      },
-      (error) => {
-        console.error("Erro ao obter localização:", error.message);
-      },
-    );
+    setValue("location.longitude", longitude.toString());
+    setValue("location.latitude", latitude.toString());
+    setLocationFound(true);
   };
 
   const {
