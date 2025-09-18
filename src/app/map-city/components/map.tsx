@@ -199,9 +199,6 @@ export function MapComponent() {
           <p className="text-2xl font-semibold text-gray-700 drop-shadow">
             Carregando mapa...
           </p>
-          <p className="mt-2 text-sm text-gray-500">
-            Aguarde, estamos preparando os dados para você
-          </p>
         </div>
       )}
 

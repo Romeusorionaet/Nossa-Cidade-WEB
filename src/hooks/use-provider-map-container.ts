@@ -18,6 +18,7 @@ export function useProviderMapContainer() {
         container: mapContainerRef.current as HTMLElement,
         style,
         maxBounds: bounds,
+        pixelRatio: Math.min(window.devicePixelRatio, 2),
       });
 
       map.jumpTo({

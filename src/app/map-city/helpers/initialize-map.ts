@@ -47,7 +47,7 @@ export async function initializeMap({
           properties: {
             id: point.id,
             name: point.name,
-            icon: iconName,
+            icon: iconName ?? "default",
             status: checkBusinessStatus(point.openingHours),
           },
           geometry: {
@@ -58,15 +58,15 @@ export async function initializeMap({
       }) ?? [],
   });
 
+  const icons = businessPointCategories?.map((c) => c.searchName) ?? [
+    "default",
+  ];
+
   mapRef.on("load", async () => {
     mapRef
       .getStyle()
       .layers?.filter((layer) => layer.id.includes("poi"))
       .forEach((layer) => mapRef.removeLayer(layer.id));
-
-    const icons = businessPointCategories?.map((c) => c.searchName) ?? [
-      "default",
-    ];
 
     await loadMapIcons(mapRef, icons);
 
@@ -79,7 +79,6 @@ export async function initializeMap({
       });
 
       const simplifiedGeojson = simplify(geojson, 0.01);
-
       mapRef.addSource("canguaretama", {
         type: "geojson",
         data: {
@@ -87,19 +86,16 @@ export async function initializeMap({
           features: simplifiedGeojson.features,
         },
       });
-
       mapRef.addSource("mask", {
         type: "geojson",
         data: "/data/geojson/canguaretama-mask.geojson",
       });
-
       mapRef.addLayer({
         id: "mask-layer",
         type: "fill",
         source: "mask",
         paint: { "fill-color": "black", "fill-opacity": 0.5 },
       });
-
       mapRef.addLayer({
         id: "clusters",
         type: "circle",
@@ -120,7 +116,6 @@ export async function initializeMap({
           ],
         },
       });
-
       mapRef.addLayer({
         id: "cluster-count",
         type: "symbol",
@@ -133,7 +128,6 @@ export async function initializeMap({
         },
         paint: { "text-color": "#000" },
       });
-
       mapRef.addLayer({
         id: "unclustered-point",
         type: "symbol",
@@ -143,32 +137,18 @@ export async function initializeMap({
           "icon-image": ["get", "icon"],
           "icon-allow-overlap": false,
           "icon-ignore-placement": false,
-          "icon-size": [
-            "interpolate",
-            ["linear"],
-            ["zoom"],
-            12,
-            0.3,
-            14,
-            0.5,
-            16,
-            0.8,
-          ],
+          "icon-size": 0.8,
         },
       });
 
-      mapRef.on(
-        "mouseenter",
-        "unclustered-point",
-        // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-        () => (mapRef.getCanvas().style.cursor = "pointer"),
-      );
-      mapRef.on(
-        "mouseleave",
-        "unclustered-point",
-        // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-        () => (mapRef.getCanvas().style.cursor = ""),
-      );
+      if (window.matchMedia("(hover: hover)").matches) {
+        mapRef.on("mouseenter", "unclustered-point", () => {
+          mapRef.getCanvas().style.cursor = "pointer";
+        });
+        mapRef.on("mouseleave", "unclustered-point", () => {
+          mapRef.getCanvas().style.cursor = "";
+        });
+      }
     }
 
     mapRef.on("click", "unclustered-point", (e) => {
@@ -194,15 +174,19 @@ export async function initializeMap({
     });
   });
 
-  let previousFeatures: string | null = null;
+  let previousPointIds: Set<string> = new Set();
   const updatePointsChunked = (newData: GeoJSON.FeatureCollection) => {
     const source = mapRef.getSource("points") as maplibregl.GeoJSONSource;
     if (!source) return;
 
-    const str = JSON.stringify(newData.features);
-    if (str !== previousFeatures) {
+    const newIds = new Set(newData.features.map((f) => f.properties?.id));
+    const isChanged =
+      newIds.size !== previousPointIds.size ||
+      Array.from(newIds).some((id) => !previousPointIds.has(id));
+
+    if (isChanged) {
       source.setData(newData);
-      previousFeatures = str;
+      previousPointIds = newIds;
     }
   };
 
