@@ -10,7 +10,7 @@ import { OpeningHoursList } from "@/components/opening-hours-list";
 import { WEEK_DAYS } from "@/constants/week-days-order";
 import { DAYS_OF_WEEK_DDD } from "@/constants/day-of-week-ddd";
 import { useMapCity } from "@/hooks/use-map-city";
-import { Bike, Car, Footprints, LogOut, Route } from "lucide-react";
+import { Bike, Car, Footprints, Locate, LogOut, Route } from "lucide-react";
 import { openRouteServiceRoutes } from "@/actions/services/open-route-service-routes";
 import { drawRouteLayer } from "../helpers/draw-route-layer";
 import { AVG_SPEEDS } from "@/constants/avg-speeds";
@@ -161,6 +161,39 @@ export function MapComponent() {
     // stopUserTracking?.();
     setTravelInfo(null);
     // stopUserTracking = null;
+  };
+
+  const handleLocateUser = async () => {
+    if (!navigator.geolocation) return;
+
+    try {
+      const position = await new Promise<GeolocationPosition>(
+        (resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+          });
+        },
+      );
+
+      const { latitude, longitude } = position.coords;
+
+      const { mapRef } = await providerMapContainer();
+
+      mapRef.flyTo({
+        center: [longitude, latitude],
+        zoom: 15,
+        essential: true,
+      });
+
+      const userMarker = new maplibregl.Marker({ color: "#007AFF" })
+        .setLngLat([longitude, latitude])
+        .addTo(mapRef);
+
+      routeMarkersRef.current.push(userMarker);
+    } catch (error) {
+      console.warn("Erro ao pegar localização:", error);
+      alert("Não foi possível obter sua localização.");
+    }
   };
 
   return (
@@ -379,7 +412,15 @@ export function MapComponent() {
         </button>
       </aside>
 
-      <div className="fixed right-0 bottom-1 z-10 flex w-full justify-end px-2 md:bottom-1 md:w-2/3">
+      <div className="fixed right-0 bottom-1 z-10 flex w-full justify-between gap-4 px-1 md:bottom-1">
+        <button
+          type="button"
+          onClick={handleLocateUser}
+          className="rounded bg-white p-2 shadow"
+        >
+          <Locate />
+        </button>
+
         <SearchBusinessPoint
           filterBusinessPoints={filterBusinessPoints}
           handleCleanRoute={handleCleanRoute}
