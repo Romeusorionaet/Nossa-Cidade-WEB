@@ -412,13 +412,14 @@ export function MapComponent() {
         </button>
       </aside>
 
-      <div className="fixed right-0 bottom-1 z-10 flex w-full justify-between gap-4 px-1 md:bottom-1">
+      <div className="fixed right-0 bottom-1 z-10 flex w-full items-center justify-between gap-8 px-1 md:bottom-1">
         <button
+          title="localização"
           type="button"
           onClick={handleLocateUser}
-          className="rounded bg-white p-2 shadow"
+          className="h-1/2 rounded bg-white p-2 shadow"
         >
-          <Locate />
+          <Locate className="h-4 w-4" />
         </button>
 
         <SearchBusinessPoint

@@ -18,6 +18,7 @@ export function useProviderMapContainer() {
         container: mapContainerRef.current as HTMLElement,
         style,
         maxBounds: bounds,
+        attributionControl: false,
         pixelRatio: Math.min(window.devicePixelRatio, 1),
         fadeDuration: 0,
       });
@@ -25,7 +26,7 @@ export function useProviderMapContainer() {
       map.fitBounds(bounds, {
         padding: 20,
         animate: false,
-        zoom: 12.8,
+        zoom: 12,
         pitch: 0,
         bearing: 0,
       });
