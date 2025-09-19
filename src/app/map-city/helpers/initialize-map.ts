@@ -3,14 +3,11 @@ import { popupContent } from "./popup-content";
 import { type RefObject } from "react";
 import maplibregl from "maplibre-gl";
 import { loadMapIcons } from "./load-map-icons";
-import type { FeatureCollection, Geometry, GeoJsonProperties } from "geojson";
-import simplify from "simplify-geojson";
 
 interface Props {
   mapContainerRef: RefObject<HTMLDivElement | null>;
   providerMapContainer: () => Promise<{
     mapRef: maplibregl.Map;
-    geojson: FeatureCollection<Geometry, GeoJsonProperties>;
   }>;
   handlePointRoute: ({ lat, lng }: { lat: number; lng: number }) => void;
   pointsToShow: businessPointType[] | undefined;
@@ -31,7 +28,7 @@ export async function initializeMap({
 }: Props) {
   if (!mapContainerRef.current) return;
 
-  const { mapRef, geojson } = await providerMapContainer();
+  const { mapRef } = await providerMapContainer();
 
   const createGeoJSON = () => ({
     type: "FeatureCollection" as const,
@@ -78,17 +75,9 @@ export async function initializeMap({
         clusterRadius: 50,
       });
 
-      const simplifiedGeojson = simplify(geojson, 0.01);
-      mapRef.addSource("canguaretama", {
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: simplifiedGeojson.features,
-        },
-      });
       mapRef.addSource("mask", {
         type: "geojson",
-        data: "/data/geojson/canguaretama-mask.geojson",
+        data: "/data/geojson/masks/canguaretama-rn-mask.geojson",
       });
       mapRef.addLayer({
         id: "mask-layer",

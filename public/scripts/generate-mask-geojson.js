@@ -28,7 +28,7 @@ if (!cityMask) {
 }
 
 fs.writeFileSync(
-  "public/data/geojson/canguaretama-mask.geojson",
+  "public/data/geojson/masks/canguaretama-rn-mask.geojson",
   JSON.stringify(cityMask),
 );
 
